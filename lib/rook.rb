@@ -9,11 +9,28 @@ class Rook
   end
 
   def move(space)
-    case space
-    when 'a4'
-      @position = 'a4'
-    when 'b5'
-      @position = 'b5'
+    return nil unless legal?(space)
+
+    @position = space
+  end
+
+  def legal?(space)
+    return false if space == position
+
+    if space[0] == column
+      true
+    else
+      space[1] == row
     end
+  end
+
+  private
+
+  def column
+    position[0]
+  end
+
+  def row
+    position[1]
   end
 end

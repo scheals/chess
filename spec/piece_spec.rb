@@ -2,6 +2,7 @@
 
 require_relative '../lib/rook'
 
+# rubocop: disable Layout/LineLength, Metrics/BlockLength
 describe Rook do
   describe '#move' do
     context 'when moved vertically' do
@@ -18,5 +19,26 @@ describe Rook do
         expect(horizontal_move.position).to be('b5')
       end
     end
+    context 'when moved diagonally' do
+      subject(:diagonal_move) { described_class.new('c4') }
+      it "doesn't change its position" do
+        diagonal_move.move('d5')
+        expect(diagonal_move.position).to be('c4')
+      end
+      it 'returns nil' do
+        expect(diagonal_move.move('b3')).to be(nil)
+      end
+    end
+    context 'when told to move on its own position' do
+      subject(:immovable_move) { described_class.new('K0') }
+      it "doesn't change its position" do
+        immovable_move.move('K0')
+        expect(immovable_move.position).to be('K0')
+      end
+      it 'returns nil' do
+        expect(immovable_move.move('K0')).to be(nil)
+      end
+    end
   end
 end
+# rubocop: enable Layout/LineLength, Metrics/BlockLength
