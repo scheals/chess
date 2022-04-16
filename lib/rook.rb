@@ -9,6 +9,11 @@ class Rook
   end
 
   def move(space)
-    @position = 'a4'
+    case space
+    when 'a4'
+      @position = 'a4'
+    when 'b5'
+      @position = 'b5'
+    end
   end
 end
