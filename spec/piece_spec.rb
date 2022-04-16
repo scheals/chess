@@ -2,6 +2,7 @@
 
 require_relative '../lib/rook'
 require_relative '../lib/bishop'
+require_relative '../lib/piece'
 
 # rubocop: disable Layout/LineLength, Metrics/BlockLength
 describe Rook do

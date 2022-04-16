@@ -1,18 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'piece'
+
 # This class handles a Bishop chesspiece
-class Bishop
+class Bishop < Piece
   attr_reader :position
-
-  def initialize(position)
-    @position = position
-  end
-
-  def move(space)
-    return nil unless legal?(space)
-
-    @position = space
-  end
 
   def legal?(space)
     return false if space == position
@@ -22,15 +14,5 @@ class Bishop
     else
       true
     end
-  end
-
-  private
-
-  def column
-    position[0]
-  end
-
-  def row
-    position[1]
   end
 end
