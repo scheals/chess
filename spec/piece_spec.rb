@@ -8,7 +8,7 @@ require_relative '../lib/king'
 require_relative '../lib/knight'
 require_relative '../lib/pawn'
 
-# rubocop: disable Layout/LineLength, Metrics/BlockLength, Lint/AmbiguousBlockAssociation
+# rubocop: disable Metrics/BlockLength, Lint/AmbiguousBlockAssociation
 describe King do
   describe '#move' do
     context 'when moved vertically by one tile' do
@@ -269,4 +269,4 @@ describe Pawn do
     end
   end
 end
-# rubocop: enable Layout/LineLength, Metrics/BlockLength, Lint/AmbiguousBlockAssociation
+# rubocop: enable Metrics/BlockLength, Lint/AmbiguousBlockAssociation
