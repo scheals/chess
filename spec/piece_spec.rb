@@ -225,8 +225,48 @@ describe Knight do
       end
     end
   end
+end
 
-  describe Pawn do
+describe Pawn do
+  describe '#move' do
+    context 'when Pawn is white' do
+      subject(:white_pawn) { described_class.new('c3') }
+      it 'can only go up one space at a time' do
+        white_pawn.move('c4')
+        expect(white_pawn.position).to be('c4')
+      end
+      context 'when there is a piece to be taken diagonally' do
+        subject(:white_take) { described_class.new('f4') }
+        let(:occupied_space) { double('Space', coordinates: 'e5') }
+        before do
+          allow(occupied_space).to receive(:occupied?).and_return(true)
+        end
+        it 'can move one space up diagonally' do
+          space = occupied_space.coordinates
+          white_take.move(space)
+          expect(white_take.position).to be('e5')
+        end
+      end
+    end
+    context 'when Pawn is black' do
+      subject(:black_pawn) { described_class.new('e5') }
+      it 'can only go down one space at a time' do
+        black_pawn.move('e4')
+        expect(black_pawn.position).to be('e4')
+      end
+      context 'when there is a piece to be taken diagonally' do
+        subject(:black_take) { described_class.new('c5') }
+        let(:occupied_space) { double('Space', coordinates: 'd4') }
+        before do
+          allow(occupied_space).to receive(:occupied?).and_return(true)
+        end
+        it 'can move one space up diagonally' do
+          space = occupied_space.coordinates
+          black_take.move(space)
+          expect(black_take.position).to be('d4')
+        end
+      end
+    end
   end
 end
 # rubocop: enable Layout/LineLength, Metrics/BlockLength, Lint/AmbiguousBlockAssociation
