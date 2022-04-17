@@ -6,6 +6,7 @@ require_relative '../lib/piece'
 require_relative '../lib/queen'
 require_relative '../lib/king'
 require_relative '../lib/knight'
+require_relative '../lib/pawn'
 
 # rubocop: disable Layout/LineLength, Metrics/BlockLength, Lint/AmbiguousBlockAssociation
 describe King do
@@ -223,6 +224,9 @@ describe Knight do
         expect(immovable_move.move('K0')).to be(nil)
       end
     end
+  end
+
+  describe Pawn do
   end
 end
 # rubocop: enable Layout/LineLength, Metrics/BlockLength, Lint/AmbiguousBlockAssociation

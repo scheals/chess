@@ -4,7 +4,6 @@ require_relative 'piece'
 
 # This class handles a rook chesspiece.
 class Rook < Piece
-  attr_reader :position
 
   def legal?(space)
     return false if space == position

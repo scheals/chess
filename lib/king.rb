@@ -4,8 +4,6 @@ require_relative 'piece'
 
 # This class handles a Queen chesspiece.
 class King < Piece
-  attr_reader :position
-
   def legal?(space)
     return false if space == position
 
