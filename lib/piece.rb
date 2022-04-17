@@ -14,7 +14,7 @@ class Piece
     @position = space
   end
 
-  def legal?
+  def legal?(_space)
     raise 'NotImplemented'
   end
 
