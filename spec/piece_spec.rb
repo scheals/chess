@@ -76,6 +76,15 @@ describe Queen do
         expect(diagonal_move.position).to be('d5')
       end
     end
+    context 'when told to make an invalid move' do
+      subject(:invalid_move) { described_class.new('d4') }
+      it "doesn't change its position" do
+        expect { invalid_move.move('c7')}.to_not change { invalid_move.position }
+      end
+      it 'returns nil' do
+        expect(invalid_move.move('c7')).to be_nil
+      end
+    end
     context 'when told to move on its own position' do
       subject(:immovable_move) { described_class.new('K0') }
       it "doesn't change its position" do
@@ -111,6 +120,15 @@ describe Rook do
       end
       it 'returns nil' do
         expect(diagonal_move.move('b3')).to be(nil)
+      end
+    end
+    context 'when told to make an invalid move' do
+      subject(:invalid_move) { described_class.new('d4') }
+      it "doesn't change its position" do
+        expect { invalid_move.move('c7')}.to_not change { invalid_move.position }
+      end
+      it 'returns nil' do
+        expect(invalid_move.move('c7')).to be_nil
       end
     end
     context 'when told to move on its own position' do
@@ -150,6 +168,15 @@ describe Bishop do
       end
       it 'returns nil' do
         expect(horizontal_move.move('c1')).to be(nil)
+      end
+    end
+    context 'when told to make an invalid move' do
+      subject(:invalid_move) { described_class.new('d4') }
+      it "doesn't change its position" do
+        expect { invalid_move.move('c7')}.to_not change { invalid_move.position }
+      end
+      it 'returns nil' do
+        expect(invalid_move.move('c7')).to be_nil
       end
     end
     context 'when told to move on its own position' do

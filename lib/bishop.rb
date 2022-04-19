@@ -4,7 +4,6 @@ require_relative 'piece'
 
 # This class handles a Bishop chesspiece
 class Bishop < Piece
-
   def legal?(space)
     return false if space == position
 
