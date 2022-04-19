@@ -7,10 +7,12 @@ class Bishop < Piece
   def legal?(space)
     return false if space == position
 
-    if space[0] == column || space[1] == row
-      false
-    else
-      true
-    end
+    on_diagonal?(space)
+  end
+
+  def on_diagonal?(space)
+    vertical_distance = (space[1].to_i - row.to_i).abs
+    horizontal_distance = (space[0].ord - column.ord).abs
+    vertical_distance == horizontal_distance
   end
 end

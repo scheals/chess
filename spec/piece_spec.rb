@@ -79,7 +79,7 @@ describe Queen do
     context 'when told to make an invalid move' do
       subject(:invalid_move) { described_class.new('d4') }
       it "doesn't change its position" do
-        expect { invalid_move.move('c7')}.to_not change { invalid_move.position }
+        expect { invalid_move.move('c7') }.to_not change { invalid_move.position }
       end
       it 'returns nil' do
         expect(invalid_move.move('c7')).to be_nil
@@ -125,7 +125,7 @@ describe Rook do
     context 'when told to make an invalid move' do
       subject(:invalid_move) { described_class.new('d4') }
       it "doesn't change its position" do
-        expect { invalid_move.move('c7')}.to_not change { invalid_move.position }
+        expect { invalid_move.move('c7') }.to_not change { invalid_move.position }
       end
       it 'returns nil' do
         expect(invalid_move.move('c7')).to be_nil
@@ -173,7 +173,7 @@ describe Bishop do
     context 'when told to make an invalid move' do
       subject(:invalid_move) { described_class.new('d4') }
       it "doesn't change its position" do
-        expect { invalid_move.move('c7')}.to_not change { invalid_move.position }
+        expect { invalid_move.move('c7') }.to_not change { invalid_move.position }
       end
       it 'returns nil' do
         expect(invalid_move.move('c7')).to be_nil

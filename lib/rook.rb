@@ -7,6 +7,10 @@ class Rook < Piece
   def legal?(space)
     return false if space == position
 
+    horizontal?(space)
+  end
+
+  def horizontal?(space)
     if space[0] == column
       true
     else
