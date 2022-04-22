@@ -7,15 +7,23 @@ require_relative '../lib/square'
 describe Board do
   describe '#initialize' do
     subject(:new_board) { described_class.new(square) }
-    let(:square) { instance_double(Square) }
-    it 'stores an array of length 8 in board instance variable' do
-      expect(new_board.instance_variable_get(:@board).length).to be(8)
-    end
-    it 'board array is made of arrays of length 8' do
-      expect(new_board.instance_variable_get(:@board)).to all(satisfy { |row| row.length == 8 })
+    let(:square) { class_double(Square) }
+    before do
+      allow(square).to receive(:new).and_return(square)
     end
     it 'board is composed of objects resembling squares' do
-      expect(new_board.instance_variable_get(:@square)).to be(square)
+      expect(new_board.instance_variable_get(:@board).values).to all(be(square))
+    end
+  end
+
+  describe '#find' do
+    context 'when the square with given coordinates exists' do
+      subject(:possible_square) { described_class.new }
+      let(:board) { possible_square.instance_variable_get(:@board) }
+      it 'returns the square' do
+        a1_square = board['a1']
+        expect(possible_square.find('a1')).to be(a1_square)
+      end
     end
   end
 end

@@ -4,29 +4,38 @@ require_relative 'square'
 
 # This class handles a chess board.
 class Board
-  def initialize(square = Square.new)
+  def initialize(square = Square)
     @square = square
     @board = create_board
   end
 
   def create_board
-    board = []
+    board = {}
     start_letter = 'a'
     8.times do |i|
       current_letter = start_letter
       i.times do
         current_letter = current_letter.succ
       end
-      board << create_column(current_letter)
+      board.merge!(create_column(current_letter))
     end
     board
   end
 
+  def find(coordinates)
+    @board[coordinates]
+  end
+
   def create_column(letter)
-    row = []
+    column = {}
     8.times do |i|
-      row << Square.new("#{letter}#{i + 1}")
+      coordinates = "#{letter}#{i + 1}"
+      column[coordinates] = create_square(coordinates)
     end
-    row
+    column
+  end
+
+  def create_square(coordinates)
+    @square.new(coordinates)
   end
 end
