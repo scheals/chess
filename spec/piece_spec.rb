@@ -7,6 +7,7 @@ require_relative '../lib/queen'
 require_relative '../lib/king'
 require_relative '../lib/knight'
 require_relative '../lib/pawn'
+require_relative '../lib/piecefactory'
 
 # rubocop: disable Metrics/BlockLength, Lint/AmbiguousBlockAssociation
 describe King do
@@ -293,6 +294,32 @@ describe Pawn do
           expect(black_take.position).to be('d4')
         end
       end
+    end
+  end
+end
+
+describe PieceFactory do
+  describe '@for' do
+    it 'creates a Pawn instance' do
+      expect(PieceFactory.for('Pawn', 'a2')).to be_a(Pawn)
+    end
+    it 'creates a Rook instance' do
+      expect(PieceFactory.for('Rook', 'a1')).to be_a(Rook)
+    end
+    it 'creates a Knight instance' do
+      expect(PieceFactory.for('Knight', 'b1')).to be_a(Knight)
+    end
+    it 'creates a Bishop instance' do
+      expect(PieceFactory.for('Bishop', 'c1')).to be_a(Bishop)
+    end
+    it 'creates a Queen instance' do
+      expect(PieceFactory.for('Queen', 'd1')).to be_a(Queen)
+    end
+    it 'creates a King instance' do
+      expect(PieceFactory.for('King', 'e1')).to be_a(King)
+    end
+    it 'defaults to a Piece instance' do
+      expect(PieceFactory.for('Unicorn', 'L4')).to be_a(Piece)
     end
   end
 end
