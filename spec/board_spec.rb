@@ -32,6 +32,30 @@ describe Board do
       end
     end
   end
+
+  describe '#put' do
+    context 'when square is empty' do
+      subject(:empty_board) { described_class.new }
+      let(:piece) { instance_double(Piece) }
+      let(:empty_square) { empty_board.find('d6') }
+      it 'sends that square a #place message' do
+        expect(empty_square).to receive(:place)
+        empty_board.put(piece, 'd6')
+      end
+    end
+    context 'when square is occupied' do
+      subject(:full_board) { described_class.new }
+      let(:piece) { instance_double(Piece) }
+      let(:another_piece) { instance_double(Piece) }
+      let(:occupied_square) { full_board.find('a2') }
+      before do
+        occupied_square.place(piece)
+      end
+      it 'returns nil' do
+        expect(full_board.put(piece, 'a2')).to be_nil
+      end
+    end
+  end
 end
 
 describe Square do
