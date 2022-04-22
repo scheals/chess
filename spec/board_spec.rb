@@ -56,6 +56,18 @@ describe Board do
       end
     end
   end
+
+  describe '#create_piece' do
+    subject(:board) { described_class.new }
+    let(:factory) { class_double(PieceFactory) }
+    before do
+      allow(factory).to receive(:for).with('Pawn')
+    end
+    it 'sends factory a @for message' do
+      expect(factory).to receive(:for).with('Pawn')
+      board.create_piece('Pawn', factory)
+    end
+  end
 end
 
 describe Square do

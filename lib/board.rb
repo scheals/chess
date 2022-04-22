@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'square'
+require_relative 'piecefactory'
 
 # This class handles a chess board.
 class Board
@@ -41,5 +42,9 @@ class Board
 
   def create_square(coordinates)
     @square.new(coordinates)
+  end
+
+  def create_piece(name, factory = PieceFactory)
+    factory.for(name)
   end
 end
