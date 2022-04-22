@@ -25,6 +25,12 @@ describe Board do
         expect(possible_square.find('a1')).to be(a1_square)
       end
     end
+    context 'when the square with given coordinates does not exist' do
+      subject(:impossible_square) { described_class.new }
+      it 'returns nil' do
+        expect(impossible_square.find('b20')).to be_nil
+      end
+    end
   end
 end
 
@@ -52,6 +58,7 @@ describe Square do
       end
     end
   end
+
   describe '#vacate' do
     context 'when square is occupied by a piece' do
       subject(:occupied_square) { described_class.new('a1') }
@@ -67,6 +74,25 @@ describe Square do
       subject(:empty_square) { described_class.new('h4') }
       it 'returns nil' do
         expect(empty_square.vacate).to be_nil
+      end
+    end
+  end
+
+  describe '#occupied?' do
+    context 'when square is occupied by a piece' do
+      subject(:pieceful_square) { described_class.new('a6') }
+      let(:piece) { instance_double(Piece) }
+      before do
+        pieceful_square.place(piece)
+      end
+      it 'returns true' do
+        expect(pieceful_square.occupied?).to be(true)
+      end
+    end
+    context 'when square is empty' do
+      subject(:pieceless_square) { described_class.new('g6') }
+      it 'returns false' do
+        expect(pieceless_square.occupied?).to be(false)
       end
     end
   end

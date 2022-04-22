@@ -20,4 +20,10 @@ class Square
 
     @piece = nil
   end
+
+  def occupied?
+    return true if @piece
+
+    false
+  end
 end
