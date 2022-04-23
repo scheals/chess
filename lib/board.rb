@@ -23,6 +23,10 @@ class Board
     board
   end
 
+  def row(number)
+    @board.select { |key| key.end_with?(number.to_s) }
+  end
+
   def put(piece, coordinates)
     find(coordinates).place(piece)
   end

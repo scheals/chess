@@ -68,6 +68,24 @@ describe Board do
       board.create_piece('Pawn', factory)
     end
   end
+
+  describe '#row' do
+    context 'when given 2 as an argument' do
+      subject(:row_board) { described_class.new }
+      it 'returns a hash of Squares from the second row' do
+        expect(row_board.row(2)).to include(
+          'a2' => be_a(Square),
+          'b2' => be_a(Square),
+          'c2' => be_a(Square),
+          'd2' => be_a(Square),
+          'e2' => be_a(Square),
+          'f2' => be_a(Square),
+          'g2' => be_a(Square),
+          'h2' => be_a(Square)
+        )
+      end
+    end
+  end
 end
 
 describe Square do
