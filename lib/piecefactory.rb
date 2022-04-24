@@ -16,7 +16,7 @@ module PieceFactory
              'queen' => Queen,
              'king' => King }.freeze
 
-  def self.for(name, position = nil)
-    (PIECES[name.to_s.downcase] || Piece).new(position)
+  def self.for(name, colour: nil, position: nil)
+    (PIECES[name.to_s.downcase] || Piece).new(position, colour: colour)
   end
 end

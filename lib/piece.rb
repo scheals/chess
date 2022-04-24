@@ -2,10 +2,11 @@
 
 # This class handles abstract chess pieces.
 class Piece
-  attr_reader :position
+  attr_reader :position, :colour
 
-  def initialize(position)
+  def initialize(position, colour: nil)
     @position = position
+    @colour = colour
   end
 
   def move(space)

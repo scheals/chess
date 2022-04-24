@@ -2,7 +2,7 @@
 
 # This class handles a square on a chessboard.
 class Square
-  attr_reader :coordinates
+  attr_reader :coordinates, :piece
 
   def initialize(coordinates = nil)
     @coordinates = coordinates

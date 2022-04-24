@@ -61,11 +61,11 @@ describe Board do
     subject(:board) { described_class.new }
     let(:factory) { class_double(PieceFactory) }
     before do
-      allow(factory).to receive(:for).with('Pawn')
+      allow(factory).to receive(:for).with('Pawn', colour: 'white', position: 'a2')
     end
     it 'sends factory a @for message' do
-      expect(factory).to receive(:for).with('Pawn')
-      board.create_piece('Pawn', factory)
+      expect(factory).to receive(:for).with('Pawn', colour: 'white', position: 'a2')
+      board.create_piece('Pawn', colour: 'white', position: 'a2', factory: factory)
     end
   end
 
@@ -84,6 +84,88 @@ describe Board do
           'h2' => be_a(Square)
         )
       end
+    end
+  end
+
+  describe '#setup' do
+    subject(:starting_board) { described_class.new }
+    let(:board) { starting_board.instance_variable_get(:@board) }
+    before do
+      starting_board.setup
+    end
+    it 'puts black Rook into a8' do
+      starting_square = starting_board.find('a8')
+      expect(starting_square.piece).to be_a(Rook).and have_attributes(colour: 'black')
+    end
+    it 'puts black Rook into h8' do
+      starting_square = starting_board.find('h8')
+      expect(starting_square.piece).to be_a(Rook).and have_attributes(colour: 'black')
+    end
+    it 'puts black Knight into b8' do
+      starting_square = starting_board.find('b8')
+      expect(starting_square.piece).to be_a(Knight).and have_attributes(colour: 'black')
+    end
+    it 'puts black Knight into g8' do
+      starting_square = starting_board.find('g8')
+      expect(starting_square.piece).to be_a(Knight).and have_attributes(colour: 'black')
+    end
+    it 'puts black Bishop into c8' do
+      starting_square = starting_board.find('c8')
+      expect(starting_square.piece).to be_a(Bishop).and have_attributes(colour: 'black')
+    end
+    it 'puts black Bishop into f8' do
+      starting_square = starting_board.find('f8')
+      expect(starting_square.piece).to be_a(Bishop).and have_attributes(colour: 'black')
+    end
+    it 'puts black Queen into d8' do
+      starting_square = starting_board.find('d8')
+      expect(starting_square.piece).to be_a(Queen).and have_attributes(colour: 'black')
+    end
+    it 'puts black King into e8' do
+      starting_square = starting_board.find('e8')
+      expect(starting_square.piece).to be_a(King).and have_attributes(colour: 'black')
+    end
+    it 'puts black Pawns into row 7' do
+      starting_row_squares = starting_board.row(7).values
+      starting_row_pieces = starting_row_squares.map(&:piece)
+      expect(starting_row_pieces).to all(be_a(Pawn).and have_attributes(colour: 'black'))
+    end
+    it 'puts white Rook into a1' do
+      starting_square = starting_board.find('a1')
+      expect(starting_square.piece).to be_a(Rook).and have_attributes(colour: 'white')
+    end
+    it 'puts white Rook into h1' do
+      starting_square = starting_board.find('h1')
+      expect(starting_square.piece).to be_a(Rook).and have_attributes(colour: 'white')
+    end
+    it 'puts white Knight into b1' do
+      starting_square = starting_board.find('b1')
+      expect(starting_square.piece).to be_a(Knight).and have_attributes(colour: 'white')
+    end
+    it 'puts white Knight into g1' do
+      starting_square = starting_board.find('g1')
+      expect(starting_square.piece).to be_a(Knight).and have_attributes(colour: 'white')
+    end
+    it 'puts white Bishop into c1' do
+      starting_square = starting_board.find('c1')
+      expect(starting_square.piece).to be_a(Bishop).and have_attributes(colour: 'white')
+    end
+    it 'puts white Bishop into f1' do
+      starting_square = starting_board.find('f1')
+      expect(starting_square.piece).to be_a(Bishop).and have_attributes(colour: 'white')
+    end
+    it 'puts white Queen into d1' do
+      starting_square = starting_board.find('d1')
+      expect(starting_square.piece).to be_a(Queen).and have_attributes(colour: 'white')
+    end
+    it 'puts white King into e1' do
+      starting_square = starting_board.find('e1')
+      expect(starting_square.piece).to be_a(King).and have_attributes(colour: 'white')
+    end
+    it 'puts white Pawns into row 2' do
+      starting_row_squares = starting_board.row(2).values
+      starting_row_pieces = starting_row_squares.map(&:piece)
+      expect(starting_row_pieces).to all(be_a(Pawn).and have_attributes(colour: 'white'))
     end
   end
 end
