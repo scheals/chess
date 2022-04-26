@@ -33,9 +33,9 @@ class Board
   end
 
   def setup_rooks
-    put(create_piece('rook', colour: 'black', position: 'h8'), 'a8')
+    put(create_piece('rook', colour: 'black', position: 'a8'), 'a8')
     put(create_piece('rook', colour: 'black', position: 'h8'), 'h8')
-    put(create_piece('rook', colour: 'white', position: 'h1'), 'a1')
+    put(create_piece('rook', colour: 'white', position: 'a1'), 'a1')
     put(create_piece('rook', colour: 'white', position: 'h1'), 'h1')
   end
 
