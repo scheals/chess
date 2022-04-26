@@ -5,8 +5,9 @@ require_relative 'piecefactory'
 
 # This class handles a chess board.
 class Board
-  def initialize(square = Square)
+  def initialize(square = Square, factory = PieceFactory)
     @square = square
+    @factory = factory
     @board = create_board
   end
 
@@ -93,7 +94,7 @@ class Board
     @square.new(coordinates)
   end
 
-  def create_piece(name, colour:, position:, factory: PieceFactory)
-    factory.for(name, colour: colour, position: position)
+  def create_piece(name, colour:, position:)
+    @factory.for(name, colour: colour, position: position)
   end
 end

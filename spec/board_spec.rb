@@ -59,13 +59,13 @@ describe Board do
 
   describe '#create_piece' do
     subject(:board) { described_class.new }
-    let(:factory) { class_double(PieceFactory) }
+    let(:factory) { board.instance_variable_get(:@factory) }
     before do
       allow(factory).to receive(:for).with('Pawn', colour: 'white', position: 'a2')
     end
     it 'sends factory a @for message' do
       expect(factory).to receive(:for).with('Pawn', colour: 'white', position: 'a2')
-      board.create_piece('Pawn', colour: 'white', position: 'a2', factory: factory)
+      board.create_piece('Pawn', colour: 'white', position: 'a2')
     end
   end
 
