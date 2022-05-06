@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'display'
+
 # This class handles abstract chess pieces.
 class Piece
+  include Display
   attr_reader :position, :colour
 
   def initialize(position, colour: nil)
@@ -17,6 +20,10 @@ class Piece
 
   def legal?(_space)
     raise 'NotImplemented'
+  end
+
+  def to_s
+    PIECES["#{colour}_#{self.class}".downcase.to_sym]
   end
 
   private

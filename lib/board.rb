@@ -2,9 +2,12 @@
 
 require_relative 'square'
 require_relative 'piecefactory'
+require 'colorize'
 
 # This class handles a chess board.
 class Board
+  attr_reader :board
+
   def initialize(square = Square, factory = PieceFactory)
     @square = square
     @factory = factory
@@ -98,3 +101,13 @@ class Board
     @factory.for(name, colour: colour, position: position)
   end
 end
+test = Board.new
+test.setup
+puts test.row(1).values.join('')
+puts test.row(2).values.join('')
+puts test.row(3).values.join('')
+puts test.row(4).values.join('')
+puts test.row(5).values.join('')
+puts test.row(6).values.join('')
+puts test.row(7).values.join('')
+puts test.row(8).values.join('')

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'colorize'
+
 # This class handles a square on a chessboard.
 class Square
   attr_reader :coordinates, :piece
@@ -10,13 +12,13 @@ class Square
   end
 
   def place(piece)
-    return nil if @piece
+    return nil if occupied?
 
     @piece = piece
   end
 
   def vacate
-    return nil unless @piece
+    return nil unless occupied?
 
     @piece = nil
   end
@@ -25,5 +27,9 @@ class Square
     return true if @piece
 
     false
+  end
+
+  def to_s
+    "#{piece.to_s} ".colorize(background: :light_black)
   end
 end
