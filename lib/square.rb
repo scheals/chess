@@ -7,9 +7,10 @@ require_relative 'nilpiece'
 class Square
   attr_reader :coordinates, :piece
 
-  def initialize(coordinates = nil)
+  def initialize(coordinates = nil, colour: :light_black)
     @coordinates = coordinates
     @piece = NilPiece.new(coordinates)
+    @colour = colour
   end
 
   def place(piece)
@@ -29,6 +30,6 @@ class Square
   end
 
   def to_s
-    "#{piece.to_s} ".colorize(background: :light_black)
+    "#{piece.to_s} ".colorize(background: @colour.to_sym)
   end
 end
