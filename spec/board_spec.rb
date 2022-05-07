@@ -3,7 +3,7 @@
 require_relative '../lib/board'
 require_relative '../lib/square'
 
-# rubocop: disable Metrics/BlockLength, Lint/AmbiguousBlockAssociation, Layout/LineLength
+# rubocop: disable Metrics/BlockLength, Lint/AmbiguousBlockAssociation, Layout/LineLength, Style/NestedParenthesizedCalls
 describe Board do
   describe '#initialize' do
     subject(:new_board) { described_class.new(square) }
@@ -237,4 +237,4 @@ describe Square do
     end
   end
 end
-# rubocop: enable Metrics/BlockLength, Lint/AmbiguousBlockAssociation, Layout/LineLength
+# rubocop: enable Metrics/BlockLength, Lint/AmbiguousBlockAssociation, Layout/LineLength, Style/NestedParenthesizedCalls

@@ -10,7 +10,7 @@ require_relative '../lib/pawn'
 require_relative '../lib/nilpiece'
 require_relative '../lib/piecefactory'
 
-# rubocop: disable Metrics/BlockLength, Lint/AmbiguousBlockAssociation
+# rubocop: disable Metrics/BlockLength, Lint/AmbiguousBlockAssociation, Layout/LineLength
 describe Piece do
   describe 'real?' do
     subject(:real_piece) { described_class.new('a1') }
@@ -348,4 +348,4 @@ describe PieceFactory do
     end
   end
 end
-# rubocop: enable Metrics/BlockLength, Lint/AmbiguousBlockAssociation
+# rubocop: enable Metrics/BlockLength, Lint/AmbiguousBlockAssociation, Layout/LineLength
