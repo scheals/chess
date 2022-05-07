@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'colorize'
+require_relative 'nilpiece'
 
 # This class handles a square on a chessboard.
 class Square
@@ -8,7 +9,7 @@ class Square
 
   def initialize(coordinates = nil)
     @coordinates = coordinates
-    @piece = nil
+    @piece = NilPiece.new(coordinates)
   end
 
   def place(piece)
@@ -20,13 +21,11 @@ class Square
   def vacate
     return nil unless occupied?
 
-    @piece = nil
+    @piece = NilPiece.new(coordinates)
   end
 
   def occupied?
-    return true if @piece
-
-    false
+    @piece.real?
   end
 
   def to_s

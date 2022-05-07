@@ -26,6 +26,10 @@ class Piece
     PIECES["#{colour}_#{self.class}".downcase.to_sym]
   end
 
+  def real?
+    true
+  end
+
   private
 
   def column

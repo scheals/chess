@@ -7,9 +7,28 @@ require_relative '../lib/queen'
 require_relative '../lib/king'
 require_relative '../lib/knight'
 require_relative '../lib/pawn'
+require_relative '../lib/nilpiece'
 require_relative '../lib/piecefactory'
 
 # rubocop: disable Metrics/BlockLength, Lint/AmbiguousBlockAssociation
+describe Piece do
+  describe 'real?' do
+    subject(:real_piece) { described_class.new('a1') }
+    it 'always returns true' do
+      expect(real_piece.real?).to be true
+    end
+  end
+end
+
+describe NilPiece do
+  describe 'real?' do
+    subject(:false_piece) { described_class.new('a1') }
+    it 'always returns false' do
+      expect(false_piece.real?).to be false
+    end
+  end
+end
+
 describe King do
   describe '#move' do
     context 'when moved vertically by one tile' do

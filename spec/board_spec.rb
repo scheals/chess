@@ -50,6 +50,7 @@ describe Board do
       let(:occupied_square) { full_board.find('a2') }
       before do
         occupied_square.place(piece)
+        allow(piece).to receive(:real?).and_return(true)
       end
       it 'returns nil' do
         expect(full_board.put(piece, 'a2')).to be_nil
@@ -185,6 +186,7 @@ describe Square do
       let(:another_piece) { instance_double(Piece) }
       before do
         full_square.place(piece)
+        allow(piece).to receive(:real?).and_return(true)
       end
       it 'does not change @piece' do
         expect { full_square.place(another_piece) }.to_not change { full_square.instance_variable_get(:@piece) }
@@ -201,9 +203,10 @@ describe Square do
       let(:piece) { instance_double(Piece) }
       before do
         occupied_square.place(piece)
+        allow(piece).to receive(:real?).and_return(true)
       end
-      it 'changes @piece into nil' do
-        expect { occupied_square.vacate }.to change { occupied_square.instance_variable_get(:@piece) }.from(piece).to(nil)
+      it 'changes @piece into a NilPiece' do
+        expect { occupied_square.vacate }.to change { occupied_square.instance_variable_get(:@piece) }.from(piece).to be_a(NilPiece)
       end
     end
     context 'when square is empty' do
@@ -220,6 +223,7 @@ describe Square do
       let(:piece) { instance_double(Piece) }
       before do
         pieceful_square.place(piece)
+        allow(piece).to receive(:real?).and_return(true)
       end
       it 'returns true' do
         expect(pieceful_square.occupied?).to be(true)
