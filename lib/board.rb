@@ -2,10 +2,12 @@
 
 require_relative 'square'
 require_relative 'piecefactory'
+require_relative 'display'
 require 'colorize'
 
 # This class handles a chess board.
 class Board
+  include Display
   attr_reader :board
 
   def initialize(square = Square, factory = PieceFactory)
@@ -18,11 +20,9 @@ class Board
     board = {}
     start_letter = 'a'
     8.times do |i|
-      current_letter = start_letter
-      i.times do
-        current_letter = current_letter.succ
-      end
-      board.merge!(create_column(current_letter))
+      current_letter = (start_letter.ord + i).chr
+      column = create_column(i, current_letter)
+      board.merge!(column)
     end
     board
   end
@@ -34,6 +34,12 @@ class Board
     setup_queens
     setup_kings
     setup_pawns
+  end
+
+  def show
+    8.times do |i|
+      puts row(i + 1).values.join('')
+    end
   end
 
   def setup_rooks
@@ -84,17 +90,36 @@ class Board
     @board[coordinates]
   end
 
-  def create_column(letter)
+  def create_column(number, letter)
+    if number.even?
+      create_even_column(letter)
+    else
+      create_odd_column(letter)
+    end
+  end
+
+  def create_odd_column(letter)
     column = {}
     8.times do |i|
       coordinates = "#{letter}#{i + 1}"
-      column[coordinates] = create_square(coordinates)
+      colour = i.even? ? TILES[:white_tile] : TILES[:black_tile]
+      column[coordinates] = create_square(coordinates, colour)
     end
     column
   end
 
-  def create_square(coordinates)
-    @square.new(coordinates)
+  def create_even_column(letter)
+    column = {}
+    8.times do |i|
+      coordinates = "#{letter}#{i + 1}"
+      colour = i.even? ? TILES[:black_tile] : TILES[:white_tile]
+      column[coordinates] = create_square(coordinates, colour)
+    end
+    column
+  end
+
+  def create_square(coordinates, colour)
+    @square.new(coordinates, colour: colour)
   end
 
   def create_piece(name, colour:, position:)
@@ -103,11 +128,4 @@ class Board
 end
 test = Board.new
 test.setup
-puts test.row(1).values.join('')
-puts test.row(2).values.join('')
-puts test.row(3).values.join('')
-puts test.row(4).values.join('')
-puts test.row(5).values.join('')
-puts test.row(6).values.join('')
-puts test.row(7).values.join('')
-puts test.row(8).values.join('')
+test.show
