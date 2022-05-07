@@ -16,48 +16,6 @@ describe Board do
     end
   end
 
-  describe '#find' do
-    context 'when the square with given coordinates exists' do
-      subject(:possible_square) { described_class.new }
-      let(:board) { possible_square.instance_variable_get(:@board) }
-      it 'returns the square' do
-        a1_square = board['a1']
-        expect(possible_square.find('a1')).to be(a1_square)
-      end
-    end
-    context 'when the square with given coordinates does not exist' do
-      subject(:impossible_square) { described_class.new }
-      it 'returns nil' do
-        expect(impossible_square.find('b20')).to be_nil
-      end
-    end
-  end
-
-  describe '#put' do
-    context 'when square is empty' do
-      subject(:empty_board) { described_class.new }
-      let(:piece) { instance_double(Piece) }
-      let(:empty_square) { empty_board.find('d6') }
-      it 'sends that square a #place message' do
-        expect(empty_square).to receive(:place)
-        empty_board.put(piece, 'd6')
-      end
-    end
-    context 'when square is occupied' do
-      subject(:full_board) { described_class.new }
-      let(:piece) { instance_double(Piece) }
-      let(:another_piece) { instance_double(Piece) }
-      let(:occupied_square) { full_board.find('a2') }
-      before do
-        occupied_square.place(piece)
-        allow(piece).to receive(:real?).and_return(true)
-      end
-      it 'returns nil' do
-        expect(full_board.put(piece, 'a2')).to be_nil
-      end
-    end
-  end
-
   describe '#create_piece' do
     subject(:board) { described_class.new }
     let(:factory) { board.instance_variable_get(:@factory) }
@@ -95,35 +53,35 @@ describe Board do
       starting_board.setup
     end
     it 'puts black Rook into a8' do
-      starting_square = starting_board.find('a8')
+      starting_square = board['a8']
       expect(starting_square.piece).to be_a(Rook).and have_attributes(colour: 'black')
     end
     it 'puts black Rook into h8' do
-      starting_square = starting_board.find('h8')
+      starting_square = board['h8']
       expect(starting_square.piece).to be_a(Rook).and have_attributes(colour: 'black')
     end
     it 'puts black Knight into b8' do
-      starting_square = starting_board.find('b8')
+      starting_square = board['b8']
       expect(starting_square.piece).to be_a(Knight).and have_attributes(colour: 'black')
     end
     it 'puts black Knight into g8' do
-      starting_square = starting_board.find('g8')
+      starting_square = board['g8']
       expect(starting_square.piece).to be_a(Knight).and have_attributes(colour: 'black')
     end
     it 'puts black Bishop into c8' do
-      starting_square = starting_board.find('c8')
+      starting_square = board['c8']
       expect(starting_square.piece).to be_a(Bishop).and have_attributes(colour: 'black')
     end
     it 'puts black Bishop into f8' do
-      starting_square = starting_board.find('f8')
+      starting_square = board['f8']
       expect(starting_square.piece).to be_a(Bishop).and have_attributes(colour: 'black')
     end
     it 'puts black Queen into d8' do
-      starting_square = starting_board.find('d8')
+      starting_square = board['d8']
       expect(starting_square.piece).to be_a(Queen).and have_attributes(colour: 'black')
     end
     it 'puts black King into e8' do
-      starting_square = starting_board.find('e8')
+      starting_square = board['e8']
       expect(starting_square.piece).to be_a(King).and have_attributes(colour: 'black')
     end
     it 'puts black Pawns into row 7' do
@@ -132,35 +90,35 @@ describe Board do
       expect(starting_row_pieces).to all(be_a(Pawn).and have_attributes(colour: 'black'))
     end
     it 'puts white Rook into a1' do
-      starting_square = starting_board.find('a1')
+      starting_square = board['a1']
       expect(starting_square.piece).to be_a(Rook).and have_attributes(colour: 'white')
     end
     it 'puts white Rook into h1' do
-      starting_square = starting_board.find('h1')
+      starting_square = board['h1']
       expect(starting_square.piece).to be_a(Rook).and have_attributes(colour: 'white')
     end
     it 'puts white Knight into b1' do
-      starting_square = starting_board.find('b1')
+      starting_square = board['b1']
       expect(starting_square.piece).to be_a(Knight).and have_attributes(colour: 'white')
     end
     it 'puts white Knight into g1' do
-      starting_square = starting_board.find('g1')
+      starting_square = board['g1']
       expect(starting_square.piece).to be_a(Knight).and have_attributes(colour: 'white')
     end
     it 'puts white Bishop into c1' do
-      starting_square = starting_board.find('c1')
+      starting_square = board['c1']
       expect(starting_square.piece).to be_a(Bishop).and have_attributes(colour: 'white')
     end
     it 'puts white Bishop into f1' do
-      starting_square = starting_board.find('f1')
+      starting_square = board['f1']
       expect(starting_square.piece).to be_a(Bishop).and have_attributes(colour: 'white')
     end
     it 'puts white Queen into d1' do
-      starting_square = starting_board.find('d1')
+      starting_square = board['d1']
       expect(starting_square.piece).to be_a(Queen).and have_attributes(colour: 'white')
     end
     it 'puts white King into e1' do
-      starting_square = starting_board.find('e1')
+      starting_square = board['e1']
       expect(starting_square.piece).to be_a(King).and have_attributes(colour: 'white')
     end
     it 'puts white Pawns into row 2' do

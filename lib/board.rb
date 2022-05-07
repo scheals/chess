@@ -42,52 +42,8 @@ class Board
     end
   end
 
-  def setup_rooks
-    put(create_piece('rook', colour: 'black', position: 'a8'), 'a8')
-    put(create_piece('rook', colour: 'black', position: 'h8'), 'h8')
-    put(create_piece('rook', colour: 'white', position: 'a1'), 'a1')
-    put(create_piece('rook', colour: 'white', position: 'h1'), 'h1')
-  end
-
-  def setup_knights
-    put(create_piece('knight', colour: 'black', position: 'b8'), 'b8')
-    put(create_piece('knight', colour: 'black', position: 'g8'), 'g8')
-    put(create_piece('knight', colour: 'white', position: 'b1'), 'b1')
-    put(create_piece('knight', colour: 'white', position: 'g1'), 'g1')
-  end
-
-  def setup_bishops
-    put(create_piece('bishop', colour: 'black', position: 'c8'), 'c8')
-    put(create_piece('bishop', colour: 'black', position: 'f8'), 'f8')
-    put(create_piece('bishop', colour: 'white', position: 'c1'), 'c1')
-    put(create_piece('bishop', colour: 'white', position: 'f1'), 'f1')
-  end
-
-  def setup_queens
-    put(create_piece('queen', colour: 'black', position: 'd8'), 'd8')
-    put(create_piece('queen', colour: 'white', position: 'd1'), 'd1')
-  end
-
-  def setup_kings
-    put(create_piece('king', colour: 'black', position: 'e8'), 'e8')
-    put(create_piece('king', colour: 'white', position: 'e1'), 'e1')
-  end
-
-  def setup_pawns
-    row(7).each_value { |square| square.place(create_piece('pawn', colour: 'black', position: square.coordinates)) }
-    row(2).each_value { |square| square.place(create_piece('pawn', colour: 'white', position: square.coordinates)) }
-  end
-
   def row(number)
     @board.select { |key| key.end_with?(number.to_s) }
-  end
-
-  def put(piece, coordinates)
-    find(coordinates).place(piece)
-  end
-
-  def find(coordinates)
-    @board[coordinates]
   end
 
   def create_column(number, letter)
@@ -96,6 +52,52 @@ class Board
     else
       create_odd_column(letter)
     end
+  end
+
+  def create_square(coordinates, colour)
+    @square.new(coordinates, colour: colour)
+  end
+
+  def create_piece(name, colour:, position:)
+    @factory.for(name, colour: colour, position: position)
+  end
+
+  private
+
+  def setup_rooks
+    board['a8'].place(create_piece('rook', colour: 'black', position: 'a8'))
+    board['h8'].place(create_piece('rook', colour: 'black', position: 'h8'))
+    board['a1'].place(create_piece('rook', colour: 'white', position: 'a1'))
+    board['h1'].place(create_piece('rook', colour: 'white', position: 'h1'))
+  end
+
+  def setup_knights
+    board['b8'].place(create_piece('knight', colour: 'black', position: 'b8'))
+    board['g8'].place(create_piece('knight', colour: 'black', position: 'g8'))
+    board['b1'].place(create_piece('knight', colour: 'white', position: 'b1'))
+    board['g1'].place(create_piece('knight', colour: 'white', position: 'g1'))
+  end
+
+  def setup_bishops
+    board['c8'].place(create_piece('bishop', colour: 'black', position: 'c8'))
+    board['f8'].place(create_piece('bishop', colour: 'black', position: 'f8'))
+    board['c1'].place(create_piece('bishop', colour: 'white', position: 'c1'))
+    board['f1'].place(create_piece('bishop', colour: 'white', position: 'f1'))
+  end
+
+  def setup_queens
+    board['d8'].place(create_piece('queen', colour: 'black', position: 'd8'))
+    board['d1'].place(create_piece('queen', colour: 'white', position: 'd1'))
+  end
+
+  def setup_kings
+    board['e8'].place(create_piece('king', colour: 'black', position: 'e8'))
+    board['e1'].place(create_piece('king', colour: 'white', position: 'e1'))
+  end
+
+  def setup_pawns
+    row(7).each_value { |square| square.place(create_piece('pawn', colour: 'black', position: square.coordinates)) }
+    row(2).each_value { |square| square.place(create_piece('pawn', colour: 'white', position: square.coordinates)) }
   end
 
   def create_odd_column(letter)
@@ -117,15 +119,4 @@ class Board
     end
     column
   end
-
-  def create_square(coordinates, colour)
-    @square.new(coordinates, colour: colour)
-  end
-
-  def create_piece(name, colour:, position:)
-    @factory.for(name, colour: colour, position: position)
-  end
 end
-test = Board.new
-test.setup
-test.show
