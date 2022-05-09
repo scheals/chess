@@ -7,7 +7,7 @@ class Knight < Piece
   def legal?(space)
     return false if space == position
 
-    if twice_vertical(space) && once_horizontal(space) || twice_horizontal(space) && once_vertical(space)
+    if (twice_vertical(space) && once_horizontal(space)) || (twice_horizontal(space) && once_vertical(space))
       true
     else
       false

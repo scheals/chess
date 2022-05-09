@@ -3,7 +3,7 @@
 require_relative '../lib/board'
 require_relative '../lib/square'
 
-# rubocop: disable Metrics/BlockLength, Lint/AmbiguousBlockAssociation, Layout/LineLength, Style/NestedParenthesizedCalls
+# rubocop: disable Metrics/BlockLength,Layout/LineLength, Lint/AmbiguousBlockAssociation
 describe Board do
   describe '#initialize' do
     subject(:new_board) { described_class.new(square) }
@@ -25,6 +25,48 @@ describe Board do
     it 'sends factory a @for message' do
       expect(factory).to receive(:for).with('Pawn', colour: 'white', position: 'a2')
       board.create_piece('Pawn', colour: 'white', position: 'a2')
+    end
+  end
+
+  describe '#find' do
+    context 'when the square with given coordinates exists' do
+      subject(:possible_square) { described_class.new }
+      let(:board) { possible_square.instance_variable_get(:@board) }
+      it 'returns the square' do
+        a1_square = board['a1']
+        expect(possible_square.find('a1')).to be(a1_square)
+      end
+    end
+    context 'when the square with given coordinates does not exist' do
+      subject(:impossible_square) { described_class.new }
+      it 'returns nil' do
+        expect(impossible_square.find('b20')).to be_nil
+      end
+    end
+  end
+
+  describe '#put' do
+    context 'when square is empty' do
+      subject(:empty_board) { described_class.new }
+      let(:piece) { instance_double(Piece) }
+      let(:empty_square) { empty_board.find('d6') }
+      it 'sends that square a #place message' do
+        expect(empty_square).to receive(:place)
+        empty_board.put(piece, 'd6')
+      end
+    end
+    context 'when square is occupied' do
+      subject(:full_board) { described_class.new }
+      let(:piece) { instance_double(Piece) }
+      let(:another_piece) { instance_double(Piece) }
+      let(:occupied_square) { full_board.find('a2') }
+      before do
+        occupied_square.place(piece)
+        allow(piece).to receive(:real?).and_return(true)
+      end
+      it 'returns nil' do
+        expect(full_board.put(piece, 'a2')).to be_nil
+      end
     end
   end
 
@@ -87,7 +129,7 @@ describe Board do
     it 'puts black Pawns into row 7' do
       starting_row_squares = starting_board.row(7).values
       starting_row_pieces = starting_row_squares.map(&:piece)
-      expect(starting_row_pieces).to all(be_a(Pawn).and have_attributes(colour: 'black'))
+      expect(starting_row_pieces).to all(be_a(Pawn).and(have_attributes(colour: 'black')))
     end
     it 'puts white Rook into a1' do
       starting_square = board['a1']
@@ -124,7 +166,7 @@ describe Board do
     it 'puts white Pawns into row 2' do
       starting_row_squares = starting_board.row(2).values
       starting_row_pieces = starting_row_squares.map(&:piece)
-      expect(starting_row_pieces).to all(be_a(Pawn).and have_attributes(colour: 'white'))
+      expect(starting_row_pieces).to all(be_a(Pawn).and(have_attributes(colour: 'white')))
     end
   end
 end
@@ -195,4 +237,4 @@ describe Square do
     end
   end
 end
-# rubocop: enable Metrics/BlockLength, Lint/AmbiguousBlockAssociation, Layout/LineLength, Style/NestedParenthesizedCalls
+# rubocop: enable Metrics/BlockLength, Layout/LineLength, Lint/AmbiguousBlockAssociation

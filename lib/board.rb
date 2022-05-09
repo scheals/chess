@@ -38,12 +38,20 @@ class Board
 
   def show
     8.times do |i|
-      puts row(i + 1).values.join('')
+      puts row(i + 1).values.join
     end
   end
 
   def row(number)
     @board.select { |key| key.end_with?(number.to_s) }
+  end
+
+  def find(square)
+    @board[square]
+  end
+
+  def put(piece, coordinates)
+    find(coordinates).place(piece)
   end
 
   def create_column(number, letter)
