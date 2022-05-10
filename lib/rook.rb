@@ -2,7 +2,7 @@
 
 require_relative 'piece'
 
-# This class handles a rook chesspiece.
+# This class handles a Rook chesspiece.
 class Rook < Piece
   def legal?(space)
     return false if space == position
