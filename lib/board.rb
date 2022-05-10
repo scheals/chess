@@ -58,10 +58,17 @@ class Board
     find(coordinates).place(piece)
   end
 
-  def move_piece(piece, coordinates)
-    return nil unless find(coordinates)
+  def move_piece(start, target)
+    return nil unless in_bounds?(start) && in_bounds?(target)
 
-    put(piece, coordinates)
+    piece = find_piece(start)
+    put(piece, target)
+  end
+
+  def in_bounds?(coordinates)
+    return true if find(coordinates)
+
+    false
   end
 
   def create_column(number, letter)

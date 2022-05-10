@@ -70,13 +70,30 @@ describe Board do
     end
   end
 
+  describe '#in_bounds?' do
+    context 'when coordinates are in bound' do
+      subject(:in_bounds) { described_class.new }
+      it 'returns true' do
+        ordinary_coordinate = 'f5'
+        expect(in_bounds.in_bounds?(ordinary_coordinate)).to be true
+      end
+    end
+    context 'when coordinates are not in bound' do
+      subject(:not_in_bounds) { described_class.new }
+      it 'returns false' do
+        extraordinary_coordinate = 'Pluto'
+        expect(not_in_bounds.in_bounds?(extraordinary_coordinate)).to be false
+      end
+    end
+  end
+
   describe '#move_piece' do
     context 'when a square is out of bounds' do
       subject(:out_of_bounds) { described_class.new }
-      let(:piece) { instance_double(Piece) }
       it 'returns nil' do
+        reachable_square = 'a1'
         unreachable_square = 'Aquarius'
-        expect(out_of_bounds.move_piece(piece, unreachable_square)).to be_nil
+        expect(out_of_bounds.move_piece(reachable_square, unreachable_square)).to be_nil
       end
     end
   end
