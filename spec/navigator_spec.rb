@@ -52,16 +52,19 @@ describe BoardNavigator do
       let(:rook) { Rook.new('b3') }
       it 'provides an array of possible moves' do
         expect(navigate_bounds.in_bounds_moves(rook)).to contain_exactly('b1', 'b2', 'b4', 'b5', 'b6', 'b7', 'b8',
-                                                                         'a3', 'c3', 'd3', 'e3', 'f3', 'g3', 'h3',)
+                                                                         'a3', 'c3', 'd3', 'e3', 'f3', 'g3', 'h3')
       end
     end
 
     context "when checking Bishop's in bounds moves" do
       subject(:navigate_bounds) { described_class.new(board) }
       let(:board) { Board.new }
-      let(:Bishop) { Bishop.new('e4') }
-      xit 'provides an array of possible moves' do
-        expect(navigate_bounds.in_bounds_moves(bishop)).to contain_exactly('a6', 'c6', 'd7')
+      let(:bishop) { Bishop.new('e4') }
+      it 'provides an array of possible moves' do
+        expect(navigate_bounds.in_bounds_moves(bishop)).to contain_exactly('d3', 'c2', 'b1',
+                                                                           'd5', 'c6', 'b7', 'a8',
+                                                                           'f3', 'g2', 'h1',
+                                                                           'f5', 'g6', 'h7')
       end
     end
   end
