@@ -69,6 +69,17 @@ describe Board do
       end
     end
   end
+  
+  describe '#move_piece' do
+    context 'when a square is out of bounds' do
+      subject(:out_of_bounds) { described_class.new }
+      let(:piece) { instance_double(Piece) }
+      it 'returns nil' do
+        unreachable_square = 'Aquarius'
+        expect(out_of_bounds.move_piece(piece, unreachable_square)).to be_nil
+      end
+    end
+  end
 
   describe '#row' do
     context 'when given 2 as an argument' do

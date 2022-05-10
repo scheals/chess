@@ -54,6 +54,12 @@ class Board
     find(coordinates).place(piece)
   end
 
+  def move_piece(piece, coordinates)
+    return nil unless find(coordinates)
+
+    put(piece, coordinates)
+  end
+
   def create_column(number, letter)
     if number.even?
       create_even_column(letter)
