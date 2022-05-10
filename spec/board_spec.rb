@@ -69,7 +69,7 @@ describe Board do
       end
     end
   end
-  
+
   describe '#move_piece' do
     context 'when a square is out of bounds' do
       subject(:out_of_bounds) { described_class.new }
@@ -78,6 +78,15 @@ describe Board do
         unreachable_square = 'Aquarius'
         expect(out_of_bounds.move_piece(piece, unreachable_square)).to be_nil
       end
+    end
+  end
+
+  describe '#find_piece' do
+    subject(:pieceful_board) { described_class.new }
+    it 'sends Square a piece message' do
+      a1_square = pieceful_board.board['a1']
+      expect(a1_square).to receive(:piece)
+      pieceful_board.find_piece('a1')
     end
   end
 

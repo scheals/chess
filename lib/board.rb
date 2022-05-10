@@ -50,6 +50,10 @@ class Board
     @board[square]
   end
 
+  def find_piece(square)
+    find(square).piece
+  end
+
   def put(piece, coordinates)
     find(coordinates).place(piece)
   end
