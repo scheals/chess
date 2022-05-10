@@ -61,6 +61,12 @@ describe King do
         expect { diagonal_move.move('e6') }.to_not change { diagonal_move.position }
       end
     end
+    context 'when told to make an illegal move' do
+      subject(:illegal_move) { described_class.new('c5') }
+      it 'does not change its position' do
+        expect { illegal_move.move('a6') }.to_not change { illegal_move.position }
+      end
+    end
     context 'when told to move on its own position' do
       subject(:immovable_move) { described_class.new('K0') }
       it "doesn't change its position" do
