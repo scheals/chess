@@ -50,8 +50,9 @@ describe BoardNavigator do
       subject(:navigate_bounds) { described_class.new(board) }
       let(:board) { Board.new }
       let(:rook) { Rook.new('b3') }
-      xit 'provides an array of possible moves' do
-        expect(navigate_bounds.in_bounds_moves(rook)).to contain_exactly('a6', 'c6', 'd7')
+      it 'provides an array of possible moves' do
+        expect(navigate_bounds.in_bounds_moves(rook)).to contain_exactly('b1', 'b2', 'b4', 'b5', 'b6', 'b7', 'b8',
+                                                                         'a3', 'c3', 'd3', 'e3', 'f3', 'g3', 'h3',)
       end
     end
 
