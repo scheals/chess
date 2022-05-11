@@ -7,12 +7,19 @@ class Pawn < Piece
   def legal?(space)
     return false if space == position
 
-    if once_horizontal?(space)
-      return true if black_vertical?(space)
-      return true if white_vertical?(space)
+    once_diagonal?(space) || (once_vertical?(space) && same_column?(space))
+  end
+
+  def once_diagonal?(space)
+    once_vertical?(space) && once_horizontal?(space)
+  end
+
+  def once_vertical?(space)
+    if colour == 'black'
+      black_vertical?(space)
+    else
+      white_vertical?(space)
     end
-    return true if black_vertical?(space) && same_column?(space)
-    return true if white_vertical?(space) && same_column?(space)
   end
 
   def black_vertical?(space)
@@ -35,3 +42,4 @@ class Pawn < Piece
     space[1] == row
   end
 end
+Pawn.new('b4', colour: 'black').move('c3')

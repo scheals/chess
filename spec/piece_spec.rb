@@ -283,7 +283,7 @@ end
 describe Pawn do
   describe '#move' do
     context 'when Pawn is white' do
-      subject(:white_pawn) { described_class.new('c3') }
+      subject(:white_pawn) { described_class.new('c3', colour: 'white') }
       it 'can only go up one space at a time' do
         white_pawn.move('c4')
         expect(white_pawn.position).to be('c4')
@@ -292,7 +292,7 @@ describe Pawn do
         expect { white_pawn.move('d5') }.to_not change { white_pawn.position }
       end
       context 'when there is a piece to be taken diagonally' do
-        subject(:white_take) { described_class.new('f4') }
+        subject(:white_take) { described_class.new('f4', colour: 'white') }
         let(:occupied_space) { double('Space', coordinates: 'e5') }
         before do
           allow(occupied_space).to receive(:occupied?).and_return(true)
@@ -305,7 +305,7 @@ describe Pawn do
       end
     end
     context 'when Pawn is black' do
-      subject(:black_pawn) { described_class.new('e5') }
+      subject(:black_pawn) { described_class.new('e5', colour: 'black') }
       it 'can only go down one space at a time' do
         black_pawn.move('e4')
         expect(black_pawn.position).to be('e4')
@@ -314,12 +314,12 @@ describe Pawn do
         expect { black_pawn.move('f3') }.to_not change { black_pawn.position }
       end
       context 'when there is a piece to be taken diagonally' do
-        subject(:black_take) { described_class.new('c5') }
+        subject(:black_take) { described_class.new('c5', colour: 'black') }
         let(:occupied_space) { double('Space', coordinates: 'd4') }
         before do
           allow(occupied_space).to receive(:occupied?).and_return(true)
         end
-        it 'can move one space up diagonally' do
+        it 'can move one space down diagonally' do
           space = occupied_space.coordinates
           black_take.move(space)
           expect(black_take.position).to be('d4')
