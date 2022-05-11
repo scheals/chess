@@ -17,4 +17,8 @@ class BoardNavigator
     all_moves = in_bounds_moves(piece)
     all_moves.select { |move| board.find(move).occupied? }
   end
+
+  def allied_coordinates(current_piece)
+    occupied_coordinates(current_piece).select { |coordinate| current_piece.colour == board.find_piece(coordinate).colour }
+  end
 end

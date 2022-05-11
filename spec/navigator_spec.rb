@@ -91,5 +91,18 @@ describe BoardNavigator do
                                                                                'g1', 'f2', 'a7')
     end
   end
+
+  describe '#allied_coordinates' do
+    subject(:navigate_allies) { described_class.new(board) }
+    let(:board) { Board.new }
+    before do
+      board.setup
+    end
+    it 'returns an array of squares that allied pieces are on in range of the piece' do
+      white_rook = board.find_piece('a1')
+      expect(navigate_allies.allied_coordinates(white_rook)).to contain_exactly('a2',
+                                                                                'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1')
+    end
+  end
 end
 # rubocop: enable Metrics/BlockLength, Layout/LineLength,
