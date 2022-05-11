@@ -104,5 +104,19 @@ describe BoardNavigator do
                                                                                 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1')
     end
   end
+
+  describe '#enemy_coordinates' do
+    subject(:navigate_enemies) { described_class.new(board) }
+    let(:board) { Board.new }
+    let(:black_rook) { Rook.new('f4', colour: 'black')}
+    before do
+      board.setup
+      board.put(black_rook, 'f4')
+    end
+    it 'returns an array of squares that enemy pieces are on in range of the piece' do
+      expect(navigate_enemies.enemy_coordinates(black_rook)).to contain_exactly('f1', 'f2')
+    end
+  end
+
 end
 # rubocop: enable Metrics/BlockLength, Layout/LineLength,

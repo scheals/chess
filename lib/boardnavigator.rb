@@ -21,4 +21,8 @@ class BoardNavigator
   def allied_coordinates(current_piece)
     occupied_coordinates(current_piece).select { |coordinate| current_piece.colour == board.find_piece(coordinate).colour }
   end
+
+  def enemy_coordinates(piece)
+    occupied_coordinates(piece) - allied_coordinates(piece)
+  end
 end
