@@ -11,8 +11,8 @@ class Pawn < Piece
       return true if black_vertical?(space)
       return true if white_vertical?(space)
     end
-    return true if black_vertical?(space)
-    return true if white_vertical?(space)
+    return true if black_vertical?(space) && same_column?(space)
+    return true if white_vertical?(space) && same_column?(space)
   end
 
   def black_vertical?(space)
@@ -25,5 +25,13 @@ class Pawn < Piece
 
   def once_horizontal?(space)
     space[0].succ == column || column.succ == space[0]
+  end
+
+  def same_column?(space)
+    space[0] == column
+  end
+
+  def same_row?(space)
+    space[1] == row
   end
 end

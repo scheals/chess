@@ -288,6 +288,9 @@ describe Pawn do
         white_pawn.move('c4')
         expect(white_pawn.position).to be('c4')
       end
+      it 'does not make an illegal move' do
+        expect { white_pawn.move('d5') }.to_not change { white_pawn.position }
+      end
       context 'when there is a piece to be taken diagonally' do
         subject(:white_take) { described_class.new('f4') }
         let(:occupied_space) { double('Space', coordinates: 'e5') }
@@ -306,6 +309,9 @@ describe Pawn do
       it 'can only go down one space at a time' do
         black_pawn.move('e4')
         expect(black_pawn.position).to be('e4')
+      end
+      it 'does not make an illegal move' do
+        expect { black_pawn.move('f3') }.to_not change { black_pawn.position }
       end
       context 'when there is a piece to be taken diagonally' do
         subject(:black_take) { described_class.new('c5') }
