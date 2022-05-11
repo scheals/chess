@@ -76,5 +76,20 @@ describe BoardNavigator do
       end
     end
   end
+
+  describe '#occupied_coordinates' do
+    subject(:navigate_collison) { described_class.new(board) }
+    let(:board) { Board.new }
+    let(:queen) { Queen.new('d4') }
+    before do
+      board.setup
+      board.put(queen, 'd4')
+    end
+    it 'returns an array of occupied squares' do
+      expect(navigate_collison.occupied_coordinates(queen)).to contain_exactly('d1', 'd2', 'd7', 'd8',
+                                                                               'a1', 'b2', 'g7', 'h8',
+                                                                               'g1', 'f2', 'a7')
+    end
+  end
 end
 # rubocop: enable Metrics/BlockLength, Layout/LineLength,
