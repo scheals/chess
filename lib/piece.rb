@@ -20,6 +20,10 @@ class Piece
     @position = space
   end
 
+  def moved?
+    !move_history.empty?
+  end
+
   def legal?(_space)
     raise 'NotImplemented'
   end

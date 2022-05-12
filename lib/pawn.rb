@@ -11,7 +11,7 @@ class Pawn < Piece
   end
 
   def double_vertical?(space)
-    return false unless move_history.empty?
+    return false if moved?
 
     if colour == 'black'
       black_double?(space)
