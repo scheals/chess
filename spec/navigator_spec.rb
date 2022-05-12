@@ -119,14 +119,144 @@ describe BoardNavigator do
   end
 
   describe '#possible_moves' do
-    subject(:navigate_possibilities) { described_class.new(board) }
-    let(:board) { Board.new }
-    before do
-      board.setup
+    context 'when checking starting moves' do
+      subject(:navigate_possibilities) { described_class.new(board) }
+      let(:board) { Board.new }
+      before do
+        board.setup
+      end
+      context "when checking Rook's possible moves" do
+        it 'returns a collection of possible coordinates' do
+          white_rook = board.find_piece('h1')
+          expect(navigate_possibilities.possible_moves(white_rook)).to be_empty
+        end
+      end
+
+      context "when checking Bishop's possible moves" do
+        it 'returns a collection of possible coordinates' do
+          black_bishop = board.find_piece('b8')
+          expect(navigate_possibilities.possible_moves(black_bishop)).to be_empty
+        end
+      end
+
+      context "when checking Knight's possible moves" do
+        it 'returns a collection of possible coordinates' do
+          white_knight = board.find_piece('g1')
+          expect(navigate_possibilities.possible_moves(white_knight)).to contain_exactly('f3', 'h3')
+        end
+      end
+
+      context "when checking Queen's possible moves" do
+        it 'returns a collection of possible coordinates' do
+          black_queen = board.find_piece('d8')
+          expect(navigate_possibilities.possible_moves(black_queen)).to be_empty
+        end
+      end
+
+      context "when checking King's possible moves" do
+        it 'returns a collection of possible coordinates' do
+          white_king = board.find_piece('e1')
+          expect(navigate_possibilities.possible_moves(white_king)).to be_empty
+        end
+      end
+
+      context "when checking Pawn's possible moves" do
+        context 'when Pawn is white' do
+          it 'returns a collection of possible coordinates' do
+            white_pawn = board.find_piece('b2')
+            expect(navigate_possibilities.possible_moves(white_pawn)).to contain_exactly('b3', 'b4')
+          end
+        end
+        context 'when Pawn is black' do
+          it 'returns a collection of possible coordinates' do
+            black_pawn = board.find_piece('d7')
+            expect(navigate_possibilities.possible_moves(black_pawn)).to contain_exactly('d6', 'd5')
+          end
+        end
+      end
     end
-    xit 'returns a collection of possible coordinates' do
-      white_rook = board.find_piece('h1')
-      expect(navigate_possibilities.possible_moves(white_rook)).to contain_exactly('g1', 'h2')
+
+    context 'when castling is possible' do
+      subject(:navigate_castling) { described_class.new(board) }
+      let(:board) { Board.new }
+      before do
+        board.send(:setup_kings)
+        board.send(:setup_rooks)
+        board.send(:setup_pawns)
+      end
+      it 'includes it as a possible move' do
+        white_king = board.find_piece('e1')
+        expect(navigate_castling.possible_moves(white_king)).to contain_exactly('d1', 'f1',
+                                                                                'g1', 'c1')
+      end
+    end
+
+    xcontext 'when King would put itself in check' do
+      subject(:navigate_check) { described_class.new(board) }
+      let(:board) { Board.new }
+      let(:black_rook) { instance_double(Rook, position: 'd8', colour: 'black') }
+      let(:white_rook) { instance_double(Rook, position: 'f3', colour: 'white') }
+      let(:white_king) { instance_double(King, position: 'e3', colour: 'white') }
+      before do
+        board.put(white_rook, 'f3')
+        board.put(black_rook, 'd8')
+        board.put(white_king, 'e3')
+        allow(navigate_check).to receive(:in_bounds_coordinates).with(white_king)
+        allow(navigate_check).to receive(:allied_coordinates).with(white_king)
+      end
+      it "doesn't include those moves" do
+        expect(navigate_check.possible_moves(white_king)).to contain_exactly('e2', 'e4',
+                                                                             'f2', 'f4')
+      end
+    end
+
+    context 'when Pawn can take' do
+      subject(:navigate_pawn_taking) { described_class.new(board) }
+      let(:board) { Board.new }
+      let(:white_piece) { instance_double(Piece, colour: 'white') }
+      let(:black_piece) { instance_double(Piece, colour: 'black') }
+      let(:white_pawn) { instance_double(Pawn, position: 'd4', colour: 'white') }
+      let(:black_pawn) { instance_double(Pawn, position: 'd5', colour: 'black') }
+      before do
+        board.put(black_piece, 'c5')
+        board.put(black_piece, 'e5')
+        board.put(white_piece, 'c4')
+        board.put(white_piece, 'e4')
+        board.put(white_pawn, 'd4')
+        board.put(black_pawn, 'd5')
+        allow(navigate_pawn_taking).to receive(:in_bounds_coordinates).with(white_pawn).and_return(%w[c5 d5 e5])
+        allow(navigate_pawn_taking).to receive(:allied_coordinates).with(white_pawn).and_return([])
+        allow(navigate_pawn_taking).to receive(:in_bounds_coordinates).with(black_pawn).and_return(%w[c4 d4 e4])
+        allow(navigate_pawn_taking).to receive(:allied_coordinates).with(black_pawn).and_return([])
+      end
+      context 'when it is white' do
+        it 'includes the takes as possible move' do
+          expect(navigate_pawn_taking.possible_moves(white_pawn)).to contain_exactly('c5', 'e5')
+        end
+      end
+      context 'when it is black' do
+        it 'includes the takes as possible move' do
+          expect(navigate_pawn_taking.possible_moves(black_pawn)).to contain_exactly('c4', 'e4')
+        end
+      end
+    end
+
+    xcontext 'when en passant is possible' do
+      subject(:navigate_en_passant) { described_class.new(board) }
+      let(:board) { Board.new }
+      let(:white_pawn) { instance_double(Pawn, position: 'g5', colour: 'white') }
+      let(:black_pawn) { instance_double(Pawn, position: 'f7', colour: 'black') }
+      before do
+        board.put(white_pawn, 'g5')
+        board.put(black_pawn, 'f7')
+        allow(navigate_en_passant).to receive(:in_bounds_coordinates).with(white_pawn).and_return(%w[f6 g6 h6])
+        allow(navigate_en_passant).to receive(:enemy_coordinates).with(white_pawn).and_return(['f6'])
+        allow(navigate_en_passant).to receive(:allied_coordinates).with(white_pawn).and_return([])
+      end
+      it 'includes it as a possibility' do
+        board.move_piece('f7', 'f5')
+        expect(navigate_en_passant.possible_moves(white_pawn)).to contain_exactly('f6', 'g6')
+      end
     end
   end
 end

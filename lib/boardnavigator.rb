@@ -8,6 +8,10 @@ class BoardNavigator
     @board = board
   end
 
+  def possible_moves(piece)
+    in_bounds_coordinates(piece) - allied_coordinates(piece)
+  end
+
   def in_bounds_coordinates(piece)
     board_coordinates = board.coordinates
     board_coordinates.select { |coordinate| piece.legal?(coordinate) }
