@@ -38,7 +38,7 @@ class Board
 
   def show
     8.times do |i|
-      puts row(i + 1).values.join
+      puts row(8 - i).values.join
     end
   end
 
