@@ -291,6 +291,12 @@ describe Pawn do
       it 'does not make an illegal move' do
         expect { white_pawn.move('d5') }.to_not change { white_pawn.position }
       end
+      context 'when it has not moved yet' do
+        subject(:white_double) { described_class.new('b2', colour: 'white') }
+        it 'can move two spaces up at once' do
+          expect { white_double.move('b4') }.to change { white_double.position }.from('b2').to('b4')
+        end
+      end
       context 'when there is a piece to be taken diagonally' do
         subject(:white_take) { described_class.new('f4', colour: 'white') }
         let(:occupied_space) { double('Space', coordinates: 'e5') }
@@ -312,6 +318,12 @@ describe Pawn do
       end
       it 'does not make an illegal move' do
         expect { black_pawn.move('f3') }.to_not change { black_pawn.position }
+      end
+      context 'when it has not moved yet' do
+        subject(:black_double) { described_class.new('e7', colour: 'black') }
+        it 'can move two spaces down at once' do
+          expect { black_double.move('e5') }.to change { black_double.position }.from('e7').to('e5')
+        end
       end
       context 'when there is a piece to be taken diagonally' do
         subject(:black_take) { described_class.new('c5', colour: 'black') }
