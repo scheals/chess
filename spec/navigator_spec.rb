@@ -29,14 +29,16 @@ describe BoardNavigator do
       subject(:navigate_bounds) { described_class.new(board) }
       let(:board) { Board.new }
       context 'when Pawn is white' do
-        let(:white_pawn) { Pawn.new('b4', colour: 'white') }
+        let(:white_pawn) { Pawn.new('b3', colour: 'white') }
         it 'provides an array of possible moves' do
+          white_pawn.move('b4')
           expect(navigate_bounds.in_bounds_coordinates(white_pawn)).to contain_exactly('a5', 'b5', 'c5')
         end
       end
       context 'when Pawn is black' do
-        let(:black_pawn) { Pawn.new('b4', colour: 'black') }
+        let(:black_pawn) { Pawn.new('b5', colour: 'black') }
         it 'provides an array of possible moves' do
+          black_pawn.move('b4')
           expect(navigate_bounds.in_bounds_coordinates(black_pawn)).to contain_exactly('a3', 'b3', 'c3')
         end
       end
