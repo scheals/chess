@@ -5,16 +5,18 @@ require_relative 'display'
 # This class handles abstract chess pieces.
 class Piece
   include Display
-  attr_reader :position, :colour
+  attr_reader :position, :colour, :move_history
 
   def initialize(position, colour: nil)
     @position = position
     @colour = colour
+    @move_history = []
   end
 
   def move(space)
     return nil unless legal?(space)
 
+    @move_history << space
     @position = space
   end
 
