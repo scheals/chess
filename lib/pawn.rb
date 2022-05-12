@@ -7,7 +7,25 @@ class Pawn < Piece
   def legal?(space)
     return false if space == position
 
-    once_diagonal?(space) || (once_vertical?(space) && same_column?(space))
+    once_diagonal?(space) || (once_vertical?(space) && same_column?(space)) || (double_vertical?(space) && same_column?(space))
+  end
+
+  def double_vertical?(space)
+    return false unless move_history.empty?
+
+    if colour == 'black'
+      black_double?(space)
+    else
+      white_double?(space)
+    end
+  end
+
+  def black_double?(space)
+    (space[1].to_i - row.to_i) == -2
+  end
+
+  def white_double?(space)
+    (space[1].to_i - row.to_i) == 2
   end
 
   def once_diagonal?(space)
