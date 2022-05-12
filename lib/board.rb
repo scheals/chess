@@ -46,6 +46,10 @@ class Board
     @board.select { |key| key.end_with?(number.to_s) }
   end
 
+  def coordinates
+    board.keys
+  end
+
   def find(square)
     @board[square]
   end

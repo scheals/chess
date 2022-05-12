@@ -8,14 +8,14 @@ class BoardNavigator
     @board = board
   end
 
-  def in_bounds_moves(piece)
-    board_coordinates = board.board.keys
+  def in_bounds_coordinates(piece)
+    board_coordinates = board.coordinates
     board_coordinates.select { |coordinate| piece.legal?(coordinate) }
   end
 
   def occupied_coordinates(piece)
-    all_moves = in_bounds_moves(piece)
-    all_moves.select { |move| board.find(move).occupied? }
+    all_coordinates = in_bounds_coordinates(piece)
+    all_coordinates.select { |coordinate| board.find(coordinate).occupied? }
   end
 
   def allied_coordinates(current_piece)
