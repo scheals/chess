@@ -178,6 +178,33 @@ describe BoardNavigator do
       end
     end
 
+    context 'when game is underway' do
+      context 'when Rook checks its moves' do
+        subject(:navigate_rook) { described_class.new(board) }
+        let(:board) { Board.new }
+        let(:black_rook) { Rook.new('e4', colour: 'black') }
+        let(:white_bishop) { Bishop.new(nil, colour: 'white') }
+        let(:black_knight) { Knight.new(nil, colour: 'black') }
+        before do
+          board.put(black_rook, 'e4')
+          board.put(white_bishop, 'e2')
+          board.put(white_bishop, 'e8')
+          board.put(white_bishop, 'g4')
+          board.put(black_knight, 'f4')
+          board.put(black_knight, 'c4')
+          board.put(black_knight, 'a4')
+        end
+        it 'correctly interprets collision' do
+          expect(navigate_rook.possible_moves(black_rook)).to contain_exactly('e2', 'e3',
+                                                                              'e5', 'e6', 'e7', 'e8',
+                                                                              'd4')
+        end
+        after do
+          board.show
+        end
+      end
+    end
+
     context 'when castling is possible' do
       subject(:navigate_castling) { described_class.new(board) }
       let(:board) { Board.new }
