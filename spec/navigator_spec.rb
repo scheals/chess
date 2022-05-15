@@ -199,9 +199,6 @@ describe BoardNavigator do
                                                                               'e5', 'e6', 'e7', 'e8',
                                                                               'd4')
         end
-        after do
-          board.show
-        end
       end
     end
 
@@ -213,7 +210,7 @@ describe BoardNavigator do
         board.send(:setup_rooks)
         board.send(:setup_pawns)
       end
-      it 'includes it as a possible move' do
+      xit 'includes it as a possible move' do
         white_king = board.find_piece('e1')
         expect(navigate_castling.possible_moves(white_king)).to contain_exactly('d1', 'f1',
                                                                                 'g1', 'c1')
