@@ -136,7 +136,7 @@ describe BoardNavigator do
 
       context "when checking Bishop's possible moves" do
         it 'returns a collection of possible coordinates' do
-          black_bishop = board.find_piece('b8')
+          black_bishop = board.find_piece('c8')
           expect(navigate_possibilities.possible_moves(black_bishop)).to be_empty
         end
       end
@@ -198,6 +198,28 @@ describe BoardNavigator do
           expect(navigate_rook.possible_moves(black_rook)).to contain_exactly('e2', 'e3',
                                                                               'e5', 'e6', 'e7', 'e8',
                                                                               'd4')
+        end
+      end
+      context 'when Bishop checks its moves' do
+        subject(:navigate_bishop) { described_class.new(board) }
+        let(:board) { Board.new }
+        let(:white_bishop) { Bishop.new('e4', colour: 'white') }
+        let(:white_rook) { Rook.new(nil, colour: 'white') }
+        let(:black_rook) { Rook.new(nil, colour: 'black') }
+        let(:black_knight) { Knight.new(nil, colour: 'black') }
+        before do
+          board.put(white_bishop, 'e4')
+          board.put(white_rook, 'f3')
+          board.put(white_rook, 'g6')
+          board.put(black_rook, 'b1')
+          board.put(black_knight, 'd5')
+          board.put(black_knight, 'b7')
+          board.put(black_knight, 'g1')
+        end
+        it 'correctly interprets collision' do
+          expect(navigate_bishop.possible_moves(white_bishop)).to contain_exactly('b1', 'c2', 'd3',
+                                                                                  'd5',
+                                                                                  'f5')
         end
       end
     end

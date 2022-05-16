@@ -17,6 +17,8 @@ class BoardNavigator
       in_bounds - allied_coordinates(piece)
     when 'Rook'
       handle_collision(piece.split_moves(mark_occupied(piece, in_bounds)))
+    when 'Bishop'
+      handle_collision(piece.split_moves(mark_occupied(piece, in_bounds)))
     else
       []
     end
