@@ -10,20 +10,7 @@ class BoardNavigator
 
   def possible_moves(piece)
     in_bounds = in_bounds_coordinates(piece)
-    case piece.class.to_s
-    when 'Knight'
-      in_bounds - allied_coordinates(piece)
-    when 'King'
-      in_bounds - allied_coordinates(piece)
-    when 'Rook'
-      handle_collision(piece.split_moves(mark_occupied(piece, in_bounds)))
-    when 'Bishop'
-      handle_collision(piece.split_moves(mark_occupied(piece, in_bounds)))
-    when 'Queen'
-      handle_collision(piece.split_moves(mark_occupied(piece, in_bounds)))
-    else
-      []
-    end
+    handle_collision(piece.split_moves(mark_occupied(piece, in_bounds)))
   end
 
   def clean(coordinates)
