@@ -222,6 +222,39 @@ describe BoardNavigator do
                                                                                   'f5')
         end
       end
+      context 'when Queen checks its moves' do
+        subject(:navigate_queen) { described_class.new(board) }
+        let(:board) { Board.new }
+        let(:black_queen) { Queen.new('c6', colour: 'black') }
+        let(:black_rook) { Rook.new(nil, colour: 'black') }
+        let(:white_knight) { Knight.new(nil, colour: 'white') }
+        before do
+          board.put(black_queen, 'c6')
+          board.put(black_rook, 'a6')
+          board.put(black_rook, 'e6')
+          board.put(black_rook, 'e8')
+          board.put(black_rook, 'c2')
+          board.put(white_knight, 'c7')
+          board.put(white_knight, 'a4')
+          board.put(white_knight, 'c1')
+          board.put(white_knight, 'f3')
+          board.put(white_knight, 'g2')
+          board.put(white_knight, 'g5')
+          board.put(white_knight, 'g6')
+        end
+        it 'correctly interprets collision' do
+          expect(navigate_queen.possible_moves(black_queen)).to contain_exactly('a8', 'b7',
+                                                                                'a4', 'b5',
+                                                                                'b6',
+                                                                                'c7',
+                                                                                'c5', 'c4', 'c3',
+                                                                                'd7',
+                                                                                'd6',
+                                                                                'd5',
+                                                                                'e4',
+                                                                                'f3')
+        end
+      end
     end
 
     context 'when castling is possible' do

@@ -19,6 +19,8 @@ class BoardNavigator
       handle_collision(piece.split_moves(mark_occupied(piece, in_bounds)))
     when 'Bishop'
       handle_collision(piece.split_moves(mark_occupied(piece, in_bounds)))
+    when 'Queen'
+      handle_collision(piece.split_moves(mark_occupied(piece, in_bounds)))
     else
       []
     end
