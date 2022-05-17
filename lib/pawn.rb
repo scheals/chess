@@ -10,6 +10,31 @@ class Pawn < Piece
     once_diagonal?(space) || (once_vertical?(space) && same_column?(space)) || (double_vertical?(space) && same_column?(space))
   end
 
+  def split_moves(moves)
+    split_moves = []
+    split_moves << up(moves) if colour == 'white'
+    split_moves << down(moves).reverse if colour == 'black'
+    split_moves << left(moves).reverse
+    split_moves << right(moves)
+    split_moves
+  end
+
+  def up(moves)
+    moves.select { |coordinate| coordinate[1].to_i > position[1].to_i && same_column?(coordinate) }
+  end
+
+  def down(moves)
+    moves.select { |coordinate| coordinate[1].to_i < position[1].to_i && same_column?(coordinate) }
+  end
+
+  def left(moves)
+    moves.select { |coordinate| coordinate[0].ord < position[0].ord }
+  end
+
+  def right(moves)
+    moves.select { |coordinate| coordinate[0].ord > position[0].ord }
+  end
+
   def double_vertical?(space)
     return false if moved?
 
@@ -60,4 +85,3 @@ class Pawn < Piece
     space[1] == row
   end
 end
-Pawn.new('b4', colour: 'black').move('c3')

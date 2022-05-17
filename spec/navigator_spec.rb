@@ -300,24 +300,28 @@ describe BoardNavigator do
       let(:black_pawn) { instance_double(Pawn, position: 'd5', colour: 'black') }
       before do
         board.put(black_piece, 'c5')
-        board.put(black_piece, 'e5')
+        board.put(black_piece, 'e4')
         board.put(white_piece, 'c4')
-        board.put(white_piece, 'e4')
+        board.put(white_piece, 'e5')
         board.put(white_pawn, 'd4')
         board.put(black_pawn, 'd5')
-        allow(navigate_pawn_taking).to receive(:in_bounds_coordinates).with(white_pawn).and_return(%w[c5 d5 e5])
-        allow(navigate_pawn_taking).to receive(:allied_coordinates).with(white_pawn).and_return([])
-        allow(navigate_pawn_taking).to receive(:in_bounds_coordinates).with(black_pawn).and_return(%w[c4 d4 e4])
-        allow(navigate_pawn_taking).to receive(:allied_coordinates).with(black_pawn).and_return([])
+        allow(white_pawn).to receive(:class).and_return('Pawn')
+        allow(black_pawn).to receive(:class).and_return('Pawn')
+        allow(white_pawn).to receive(:split_moves).with(%w[d5E c5E e5A]).and_return([['d5E'], ['c5E'], ['e5A']])
+        allow(black_pawn).to receive(:split_moves).with(%w[d4E c4E e4A]).and_return([['d4E'], ['c4E'], ['e4A']])
+        allow(navigate_pawn_taking).to receive(:mark_occupied).with(white_pawn, %w[d5 c5 e5]).and_return(%w[d5E c5E e5A])
+        allow(navigate_pawn_taking).to receive(:mark_occupied).with(black_pawn, %w[d4 c4 e4]).and_return(%w[d4E c4E e4A])
+        allow(navigate_pawn_taking).to receive(:in_bounds_coordinates).with(white_pawn).and_return(%w[d5 c5 e5])
+        allow(navigate_pawn_taking).to receive(:in_bounds_coordinates).with(black_pawn).and_return(%w[d4 c4 e4])
       end
       context 'when it is white' do
         it 'includes the takes as possible move' do
-          expect(navigate_pawn_taking.possible_moves(white_pawn)).to contain_exactly('c5', 'e5')
+          expect(navigate_pawn_taking.possible_moves(white_pawn)).to contain_exactly('c5')
         end
       end
       context 'when it is black' do
         it 'includes the takes as possible move' do
-          expect(navigate_pawn_taking.possible_moves(black_pawn)).to contain_exactly('c4', 'e4')
+          expect(navigate_pawn_taking.possible_moves(black_pawn)).to contain_exactly('c4')
         end
       end
     end

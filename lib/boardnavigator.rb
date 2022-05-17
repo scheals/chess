@@ -10,7 +10,14 @@ class BoardNavigator
 
   def possible_moves(piece)
     in_bounds = in_bounds_coordinates(piece)
-    handle_collision(piece.split_moves(mark_occupied(piece, in_bounds)))
+    case piece.class.to_s
+    when 'Pawn'
+      moves_after_collision = handle_collision(piece.split_moves(mark_occupied(piece, in_bounds)))
+      moves = handle_pawn(moves_after_collision)
+    else
+      moves = handle_collision(piece.split_moves(mark_occupied(piece, in_bounds)))
+    end
+    clean(moves.compact.flatten)
   end
 
   def clean(coordinates)
@@ -18,8 +25,14 @@ class BoardNavigator
   end
 
   def handle_collision(moves)
-    moves_after_collision = moves.map { |direction| handle_allies(direction) }.map { |direction| handle_enemies(direction) }
-    clean(moves_after_collision.compact.flatten)
+    moves.map { |direction| handle_allies(direction) }.map { |direction| handle_enemies(direction) }
+  end
+
+  def handle_pawn(moves)
+    moves.map!(&:to_a)
+    takes = (moves[1] + moves[2]).select { |coordinate| coordinate.end_with?('E') }
+    forward = moves[0].reject { |coordinate| coordinate.end_with?('E') }
+    [forward, takes]
   end
 
   def handle_enemies(direction)
