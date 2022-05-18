@@ -56,13 +56,11 @@ class BoardNavigator
   end
 
   def in_bounds_coordinates(piece)
-    board_coordinates = board.coordinates
-    board_coordinates.select { |coordinate| piece.legal?(coordinate) }
+    board.coordinates.select { |coordinate| piece.legal?(coordinate) }
   end
 
   def occupied_coordinates(piece)
-    all_coordinates = in_bounds_coordinates(piece)
-    all_coordinates.select { |coordinate| board.find(coordinate).occupied? }
+    in_bounds_coordinates(piece).select { |coordinate| board.find(coordinate).occupied? }
   end
 
   def allied_coordinates(current_piece)
