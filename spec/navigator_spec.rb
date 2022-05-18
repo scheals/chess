@@ -1,16 +1,35 @@
 # frozen_string_literal: true
 
 require_relative '../lib/boardnavigator'
-require_relative '../lib/knight'
 require_relative '../lib/board'
 
 # rubocop: disable Metrics/BlockLength, Layout/LineLength,
 describe BoardNavigator do
   describe '#in_bounds_coordinates' do
+    coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
+                     b1 b2 b3 b4 b5 b6 b7 b8
+                     c1 c2 c3 c4 c5 c6 c7 c8
+                     d1 d2 d3 d4 d5 d6 d7 d8
+                     e1 e2 e3 e4 e5 e6 e7 e8
+                     f1 f2 f3 f4 f5 f6 f7 f8
+                     g1 g2 g3 g4 g5 g6 g7 g8
+                     h1 h2 h3 h4 h5 h6 h7 h8]
     context "when checking Kings's in bounds moves" do
       subject(:navigate_bounds) { described_class.new(board) }
-      let(:board) { Board.new }
-      let(:king) { King.new('d4') }
+      let(:board) { instance_double(Board) }
+      let(:king) { instance_double(King, position: 'd4') }
+      before do
+        allow(board).to receive(:coordinates).and_return(coordinates)
+        allow(king).to receive(:legal?).and_return(false)
+        allow(king).to receive(:legal?).with('d3').and_return(true)
+        allow(king).to receive(:legal?).with('d5').and_return(true)
+        allow(king).to receive(:legal?).with('c3').and_return(true)
+        allow(king).to receive(:legal?).with('c4').and_return(true)
+        allow(king).to receive(:legal?).with('c5').and_return(true)
+        allow(king).to receive(:legal?).with('e3').and_return(true)
+        allow(king).to receive(:legal?).with('e4').and_return(true)
+        allow(king).to receive(:legal?).with('e5').and_return(true)
+      end
       it 'provides an array of possible moves' do
         expect(navigate_bounds.in_bounds_coordinates(king)).to contain_exactly('d3', 'd5', 'c3', 'c4', 'c5', 'e3', 'e4', 'e5')
       end
