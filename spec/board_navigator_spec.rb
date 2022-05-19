@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/boardnavigator'
+require_relative '../lib/board_navigator'
 require_relative '../lib/board'
 
 RSpec.configure do |config|

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'square'
-require_relative 'piecefactory'
+require_relative 'piece_factory'
 require_relative 'display'
 require 'colorize'
 
