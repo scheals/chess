@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'piece'
+require_relative '../piece'
 
 # This class handles abstract chess empty pieces.
 class NilPiece < Piece

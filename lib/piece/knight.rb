@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'piece'
+require_relative '../piece'
 
 # This class handles a Knight chesspiece rules.
 class Knight < Piece

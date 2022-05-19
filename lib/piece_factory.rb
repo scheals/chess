@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-require_relative 'pawn'
-require_relative 'rook'
-require_relative 'knight'
-require_relative 'bishop'
-require_relative 'queen'
-require_relative 'king'
+require_relative 'piece'
+require_relative 'piece/pawn'
+require_relative 'piece/rook'
+require_relative 'piece/knight'
+require_relative 'piece/bishop'
+require_relative 'piece/queen'
+require_relative 'piece/king'
 
 # This module handles creation of particular chess pieces.
 module PieceFactory

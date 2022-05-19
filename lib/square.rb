@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'colorize'
-require_relative 'nil_piece'
+require_relative 'piece/nil_piece'
 
 # This class handles a square on a chessboard.
 class Square
