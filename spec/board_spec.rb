@@ -20,17 +20,19 @@ describe Board do
   end
 
   describe '#create_piece' do
-    subject(:board) { described_class.new }
+    subject(:board) { described_class.new(square, factory) }
 
-    let(:factory) { board.instance_variable_get(:@factory) }
+    let(:square) { class_double(Square) }
+    let(:factory) { class_double(PieceFactory) }
 
     before do
+      allow(square).to receive(:new)
       allow(factory).to receive(:for).with('Pawn', colour: 'white', position: 'a2')
     end
 
     it 'sends factory a @for message' do
-      expect(factory).to receive(:for).with('Pawn', colour: 'white', position: 'a2')
       board.create_piece('Pawn', colour: 'white', position: 'a2')
+      expect(factory).to have_received(:for).with('Pawn', colour: 'white', position: 'a2')
     end
   end
 
@@ -60,11 +62,17 @@ describe Board do
       subject(:empty_board) { described_class.new }
 
       let(:piece) { instance_double(Piece) }
-      let(:empty_square) { empty_board.find('d6') }
+      let(:empty_square) { instance_double(Square) }
+      let(:board_hash) { empty_board.board }
+
+      before do
+        board_hash['d6'] = empty_square
+        allow(empty_square).to receive(:place).with(piece)
+      end
 
       it 'sends that square a #place message' do
-        expect(empty_square).to receive(:place)
         empty_board.put(piece, 'd6')
+        expect(empty_square).to have_received(:place)
       end
     end
 
@@ -121,10 +129,17 @@ describe Board do
   describe '#find_piece' do
     subject(:pieceful_board) { described_class.new }
 
+    let(:board_hash) { pieceful_board.board }
+    let(:square) { instance_double(Square) }
+
+    before do
+      board_hash['a1'] = square
+      allow(square).to receive(:piece)
+    end
+
     it 'sends Square a piece message' do
-      a1_square = pieceful_board.board['a1']
-      expect(a1_square).to receive(:piece)
       pieceful_board.find_piece('a1')
+      expect(square).to have_received(:piece)
     end
   end
 

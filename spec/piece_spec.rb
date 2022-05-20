@@ -367,7 +367,7 @@ describe Pawn do
       context 'when there is a piece to be taken diagonally' do
         subject(:white_take) { described_class.new('f4', colour: 'white') }
 
-        let(:occupied_space) { double('Space', coordinates: 'e5') }
+        let(:occupied_space) { instance_double(Square, coordinates: 'e5') }
 
         before do
           allow(occupied_space).to receive(:occupied?).and_return(true)
@@ -404,7 +404,7 @@ describe Pawn do
       context 'when there is a piece to be taken diagonally' do
         subject(:black_take) { described_class.new('c5', colour: 'black') }
 
-        let(:occupied_space) { double('Space', coordinates: 'd4') }
+        let(:occupied_space) { instance_double(Square, coordinates: 'd4') }
 
         before do
           allow(occupied_space).to receive(:occupied?).and_return(true)
