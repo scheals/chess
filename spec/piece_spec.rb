@@ -10,7 +10,7 @@ require_relative '../lib/piece/knight'
 require_relative '../lib/piece/pawn'
 require_relative '../lib/piece/nil_piece'
 
-# rubocop: disable Lint/AmbiguousBlockAssociation, Layout/LineLength
+# rubocop: disable Layout/LineLength
 describe Piece do
   describe 'real?' do
     subject(:real_piece) { described_class.new('a1') }
@@ -42,7 +42,7 @@ describe King do
       end
 
       it 'does not move further than one tile' do
-        expect { vertical_move.move('a6') }.not_to change { vertical_move.position }
+        expect { vertical_move.move('a6') }.not_to change(vertical_move, :position)
       end
     end
 
@@ -55,7 +55,7 @@ describe King do
       end
 
       it 'does not move further than one tile' do
-        expect { horizontal_move.move('h1') }.not_to change { horizontal_move.position }
+        expect { horizontal_move.move('h1') }.not_to change(horizontal_move, :position)
       end
     end
 
@@ -68,7 +68,7 @@ describe King do
       end
 
       it 'does not move further than one tile' do
-        expect { diagonal_move.move('e6') }.not_to change { diagonal_move.position }
+        expect { diagonal_move.move('e6') }.not_to change(diagonal_move, :position)
       end
     end
 
@@ -76,7 +76,7 @@ describe King do
       subject(:illegal_move) { described_class.new('c5') }
 
       it 'does not change its position' do
-        expect { illegal_move.move('a6') }.not_to change { illegal_move.position }
+        expect { illegal_move.move('a6') }.not_to change(illegal_move, :position)
       end
     end
 
@@ -84,7 +84,7 @@ describe King do
       subject(:immovable_move) { described_class.new('K0') }
 
       it "doesn't change its position" do
-        expect { immovable_move.move('K0') }.not_to change { immovable_move.position }
+        expect { immovable_move.move('K0') }.not_to change(immovable_move, :position)
       end
 
       it 'returns nil' do
@@ -127,7 +127,7 @@ describe Queen do
       subject(:invalid_move) { described_class.new('d4') }
 
       it "doesn't change its position" do
-        expect { invalid_move.move('c7') }.not_to change { invalid_move.position }
+        expect { invalid_move.move('c7') }.not_to change(invalid_move, :position)
       end
 
       it 'returns nil' do
@@ -139,7 +139,7 @@ describe Queen do
       subject(:immovable_move) { described_class.new('K0') }
 
       it "doesn't change its position" do
-        expect { immovable_move.move('K0') }.not_to change { immovable_move.position }
+        expect { immovable_move.move('K0') }.not_to change(immovable_move, :position)
       end
 
       it 'returns nil' do
@@ -173,7 +173,7 @@ describe Rook do
       subject(:diagonal_move) { described_class.new('c4') }
 
       it "doesn't change its position" do
-        expect { diagonal_move.move('d5') }.not_to change { diagonal_move.position }
+        expect { diagonal_move.move('d5') }.not_to change(diagonal_move, :position)
       end
 
       it 'returns nil' do
@@ -185,7 +185,7 @@ describe Rook do
       subject(:invalid_move) { described_class.new('d4') }
 
       it "doesn't change its position" do
-        expect { invalid_move.move('c7') }.not_to change { invalid_move.position }
+        expect { invalid_move.move('c7') }.not_to change(invalid_move, :position)
       end
 
       it 'returns nil' do
@@ -197,7 +197,7 @@ describe Rook do
       subject(:immovable_move) { described_class.new('K0') }
 
       it "doesn't change its position" do
-        expect { immovable_move.move('K0') }.not_to change { immovable_move.position }
+        expect { immovable_move.move('K0') }.not_to change(immovable_move, :position)
       end
 
       it 'returns nil' do
@@ -222,7 +222,7 @@ describe Bishop do
       subject(:vertical_move) { described_class.new('a1') }
 
       it "doesn't change its position" do
-        expect { vertical_move.move('a4') }.not_to change { vertical_move.position }
+        expect { vertical_move.move('a4') }.not_to change(vertical_move, :position)
       end
 
       it 'returns nil' do
@@ -234,7 +234,7 @@ describe Bishop do
       subject(:horizontal_move) { described_class.new('b1') }
 
       it "doesn't change its position" do
-        expect { horizontal_move.move('h1') }.not_to change { horizontal_move.position }
+        expect { horizontal_move.move('h1') }.not_to change(horizontal_move, :position)
       end
 
       it 'returns nil' do
@@ -246,7 +246,7 @@ describe Bishop do
       subject(:invalid_move) { described_class.new('d4') }
 
       it "doesn't change its position" do
-        expect { invalid_move.move('c7') }.not_to change { invalid_move.position }
+        expect { invalid_move.move('c7') }.not_to change(invalid_move, :position)
       end
 
       it 'returns nil' do
@@ -258,7 +258,7 @@ describe Bishop do
       subject(:immovable_move) { described_class.new('K0') }
 
       it "doesn't change its position" do
-        expect { immovable_move.move('K0') }.not_to change { immovable_move.position }
+        expect { immovable_move.move('K0') }.not_to change(immovable_move, :position)
       end
 
       it 'returns nil' do
@@ -332,7 +332,7 @@ describe Knight do
       subject(:immovable_move) { described_class.new('K0') }
 
       it "doesn't change its position" do
-        expect { immovable_move.move('K0') }.not_to change { immovable_move.position }
+        expect { immovable_move.move('K0') }.not_to change(immovable_move, :position)
       end
 
       it 'returns nil' do
@@ -353,14 +353,14 @@ describe Pawn do
       end
 
       it 'does not make an illegal move' do
-        expect { white_pawn.move('d5') }.not_to change { white_pawn.position }
+        expect { white_pawn.move('d5') }.not_to change(white_pawn, :position)
       end
 
       context 'when it has not moved yet' do
         subject(:white_double) { described_class.new('b2', colour: 'white') }
 
         it 'can move two spaces up at once' do
-          expect { white_double.move('b4') }.to change { white_double.position }.from('b2').to('b4')
+          expect { white_double.move('b4') }.to change(white_double, :position).from('b2').to('b4')
         end
       end
 
@@ -390,14 +390,14 @@ describe Pawn do
       end
 
       it 'does not make an illegal move' do
-        expect { black_pawn.move('f3') }.not_to change { black_pawn.position }
+        expect { black_pawn.move('f3') }.not_to change(black_pawn, :position)
       end
 
       context 'when it has not moved yet' do
         subject(:black_double) { described_class.new('e7', colour: 'black') }
 
         it 'can move two spaces down at once' do
-          expect { black_double.move('e5') }.to change { black_double.position }.from('e7').to('e5')
+          expect { black_double.move('e5') }.to change(black_double, :position).from('e7').to('e5')
         end
       end
 
@@ -460,4 +460,4 @@ describe PieceFactory do
     end
   end
 end
-# rubocop: enable Lint/AmbiguousBlockAssociation, Layout/LineLength
+# rubocop: enable Layout/LineLength

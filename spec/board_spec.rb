@@ -3,7 +3,7 @@
 require_relative '../lib/board'
 require_relative '../lib/square'
 
-# rubocop: disable Layout/LineLength, Lint/AmbiguousBlockAssociation
+# rubocop: disable Layout/LineLength
 describe Board do
   describe '#initialize' do
     subject(:new_board) { described_class.new(square) }
@@ -258,7 +258,7 @@ describe Square do
       let(:piece) { instance_double(Piece) }
 
       it 'stores the piece in @piece' do
-        expect { empty_square.place(piece) }.to change { empty_square.instance_variable_get(:@piece) }
+        expect { empty_square.place(piece) }.to change(empty_square, :piece)
       end
     end
 
@@ -274,7 +274,7 @@ describe Square do
       end
 
       it 'does not change @piece' do
-        expect { full_square.place(another_piece) }.not_to change { full_square.instance_variable_get(:@piece) }
+        expect { full_square.place(another_piece) }.not_to change(full_square, :piece)
       end
 
       it 'returns nil' do
@@ -333,4 +333,4 @@ describe Square do
     end
   end
 end
-# rubocop: enable Layout/LineLength, Lint/AmbiguousBlockAssociation
+# rubocop: enable Layout/LineLength
