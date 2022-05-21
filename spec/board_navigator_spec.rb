@@ -55,27 +55,27 @@ describe BoardNavigator do
       end
     end
 
-    context "when checking Pawns's in bounds moves" do
+    context "when checking white Pawns's in bounds moves" do
       subject(:navigate_bounds) { described_class.new(board) }
 
       let(:board) { Board.new }
+      let(:white_pawn) { Pawn.new('b3', colour: 'white') }
 
-      context 'when Pawn is white' do
-        let(:white_pawn) { Pawn.new('b3', colour: 'white') }
-
-        it 'provides an array of possible moves' do
-          white_pawn.move('b4')
-          expect(navigate_bounds.in_bounds_coordinates(white_pawn)).to contain_exactly('a5', 'b5', 'c5')
-        end
+      it 'provides an array of possible moves' do
+        white_pawn.move('b4')
+        expect(navigate_bounds.in_bounds_coordinates(white_pawn)).to contain_exactly('a5', 'b5', 'c5')
       end
+    end
 
-      context 'when Pawn is black' do
-        let(:black_pawn) { Pawn.new('b5', colour: 'black') }
+    context "when checking black Pawns's in bounds moves" do
+      subject(:navigate_bounds) { described_class.new(board) }
 
-        it 'provides an array of possible moves' do
-          black_pawn.move('b4')
-          expect(navigate_bounds.in_bounds_coordinates(black_pawn)).to contain_exactly('a3', 'b3', 'c3')
-        end
+      let(:board) { Board.new }
+      let(:black_pawn) { Pawn.new('b5', colour: 'black') }
+
+      it 'provides an array of possible moves' do
+        black_pawn.move('b4')
+        expect(navigate_bounds.in_bounds_coordinates(black_pawn)).to contain_exactly('a3', 'b3', 'c3')
       end
     end
 
@@ -180,55 +180,39 @@ describe BoardNavigator do
         board.setup
       end
 
-      context "when checking Rook's possible moves" do
-        it 'returns a collection of possible coordinates' do
-          white_rook = board.find_piece('h1')
-          expect(navigate_possibilities.possible_moves(white_rook)).to be_empty
-        end
+      it "returns a collection of Rook's possible coordinates" do
+        white_rook = board.find_piece('h1')
+        expect(navigate_possibilities.possible_moves(white_rook)).to be_empty
       end
 
-      context "when checking Bishop's possible moves" do
-        it 'returns a collection of possible coordinates' do
-          black_bishop = board.find_piece('c8')
-          expect(navigate_possibilities.possible_moves(black_bishop)).to be_empty
-        end
+      it "returns a collection of Bishop's possible coordinates" do
+        black_bishop = board.find_piece('c8')
+        expect(navigate_possibilities.possible_moves(black_bishop)).to be_empty
       end
 
-      context "when checking Knight's possible moves" do
-        it 'returns a collection of possible coordinates' do
-          white_knight = board.find_piece('g1')
-          expect(navigate_possibilities.possible_moves(white_knight)).to contain_exactly('f3', 'h3')
-        end
+      it "returns a collection of Knight's possible coordinates" do
+        white_knight = board.find_piece('g1')
+        expect(navigate_possibilities.possible_moves(white_knight)).to contain_exactly('f3', 'h3')
       end
 
-      context "when checking Queen's possible moves" do
-        it 'returns a collection of possible coordinates' do
-          black_queen = board.find_piece('d8')
-          expect(navigate_possibilities.possible_moves(black_queen)).to be_empty
-        end
+      it "returns a collection of Queen's possible coordinates" do
+        black_queen = board.find_piece('d8')
+        expect(navigate_possibilities.possible_moves(black_queen)).to be_empty
       end
 
-      context "when checking King's possible moves" do
-        it 'returns a collection of possible coordinates' do
-          white_king = board.find_piece('e1')
-          expect(navigate_possibilities.possible_moves(white_king)).to be_empty
-        end
+      it "returns a collection of King's possible coordinates" do
+        white_king = board.find_piece('e1')
+        expect(navigate_possibilities.possible_moves(white_king)).to be_empty
       end
 
-      context "when checking Pawn's possible moves" do
-        context 'when Pawn is white' do
-          it 'returns a collection of possible coordinates' do
-            white_pawn = board.find_piece('b2')
-            expect(navigate_possibilities.possible_moves(white_pawn)).to contain_exactly('b3', 'b4')
-          end
-        end
+      it "returns a collection of white Pawn's possible coordinates" do
+        white_pawn = board.find_piece('b2')
+        expect(navigate_possibilities.possible_moves(white_pawn)).to contain_exactly('b3', 'b4')
+      end
 
-        context 'when Pawn is black' do
-          it 'returns a collection of possible coordinates' do
-            black_pawn = board.find_piece('d7')
-            expect(navigate_possibilities.possible_moves(black_pawn)).to contain_exactly('d6', 'd5')
-          end
-        end
+      it "returns a collection of black Pawn's possible coordinates" do
+        black_pawn = board.find_piece('d7')
+        expect(navigate_possibilities.possible_moves(black_pawn)).to contain_exactly('d6', 'd5')
       end
     end
 
