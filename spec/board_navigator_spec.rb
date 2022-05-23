@@ -11,115 +11,6 @@ end
 
 # rubocop: disable Layout/LineLength,
 describe BoardNavigator do
-  describe '#in_bounds_coordinates' do
-    coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
-                     b1 b2 b3 b4 b5 b6 b7 b8
-                     c1 c2 c3 c4 c5 c6 c7 c8
-                     d1 d2 d3 d4 d5 d6 d7 d8
-                     e1 e2 e3 e4 e5 e6 e7 e8
-                     f1 f2 f3 f4 f5 f6 f7 f8
-                     g1 g2 g3 g4 g5 g6 g7 g8
-                     h1 h2 h3 h4 h5 h6 h7 h8]
-    context "when checking Kings's in bounds moves" do
-      subject(:navigate_bounds) { described_class.new(board) }
-
-      let(:board) { instance_double(Board) }
-      let(:king) { instance_double(King, position: 'd4') }
-
-      before do
-        allow(board).to receive(:coordinates).and_return(coordinates)
-        allow(king).to receive(:legal?).and_return(false)
-        allow(king).to receive(:legal?).with('d3').and_return(true)
-        allow(king).to receive(:legal?).with('d5').and_return(true)
-        allow(king).to receive(:legal?).with('c3').and_return(true)
-        allow(king).to receive(:legal?).with('c4').and_return(true)
-        allow(king).to receive(:legal?).with('c5').and_return(true)
-        allow(king).to receive(:legal?).with('e3').and_return(true)
-        allow(king).to receive(:legal?).with('e4').and_return(true)
-        allow(king).to receive(:legal?).with('e5').and_return(true)
-      end
-
-      it 'provides an array of possible moves' do
-        expect(navigate_bounds.in_bounds_coordinates(king)).to contain_exactly('d3', 'd5', 'c3', 'c4', 'c5', 'e3', 'e4', 'e5')
-      end
-    end
-
-    context "when checking Knight's in bounds moves" do
-      subject(:navigate_bounds) { described_class.new(board) }
-
-      let(:board) { Board.new }
-      let(:knight) { Knight.new('b8') }
-
-      it 'provides an array of possible moves' do
-        expect(navigate_bounds.in_bounds_coordinates(knight)).to contain_exactly('a6', 'c6', 'd7')
-      end
-    end
-
-    context "when checking white Pawns's in bounds moves" do
-      subject(:navigate_bounds) { described_class.new(board) }
-
-      let(:board) { Board.new }
-      let(:white_pawn) { Pawn.new('b3', colour: 'white') }
-
-      it 'provides an array of possible moves' do
-        white_pawn.move('b4')
-        expect(navigate_bounds.in_bounds_coordinates(white_pawn)).to contain_exactly('a5', 'b5', 'c5')
-      end
-    end
-
-    context "when checking black Pawns's in bounds moves" do
-      subject(:navigate_bounds) { described_class.new(board) }
-
-      let(:board) { Board.new }
-      let(:black_pawn) { Pawn.new('b5', colour: 'black') }
-
-      it 'provides an array of possible moves' do
-        black_pawn.move('b4')
-        expect(navigate_bounds.in_bounds_coordinates(black_pawn)).to contain_exactly('a3', 'b3', 'c3')
-      end
-    end
-
-    context "when checking Queens's in bounds moves" do
-      subject(:navigate_bounds) { described_class.new(board) }
-
-      let(:board) { Board.new }
-      let(:queen) { Queen.new('c3') }
-
-      it 'provides an array of possible moves' do
-        expect(navigate_bounds.in_bounds_coordinates(queen)).to contain_exactly('c1', 'c2', 'c4', 'c5', 'c6', 'c7', 'c8',
-                                                                                'a3', 'b3', 'd3', 'e3', 'f3', 'g3', 'h3',
-                                                                                'a1', 'b2', 'd4', 'e5', 'f6', 'g7', 'h8',
-                                                                                'b4', 'a5', 'd2', 'e1')
-      end
-    end
-
-    context "when checking Rook's in bounds moves" do
-      subject(:navigate_bounds) { described_class.new(board) }
-
-      let(:board) { Board.new }
-      let(:rook) { Rook.new('b3') }
-
-      it 'provides an array of possible moves' do
-        expect(navigate_bounds.in_bounds_coordinates(rook)).to contain_exactly('b1', 'b2', 'b4', 'b5', 'b6', 'b7', 'b8',
-                                                                               'a3', 'c3', 'd3', 'e3', 'f3', 'g3', 'h3')
-      end
-    end
-
-    context "when checking Bishop's in bounds moves" do
-      subject(:navigate_bounds) { described_class.new(board) }
-
-      let(:board) { Board.new }
-      let(:bishop) { Bishop.new('e4') }
-
-      it 'provides an array of possible moves' do
-        expect(navigate_bounds.in_bounds_coordinates(bishop)).to contain_exactly('d3', 'c2', 'b1',
-                                                                                 'd5', 'c6', 'b7', 'a8',
-                                                                                 'f3', 'g2', 'h1',
-                                                                                 'f5', 'g6', 'h7')
-      end
-    end
-  end
-
   describe '#occupied_coordinates' do
     subject(:navigate_collison) { described_class.new(board) }
 
@@ -346,7 +237,7 @@ describe BoardNavigator do
       end
     end
 
-    context 'when Pawn can take' do
+    xcontext 'when Pawn can take' do
       subject(:navigate_pawn_taking) { described_class.new(board) }
 
       let(:board) { Board.new }

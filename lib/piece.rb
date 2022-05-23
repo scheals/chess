@@ -36,6 +36,26 @@ class Piece
     true
   end
 
+  def legal(coordinates)
+    coordinates.select { |coordinate| legal?(coordinate) }
+  end
+
+  def handle_collision(moves)
+    split_moves(moves).map { |direction| handle_allies(direction) }.map { |direction| handle_enemies(direction) }
+  end
+
+  def handle_enemies(direction)
+    direction.slice_after { |coordinate| coordinate.end_with?('E') }.first
+  end
+
+  def handle_allies(direction)
+    direction.take_while { |coordinate| !coordinate.end_with?('A') }
+  end
+
+  def split_moves(_moves)
+    raise 'NotImplemented'
+  end
+
   private
 
   def column

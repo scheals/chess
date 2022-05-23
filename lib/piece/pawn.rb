@@ -35,6 +35,27 @@ class Pawn < Piece
     moves.select { |coordinate| coordinate[0].ord > position[0].ord }
   end
 
+  def handle_collision(moves)
+    case colour
+    when 'white'
+      handle_white_pawn(moves)
+    when 'black'
+      handle_black_pawn(moves)
+    end
+  end
+
+  def handle_white_pawn(moves)
+    takes = (left(moves) + right(moves)).select { |coordinate| coordinate.end_with?('E') }
+    forward = up(moves).reject { |coordinate| coordinate.end_with?('E') }
+    [forward, takes]
+  end
+
+  def handle_black_pawn(moves)
+    takes = (left(moves) + right(moves)).select { |coordinate| coordinate.end_with?('E') }
+    forward = down(moves).reject { |coordinate| coordinate.end_with?('E') }
+    [forward, takes]
+  end
+
   def double_vertical?(space)
     return false if moved?
 
