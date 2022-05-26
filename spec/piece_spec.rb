@@ -32,6 +32,25 @@ describe NilPiece do
 end
 
 describe King do
+  describe '#legal' do
+    context "when checking King's legal moves" do
+      subject(:boundful_king) { described_class.new('a8', colour: 'white') }
+
+      coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
+                       b1 b2 b3 b4 b5 b6 b7 b8
+                       c1 c2 c3 c4 c5 c6 c7 c8
+                       d1 d2 d3 d4 d5 d6 d7 d8
+                       e1 e2 e3 e4 e5 e6 e7 e8
+                       f1 f2 f3 f4 f5 f6 f7 f8
+                       g1 g2 g3 g4 g5 g6 g7 g8
+                       h1 h2 h3 h4 h5 h6 h7 h8]
+
+      it 'provides an array of possible moves' do
+        expect(boundful_king.legal(coordinates)).to contain_exactly('a7', 'b7', 'b8')
+      end
+    end
+  end
+
   describe '#move' do
     context 'when moved vertically by one tile' do
       subject(:vertical_move) { described_class.new('a1') }
@@ -95,6 +114,27 @@ describe King do
 end
 
 describe Queen do
+  describe '#legal' do
+    context "when checking Queen's legal moves" do
+      subject(:boundful_queen) { described_class.new('h8', colour: 'black') }
+
+      coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
+                       b1 b2 b3 b4 b5 b6 b7 b8
+                       c1 c2 c3 c4 c5 c6 c7 c8
+                       d1 d2 d3 d4 d5 d6 d7 d8
+                       e1 e2 e3 e4 e5 e6 e7 e8
+                       f1 f2 f3 f4 f5 f6 f7 f8
+                       g1 g2 g3 g4 g5 g6 g7 g8
+                       h1 h2 h3 h4 h5 h6 h7 h8]
+
+      it 'provides an array of possible moves' do
+        expect(boundful_queen.legal(coordinates)).to contain_exactly('g7', 'f6', 'e5', 'd4', 'c3', 'b2', 'a1',
+                                                                     'h7', 'h6', 'h5', 'h4', 'h3', 'h2', 'h1',
+                                                                     'g8', 'f8', 'e8', 'd8', 'c8', 'b8', 'a8')
+      end
+    end
+  end
+
   describe '#move' do
     context 'when moved vertically' do
       subject(:vertical_move) { described_class.new('a1') }
@@ -150,6 +190,25 @@ describe Queen do
 end
 
 describe Rook do
+  describe '#legal' do
+    context "when checking Rook's legal moves" do
+      subject(:boundful_rook) { described_class.new('a1', colour: 'white') }
+
+      coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
+                       b1 b2 b3 b4 b5 b6 b7 b8
+                       c1 c2 c3 c4 c5 c6 c7 c8
+                       d1 d2 d3 d4 d5 d6 d7 d8
+                       e1 e2 e3 e4 e5 e6 e7 e8
+                       f1 f2 f3 f4 f5 f6 f7 f8
+                       g1 g2 g3 g4 g5 g6 g7 g8
+                       h1 h2 h3 h4 h5 h6 h7 h8]
+
+      it 'provides an array of possible moves' do
+        expect(boundful_rook.legal(coordinates)).to contain_exactly('a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1')
+      end
+    end
+  end
+
   describe '#move' do
     context 'when moved vertically' do
       subject(:vertical_move) { described_class.new('a1') }
@@ -208,6 +267,25 @@ describe Rook do
 end
 
 describe Bishop do
+  describe '#legal' do
+    context "when checking Bishop's legal moves" do
+      subject(:boundful_bishop) { described_class.new('e1', colour: 'white') }
+
+      coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
+                       b1 b2 b3 b4 b5 b6 b7 b8
+                       c1 c2 c3 c4 c5 c6 c7 c8
+                       d1 d2 d3 d4 d5 d6 d7 d8
+                       e1 e2 e3 e4 e5 e6 e7 e8
+                       f1 f2 f3 f4 f5 f6 f7 f8
+                       g1 g2 g3 g4 g5 g6 g7 g8
+                       h1 h2 h3 h4 h5 h6 h7 h8]
+
+      it 'provides an array of possible moves' do
+        expect(boundful_bishop.legal(coordinates)).to contain_exactly('d2', 'c3', 'b4', 'a5', 'f2', 'g3', 'h4')
+      end
+    end
+  end
+
   describe '#move' do
     context 'when moved diagonally' do
       subject(:diagonal_move) { described_class.new('c4') }
@@ -362,6 +440,63 @@ describe Knight do
 end
 
 describe Pawn do
+  describe '#legal' do
+    context "when checking unmoved white Pawn's legal moves" do
+      subject(:boundful_pawn) { described_class.new('e4', colour: 'white') }
+
+      coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
+                       b1 b2 b3 b4 b5 b6 b7 b8
+                       c1 c2 c3 c4 c5 c6 c7 c8
+                       d1 d2 d3 d4 d5 d6 d7 d8
+                       e1 e2 e3 e4 e5 e6 e7 e8
+                       f1 f2 f3 f4 f5 f6 f7 f8
+                       g1 g2 g3 g4 g5 g6 g7 g8
+                       h1 h2 h3 h4 h5 h6 h7 h8]
+
+      it 'provides an array of possible moves' do
+        expect(boundful_pawn.legal(coordinates)).to contain_exactly('d5', 'e5', 'e6', 'f5')
+      end
+    end
+
+    context "when checking unmoved black Pawn's legal moves" do
+      subject(:boundful_pawn) { described_class.new('d4', colour: 'black') }
+
+      coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
+                       b1 b2 b3 b4 b5 b6 b7 b8
+                       c1 c2 c3 c4 c5 c6 c7 c8
+                       d1 d2 d3 d4 d5 d6 d7 d8
+                       e1 e2 e3 e4 e5 e6 e7 e8
+                       f1 f2 f3 f4 f5 f6 f7 f8
+                       g1 g2 g3 g4 g5 g6 g7 g8
+                       h1 h2 h3 h4 h5 h6 h7 h8]
+
+      it 'provides an array of possible moves' do
+        expect(boundful_pawn.legal(coordinates)).to contain_exactly('d2', 'd3', 'c3', 'e3')
+      end
+    end
+
+    context "when checking moved black Pawn's legal moves" do
+      subject(:boundful_pawn) { described_class.new('b6', colour: 'black') }
+
+      coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
+                       b1 b2 b3 b4 b5 b6 b7 b8
+                       c1 c2 c3 c4 c5 c6 c7 c8
+                       d1 d2 d3 d4 d5 d6 d7 d8
+                       e1 e2 e3 e4 e5 e6 e7 e8
+                       f1 f2 f3 f4 f5 f6 f7 f8
+                       g1 g2 g3 g4 g5 g6 g7 g8
+                       h1 h2 h3 h4 h5 h6 h7 h8]
+
+      before do
+        boundful_pawn.move('b5')
+      end
+
+      it 'provides an array of possible moves' do
+        expect(boundful_pawn.legal(coordinates)).to contain_exactly('a4', 'b4', 'c4')
+      end
+    end
+  end
+
   describe '#move' do
     context 'when Pawn is white' do
       subject(:white_pawn) { described_class.new('c3', colour: 'white') }
