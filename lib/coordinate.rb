@@ -26,4 +26,24 @@ class Coordinate
   def same_row?(coordinate)
     row == coordinate.row
   end
+
+  def up
+    row_up = (row.ord + 1).chr
+    Coordinate.parse([column, row_up].join)
+  end
+
+  def down
+    row_down = (row.ord - 1).chr
+    Coordinate.parse([column, row_down].join)
+  end
+
+  def left
+    column_right = (column.ord - 1).chr
+    Coordinate.parse([column_right, row].join)
+  end
+
+  def right
+    column_left = (column.ord + 1).chr
+    Coordinate.parse([column_left, row].join)
+  end
 end
