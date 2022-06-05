@@ -22,4 +22,24 @@ describe Coordinate do
       end
     end
   end
+
+  describe '==' do
+    subject(:absolute_coordinate) { described_class.new('00') }
+
+    context 'when row and column are the same' do
+      let(:twin_coordinate) { described_class.new('00') }
+
+      it 'returns true' do
+        expect(absolute_coordinate == twin_coordinate).to be true
+      end
+    end
+
+    context 'when either row or column are not the same' do
+      let(:different_coordinate) { described_class.new('a0') }
+
+      it 'returns false' do
+        expect(absolute_coordinate == different_coordinate).to be false
+      end
+    end
+  end
 end

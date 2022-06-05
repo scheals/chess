@@ -14,4 +14,8 @@ class Coordinate
 
     new(coordinate)
   end
+
+  def ==(other)
+    column == other.column && row == other.row
+  end
 end
