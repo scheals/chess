@@ -42,4 +42,44 @@ describe Coordinate do
       end
     end
   end
+
+  describe 'same_column?' do
+    subject(:starting_coordinate) { described_class.new('f6') }
+
+    context 'when column is the same' do
+      let(:climbing_coordinate) { described_class.new('f7') }
+
+      it 'returns true' do
+        expect(starting_coordinate.same_column?(climbing_coordinate)).to be true
+      end
+    end
+
+    context 'when column is not the same' do
+      let(:sliding_coordinate) { described_class.new('e7') }
+
+      it 'returns false' do
+        expect(starting_coordinate.same_column?(sliding_coordinate)).to be false
+      end
+    end
+  end
+
+  describe 'same_row?' do
+    subject(:starting_coordinate) { described_class.new('a4') }
+
+    context 'when row is the same' do
+      let(:sliding_coordinate) { described_class.new('b4') }
+
+      it 'returns true' do
+        expect(starting_coordinate.same_row?(sliding_coordinate)).to be true
+      end
+    end
+
+    context 'when row is not the same' do
+      let(:climbing_coordinate) { described_class.new('a5') }
+
+      it 'returns false' do
+        expect(starting_coordinate.same_row?(climbing_coordinate)).to be false
+      end
+    end
+  end
 end

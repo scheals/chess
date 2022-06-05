@@ -18,4 +18,12 @@ class Coordinate
   def ==(other)
     column == other.column && row == other.row
   end
+
+  def same_column?(coordinate)
+    column == coordinate.column
+  end
+
+  def same_row?(coordinate)
+    row == coordinate.row
+  end
 end
