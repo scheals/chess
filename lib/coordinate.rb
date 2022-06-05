@@ -46,4 +46,8 @@ class Coordinate
     column_left = (column.ord + 1).chr
     Coordinate.parse([column_left, row].join)
   end
+
+  def to_s
+    [column, row].join
+  end
 end
