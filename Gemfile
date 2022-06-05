@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-ruby '3.0.3'
+ruby '3.1.2'
 
 
 gem "colorize", "~> 0.8.1"
