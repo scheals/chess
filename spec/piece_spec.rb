@@ -627,6 +627,8 @@ describe Pawn do
 end
 
 describe PieceFactory do
+  let(:coordinate) { Coordinate }
+
   describe '@for' do
     let(:factory) { described_class }
 
@@ -661,7 +663,7 @@ describe PieceFactory do
     context 'when given a colour' do
       it 'creates a piece with the right colour' do
         piece = 'Pawn'
-        expect(factory.for(piece, colour: 'red', position: 'B9')).to be_a(Pawn).and have_attributes(colour: 'red', position: 'B9')
+        expect(factory.for(piece, colour: 'red', position: 'B9')).to be_a(Pawn).and have_attributes(colour: 'red', position: coordinate.parse('B9'))
       end
     end
   end
