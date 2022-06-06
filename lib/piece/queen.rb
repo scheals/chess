@@ -5,9 +5,10 @@ require_relative '../piece'
 # This class handles a Queen chesspiece.
 class Queen < Piece
   def legal?(space)
-    return false if space == position
+    to_coordinate = Coordinate.parse(space)
+    return false if position == to_coordinate
 
-    on_diagonal?(space) || (horizontal?(space) || vertical?(space))
+    on_diagonal?(to_coordinate) || (horizontal?(to_coordinate) || vertical?(to_coordinate))
   end
 
   def split_moves(moves)
@@ -33,48 +34,48 @@ class Queen < Piece
   end
 
   def left_up(moves)
-    moves.select { |coordinate| coordinate[1].to_i > position[1].to_i && coordinate[0].ord < position[0].ord }
+    moves.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord < position.column.ord }
   end
 
   def left_down(moves)
-    moves.select { |coordinate| coordinate[1].to_i < position[1].to_i && coordinate[0].ord < position[0].ord }
+    moves.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord < position.column.ord }
   end
 
   def right_up(moves)
-    moves.select { |coordinate| coordinate[1].to_i > position[1].to_i && coordinate[0].ord > position[0].ord }
+    moves.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord > position.column.ord }
   end
 
   def right_down(moves)
-    moves.select { |coordinate| coordinate[1].to_i < position[1].to_i && coordinate[0].ord > position[0].ord }
+    moves.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord > position.column.ord }
   end
 
   def up(moves)
-    moves.select { |coordinate| coordinate[1].to_i > position[1].to_i && vertical?(coordinate) }
+    moves.select { |coordinate| coordinate.row.to_i > position.row.to_i && vertical?(coordinate) }
   end
 
   def down(moves)
-    moves.select { |coordinate| coordinate[1].to_i < position[1].to_i && vertical?(coordinate) }
+    moves.select { |coordinate| coordinate.row.to_i < position.row.to_i && vertical?(coordinate) }
   end
 
   def left(moves)
-    moves.select { |coordinate| coordinate[0].ord < position[0].ord && horizontal?(coordinate) }
+    moves.select { |coordinate| coordinate.column.ord < position.column.ord && horizontal?(coordinate) }
   end
 
   def right(moves)
-    moves.select { |coordinate| coordinate[0].ord > position[0].ord && horizontal?(coordinate) }
+    moves.select { |coordinate| coordinate.column.ord > position.column.ord && horizontal?(coordinate) }
   end
 
   def on_diagonal?(space)
-    vertical_distance = (space[1].to_i - row.to_i).abs
-    horizontal_distance = (space[0].ord - column.ord).abs
+    vertical_distance = (space.row.to_i - position.row.to_i).abs
+    horizontal_distance = (space.column.ord - position.column.ord).abs
     vertical_distance == horizontal_distance
   end
 
   def horizontal?(space)
-    space[1] == row
+    position.same_row?(space)
   end
 
   def vertical?(space)
-    space[0] == column
+    position.same_column?(space)
   end
 end

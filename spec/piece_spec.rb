@@ -176,12 +176,14 @@ describe Queen do
   end
 
   describe '#move' do
+    let(:coordinate) { Coordinate }
+
     context 'when moved vertically' do
       subject(:vertical_move) { described_class.new('a1') }
 
       it 'changes its position' do
         vertical_move.move('a4')
-        expect(vertical_move.position).to be('a4')
+        expect(vertical_move.position).to eq(coordinate.parse('a4'))
       end
     end
 
@@ -190,7 +192,7 @@ describe Queen do
 
       it 'changes its position' do
         horizontal_move.move('h1')
-        expect(horizontal_move.position).to be('h1')
+        expect(horizontal_move.position).to eq(coordinate.parse('h1'))
       end
     end
 
@@ -199,7 +201,7 @@ describe Queen do
 
       it 'changes its position' do
         diagonal_move.move('d5')
-        expect(diagonal_move.position).to be('d5')
+        expect(diagonal_move.position).to eq(coordinate.parse('d5'))
       end
     end
 
