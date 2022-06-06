@@ -5,9 +5,10 @@ require_relative '../piece'
 # This class handles a Bishop chesspiece
 class Bishop < Piece
   def legal?(space)
-    return false if space == position
+    to_coordinate = Coordinate.parse(space)
+    return false if position == to_coordinate
 
-    on_diagonal?(space)
+    on_diagonal?(to_coordinate)
   end
 
   def split_moves(moves)
@@ -20,24 +21,24 @@ class Bishop < Piece
   end
 
   def left_up(moves)
-    moves.select { |coordinate| coordinate[1].to_i > position[1].to_i && coordinate[0].ord < position[0].ord }
+    moves.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord < position.column.ord }
   end
 
   def left_down(moves)
-    moves.select { |coordinate| coordinate[1].to_i < position[1].to_i && coordinate[0].ord < position[0].ord }
+    moves.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord < position.column.ord }
   end
 
   def right_up(moves)
-    moves.select { |coordinate| coordinate[1].to_i > position[1].to_i && coordinate[0].ord > position[0].ord }
+    moves.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord > position.column.ord }
   end
 
   def right_down(moves)
-    moves.select { |coordinate| coordinate[1].to_i < position[1].to_i && coordinate[0].ord > position[0].ord }
+    moves.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord > position.column.ord }
   end
 
   def on_diagonal?(space)
-    vertical_distance = (space[1].to_i - row.to_i).abs
-    horizontal_distance = (space[0].ord - column.ord).abs
+    vertical_distance = (space.row.to_i - position.row.to_i).abs
+    horizontal_distance = (space.column.ord - position.column.ord).abs
     vertical_distance == horizontal_distance
   end
 end

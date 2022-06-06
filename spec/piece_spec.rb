@@ -311,6 +311,8 @@ describe Rook do
 end
 
 describe Bishop do
+  let(:coordinate) { Coordinate }
+
   describe '#legal' do
     context "when checking Bishop's legal moves" do
       subject(:boundful_bishop) { described_class.new('e1', colour: 'white') }
@@ -336,7 +338,7 @@ describe Bishop do
 
       it 'changes its position' do
         diagonal_move.move('d5')
-        expect(diagonal_move.position).to be('d5')
+        expect(diagonal_move.position).to eq(coordinate.parse('d5'))
       end
     end
 
