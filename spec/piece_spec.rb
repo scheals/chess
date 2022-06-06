@@ -9,6 +9,8 @@ require_relative '../lib/piece/king'
 require_relative '../lib/piece/knight'
 require_relative '../lib/piece/pawn'
 require_relative '../lib/piece/nil_piece'
+require_relative '../lib/square'
+
 
 # rubocop: disable Layout/LineLength
 describe Piece do
@@ -546,12 +548,14 @@ describe Pawn do
   end
 
   describe '#move' do
+    let(:coordinate) { Coordinate }
+
     context 'when Pawn is white' do
       subject(:white_pawn) { described_class.new('c3', colour: 'white') }
 
       it 'can only go up one space at a time' do
         white_pawn.move('c4')
-        expect(white_pawn.position).to be('c4')
+        expect(white_pawn.position).to eq(coordinate.parse('c4'))
       end
 
       it 'does not make an illegal move' do
@@ -562,7 +566,7 @@ describe Pawn do
         subject(:white_double) { described_class.new('b2', colour: 'white') }
 
         it 'can move two spaces up at once' do
-          expect { white_double.move('b4') }.to change(white_double, :position).from('b2').to('b4')
+          expect { white_double.move('b4') }.to change(white_double, :position).from(coordinate.parse('b2')).to(coordinate.parse('b4'))
         end
       end
 
@@ -578,7 +582,7 @@ describe Pawn do
         it 'can move one space up diagonally' do
           space = occupied_space.coordinates
           white_take.move(space)
-          expect(white_take.position).to be('e5')
+          expect(white_take.position).to eq(coordinate.parse('e5'))
         end
       end
     end
@@ -588,7 +592,7 @@ describe Pawn do
 
       it 'can only go down one space at a time' do
         black_pawn.move('e4')
-        expect(black_pawn.position).to be('e4')
+        expect(black_pawn.position).to eq(coordinate.parse('e4'))
       end
 
       it 'does not make an illegal move' do
@@ -599,7 +603,7 @@ describe Pawn do
         subject(:black_double) { described_class.new('e7', colour: 'black') }
 
         it 'can move two spaces down at once' do
-          expect { black_double.move('e5') }.to change(black_double, :position).from('e7').to('e5')
+          expect { black_double.move('e5') }.to change(black_double, :position).from(coordinate.parse('e7')).to(coordinate.parse('e5'))
         end
       end
 
@@ -615,7 +619,7 @@ describe Pawn do
         it 'can move one space down diagonally' do
           space = occupied_space.coordinates
           black_take.move(space)
-          expect(black_take.position).to be('d4')
+          expect(black_take.position).to eq(coordinate.parse('d4'))
         end
       end
     end

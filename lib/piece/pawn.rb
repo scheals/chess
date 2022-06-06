@@ -5,9 +5,10 @@ require_relative '../piece'
 # This class handles a Pawn chesspiece rules.
 class Pawn < Piece
   def legal?(space)
-    return false if space == position
+    to_coordinate = Coordinate.parse(space)
+    return false if position == to_coordinate
 
-    once_diagonal?(space) || (once_vertical?(space) && same_column?(space)) || (double_vertical?(space) && same_column?(space))
+    once_diagonal?(to_coordinate) || (once_vertical?(to_coordinate) && position.same_column?(to_coordinate)) || (double_vertical?(to_coordinate) && position.same_column?(to_coordinate))
   end
 
   def split_moves(moves)
@@ -67,11 +68,11 @@ class Pawn < Piece
   end
 
   def black_double?(space)
-    (space[1].to_i - row.to_i) == -2
+    position.down.down.row == space.row
   end
 
   def white_double?(space)
-    (space[1].to_i - row.to_i) == 2
+    position.up.up.row == space.row
   end
 
   def once_diagonal?(space)
@@ -87,22 +88,22 @@ class Pawn < Piece
   end
 
   def black_vertical?(space)
-    (space[1].to_i - row.to_i) == -1
+    position.down.row == space.row
   end
 
   def white_vertical?(space)
-    (space[1].to_i - row.to_i) == 1
+    position.up.row == space.row
   end
 
   def once_horizontal?(space)
-    space[0].succ == column || column.succ == space[0]
+    position.left.column == space.column || position.right.column == space.column
   end
 
   def same_column?(space)
-    space[0] == column
+    position.same_column?(space)
   end
 
   def same_row?(space)
-    space[1] == row
+    position.same_row?(space)
   end
 end
