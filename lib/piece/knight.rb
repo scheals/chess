@@ -16,18 +16,18 @@ class Knight < Piece
   end
 
   def twice_vertical?(coordinate)
-    position.row == coordinate.up.up.row || position.row == coordinate.down.down.row
+    position.up.up.row == coordinate.row || position.down.down.row == coordinate.row
   end
 
   def once_vertical?(coordinate)
-    position.row == coordinate.up.row || position.row == coordinate.down.row
+    position.up.row == coordinate.row || position.down.row == coordinate.row
   end
 
   def twice_horizontal?(coordinate)
-    position.column == coordinate.right.right.column || position.column == coordinate.left.left.column
+    position.right.right.column == coordinate.column || position.left.left.column == coordinate.column
   end
 
   def once_horizontal?(coordinate)
-    position.column == coordinate.right.column || position.column == coordinate.left.column
+    position.right.column == coordinate.column || position.left.column == coordinate.column
   end
 end

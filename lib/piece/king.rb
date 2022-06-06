@@ -16,11 +16,11 @@ class King < Piece
   end
 
   def once_vertical?(space)
-    position.row == space.up.row || position.row == space.down.row
+    position.up.row == space.row || position.down.row == space.row
   end
 
   def once_horizontal?(space)
-    position.column == space.left.column || position.column == space.right.column
+    position.left.column == space.column || position.right.column == space.column
   end
 
   def once_diagonal?(space)
