@@ -90,12 +90,14 @@ describe King do
   end
 
   describe '#move' do
+    let(:coordinate) { Coordinate }
+
     context 'when moved vertically by one tile' do
       subject(:vertical_move) { described_class.new('a1') }
 
       it 'changes its position' do
         vertical_move.move('a2')
-        expect(vertical_move.position).to be('a2')
+        expect(vertical_move.position).to eq(coordinate.parse('a2'))
       end
 
       it 'does not move further than one tile' do
@@ -108,7 +110,7 @@ describe King do
 
       it 'changes its position' do
         horizontal_move.move('c1')
-        expect(horizontal_move.position).to be('c1')
+        expect(horizontal_move.position).to eq(coordinate.parse('c1'))
       end
 
       it 'does not move further than one tile' do
@@ -121,7 +123,7 @@ describe King do
 
       it 'changes its position' do
         diagonal_move.move('d5')
-        expect(diagonal_move.position).to be('d5')
+        expect(diagonal_move.position).to eq(coordinate.parse('d5'))
       end
 
       it 'does not move further than one tile' do

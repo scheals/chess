@@ -5,9 +5,10 @@ require_relative '../piece'
 # This class handles a King chesspiece.
 class King < Piece
   def legal?(space)
-    return false if space == position
+    to_coordinate = Coordinate.parse(space)
+    return false if position == to_coordinate
 
-    once_diagonal?(space) || (once_horizontal?(space) && same_row?(space)) || (once_vertical?(space) && same_column?(space))
+    once_diagonal?(to_coordinate) || (once_horizontal?(to_coordinate) && position.same_row?(to_coordinate)) || (once_vertical?(to_coordinate) && position.same_column?(to_coordinate))
   end
 
   def split_moves(moves)
@@ -15,22 +16,14 @@ class King < Piece
   end
 
   def once_vertical?(space)
-    (space[1].to_i - row.to_i).abs == 1
+    position.row == space.up.row || position.row == space.down.row
   end
 
   def once_horizontal?(space)
-    space[0].succ == column || column.succ == space[0]
+    position.column == space.left.column || position.column == space.right.column
   end
 
   def once_diagonal?(space)
     once_horizontal?(space) && once_vertical?(space)
-  end
-
-  def same_column?(space)
-    space[0] == column
-  end
-
-  def same_row?(space)
-    space[1] == row
   end
 end
