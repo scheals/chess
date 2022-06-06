@@ -12,7 +12,45 @@ require_relative '../lib/piece/nil_piece'
 
 # rubocop: disable Layout/LineLength
 describe Piece do
-  describe 'real?' do
+  describe '#initialize' do
+    let(:coordinate) { class_double(Coordinate) }
+
+    before do
+      allow(coordinate).to receive(:parse).with('b7')
+    end
+
+    it 'sends coordinate a parse message' do
+      described_class.new('b7', coordinate:)
+      expect(coordinate).to have_received(:parse).with('b7')
+    end
+  end
+
+  describe '#move' do
+    subject(:moving_piece) { described_class.new('b6', coordinate:) }
+
+    let(:coordinate) { class_double(Coordinate) }
+
+    before do
+      allow(coordinate).to receive(:parse).with('b6')
+      allow(coordinate).to receive(:parse).with('b7')
+      allow(coordinate).to receive(:parse).with('b8').and_return(Coordinate.parse('b8'))
+      allow(moving_piece).to receive(:legal?).and_return(true) # The abstract piece does not implement legal? method but is necessary for all the other pieces.
+    end
+
+    it 'sends coordinate a parse message' do
+      to_coordinate = 'b7'
+      moving_piece.move(to_coordinate)
+      expect(coordinate).to have_received(:parse).with(to_coordinate)
+    end
+
+    it 'changes move_history to contain the new position' do
+      new_position = 'b8'
+      new_history = ['b8']
+      expect { moving_piece.move(new_position) }.to change(moving_piece, :move_history).to(new_history)
+    end
+  end
+
+  describe '#real?' do
     subject(:real_piece) { described_class.new('a1') }
 
     it 'always returns true' do
@@ -22,7 +60,7 @@ describe Piece do
 end
 
 describe NilPiece do
-  describe 'real?' do
+  describe '#real?' do
     subject(:false_piece) { described_class.new('a1') }
 
     it 'always returns false' do
@@ -369,59 +407,61 @@ describe Knight do
   describe '#move' do
     subject(:centre_position) { described_class.new('d4') }
 
+    let(:coordinate) { Coordinate }
+
     context 'when moved twice left then up once' do
       it 'changes its position' do
         centre_position.move('b5')
-        expect(centre_position.position).to be('b5')
+        expect(centre_position.position).to eq(coordinate.parse('b5'))
       end
     end
 
     context 'when moved twice left then down once' do
       it 'changes its position' do
         centre_position.move('b3')
-        expect(centre_position.position).to be('b3')
+        expect(centre_position.position).to eq(coordinate.parse('b3'))
       end
     end
 
     context 'when moved twice right then up once' do
       it 'changes its position' do
         centre_position.move('f5')
-        expect(centre_position.position).to be('f5')
+        expect(centre_position.position).to eq(coordinate.parse('f5'))
       end
     end
 
     context 'when moved twice right then down once' do
       it 'changes its position' do
         centre_position.move('f3')
-        expect(centre_position.position).to be('f3')
+        expect(centre_position.position).to eq(coordinate.parse('f3'))
       end
     end
 
     context 'when moved twice up then left once' do
       it 'changes its position' do
         centre_position.move('c6')
-        expect(centre_position.position).to be('c6')
+        expect(centre_position.position).to eq(coordinate.parse('c6'))
       end
     end
 
     context 'when moved twice up then right once' do
       it 'changes its position' do
         centre_position.move('e6')
-        expect(centre_position.position).to be('e6')
+        expect(centre_position.position).to eq(coordinate.parse('e6'))
       end
     end
 
     context 'when moved twice down then left once' do
       it 'changes its position' do
         centre_position.move('c2')
-        expect(centre_position.position).to be('c2')
+        expect(centre_position.position).to eq(coordinate.parse('c2'))
       end
     end
 
     context 'when moved twice down then right once' do
       it 'changes its position' do
         centre_position.move('e2')
-        expect(centre_position.position).to be('e2')
+        expect(centre_position.position).to eq(coordinate.parse('e2'))
       end
     end
 

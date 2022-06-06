@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 require_relative 'display'
+require_relative 'coordinate'
 
 # This class handles abstract chess pieces.
 class Piece
   include Display
-  attr_reader :position, :colour, :move_history
+  attr_reader :position, :colour, :move_history, :coordinate
 
-  def initialize(position, colour: nil)
-    @position = position
+  def initialize(position, colour: nil, coordinate: Coordinate)
+    @coordinate = coordinate
+    @position = coordinate.parse(position)
     @colour = colour
     @move_history = []
   end
@@ -17,7 +19,7 @@ class Piece
     return nil unless legal?(space)
 
     @move_history << space
-    @position = space
+    @position = coordinate.parse(space)
   end
 
   def moved?

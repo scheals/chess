@@ -6,8 +6,7 @@ require_relative '../piece'
 class Knight < Piece
   def legal?(space)
     to_coordinate = Coordinate.parse(space)
-    current_coordinate = Coordinate.parse(position)
-    return false if current_coordinate == to_coordinate
+    return false if position == to_coordinate
 
     (twice_vertical?(to_coordinate) && once_horizontal?(to_coordinate)) || (twice_horizontal?(to_coordinate) && once_vertical?(to_coordinate))
   end
@@ -17,18 +16,18 @@ class Knight < Piece
   end
 
   def twice_vertical?(coordinate)
-    row == coordinate.up.up.row || row == coordinate.down.down.row
+    position.row == coordinate.up.up.row || position.row == coordinate.down.down.row
   end
 
   def once_vertical?(coordinate)
-    row == coordinate.up.row || row == coordinate.down.row
+    position.row == coordinate.up.row || position.row == coordinate.down.row
   end
 
   def twice_horizontal?(coordinate)
-    coordinate.right.right.column == column || coordinate.left.left.column == column
+    position.column == coordinate.right.right.column || position.column == coordinate.left.left.column
   end
 
   def once_horizontal?(coordinate)
-    coordinate.right.column == column || coordinate.left.column == column
+    position.column == coordinate.right.column || position.column == coordinate.left.column
   end
 end
