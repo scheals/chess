@@ -5,9 +5,10 @@ require_relative '../piece'
 # This class handles a Rook chesspiece.
 class Rook < Piece
   def legal?(space)
-    return false if space == position
+    to_coordinate = Coordinate.parse(space)
+    return false if position == to_coordinate
 
-    horizontal?(space) || vertical?(space)
+    horizontal?(to_coordinate) || vertical?(to_coordinate)
   end
 
   def split_moves(moves)
@@ -20,26 +21,26 @@ class Rook < Piece
   end
 
   def up(moves)
-    moves.select { |coordinate| coordinate[1].to_i > position[1].to_i }
+    moves.select { |coordinate| coordinate.row.to_i > position.row.to_i }
   end
 
   def down(moves)
-    moves.select { |coordinate| coordinate[1].to_i < position[1].to_i }
+    moves.select { |coordinate| coordinate.row.to_i < position.row.to_i }
   end
 
   def left(moves)
-    moves.select { |coordinate| coordinate[0].ord < position[0].ord }
+    moves.select { |coordinate| coordinate.column.ord < position.column.ord }
   end
 
   def right(moves)
-    moves.select { |coordinate| coordinate[0].ord > position[0].ord }
+    moves.select { |coordinate| coordinate.column.ord > position.column.ord }
   end
 
   def horizontal?(space)
-    space[1] == row
+    position.same_row?(space)
   end
 
   def vertical?(space)
-    space[0] == column
+    position.same_column?(space)
   end
 end

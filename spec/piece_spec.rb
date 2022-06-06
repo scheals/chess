@@ -232,6 +232,8 @@ describe Queen do
 end
 
 describe Rook do
+  let(:coordinate) { Coordinate }
+
   describe '#legal' do
     context "when checking Rook's legal moves" do
       subject(:boundful_rook) { described_class.new('a1', colour: 'white') }
@@ -257,7 +259,7 @@ describe Rook do
 
       it 'changes its position' do
         vertical_move.move('a4')
-        expect(vertical_move.position).to be('a4')
+        expect(vertical_move.position).to eq(coordinate.parse('a4'))
       end
     end
 
@@ -266,7 +268,7 @@ describe Rook do
 
       it 'changes its position' do
         horizontal_move.move('h1')
-        expect(horizontal_move.position).to be('h1')
+        expect(horizontal_move.position).to eq(coordinate.parse('h1'))
       end
     end
 
