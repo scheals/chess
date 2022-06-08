@@ -179,4 +179,23 @@ describe Coordinate do
       expect(position.to_up?(leftwards)).to be false
     end
   end
+
+  describe '#to_down?' do
+    subject(:position) { described_class.new('f8') }
+
+    it 'returns false for coordinate to upwards from itself' do
+      upwards = 'a9'
+      expect(position.to_down?(upwards)).to be false
+    end
+
+    it 'returns true for coordinate to downwards from itself' do
+      downwards = 'm1'
+      expect(position.to_down?(downwards)).to be true
+    end
+
+    it 'returns false if the row is the same' do
+      rightwards = 'g8'
+      expect(position.to_down?(rightwards)).to be false
+    end
+  end
 end

@@ -59,6 +59,10 @@ class Coordinate
     Coordinate.parse(coordinate).row.to_i > row.to_i
   end
 
+  def to_down?(coordinate)
+    Coordinate.parse(coordinate).row.to_i < row.to_i
+  end
+
   def to_s
     [column, row].join
   end
