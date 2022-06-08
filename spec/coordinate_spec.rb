@@ -141,4 +141,23 @@ describe Coordinate do
       expect(position.to_left?(upwards)).to be false
     end
   end
+
+  describe '#to_right?' do
+    subject(:position) { described_class.new('d8') }
+
+    it 'returns false for coordinate to the left of itself' do
+      to_the_left = 'a1'
+      expect(position.to_right?(to_the_left)).to be false
+    end
+
+    it 'returns true for coordinate to the right of itself' do
+      to_the_right = 'm5'
+      expect(position.to_right?(to_the_right)).to be true
+    end
+
+    it 'returns false if the column is the same' do
+      upwards = 'd900'
+      expect(position.to_right?(upwards)).to be false
+    end
+  end
 end
