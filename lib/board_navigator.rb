@@ -31,8 +31,8 @@ class BoardNavigator
     piece.legal(board.coordinates).select { |coordinate| board.find(coordinate.to_s).occupied? }
   end
 
-  def allied_coordinates(piece)
-    occupied_coordinates(piece).select { |coordinate| piece.ally?(board.find_piece(coordinate)) }
+  def allied_coordinates(piece, coordinates = occupied_coordinates(piece))
+    coordinates.select { |coordinate| piece.ally?(board.find_piece(coordinate)) }
   end
 
   def enemy_coordinates(piece)
