@@ -32,8 +32,7 @@ class BoardNavigator
   end
 
   def allied_coordinates(piece)
-    colour = piece.colour
-    occupied_coordinates(piece).select { |coordinate| colour == board.find_piece(coordinate).colour }
+    occupied_coordinates(piece).select { |coordinate| piece.ally?(board.find_piece(coordinate)) }
   end
 
   def enemy_coordinates(piece)
