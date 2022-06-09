@@ -27,13 +27,13 @@ class Board
     board
   end
 
-  def setup
-    setup_rooks
-    setup_knights
-    setup_bishops
-    setup_queens
-    setup_kings
-    setup_pawns
+  def setup(notation = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
+    notation.split('/').each_with_index do |row, row_number|
+      row.chars.each_with_index do |char, column|
+        coordinate = [integer_to_column(column), 8 - row_number].join
+        board[coordinate].place(create_fen_piece(char, coordinate))
+      end
+    end
   end
 
   def show
@@ -91,43 +91,11 @@ class Board
     @factory.for(name, colour: colour, position: position)
   end
 
+  def create_fen_piece(name, position)
+    @factory.fen_for(name, position)
+  end
+
   private
-
-  def setup_rooks
-    board['a8'].place(create_piece('rook', colour: 'black', position: 'a8'))
-    board['h8'].place(create_piece('rook', colour: 'black', position: 'h8'))
-    board['a1'].place(create_piece('rook', colour: 'white', position: 'a1'))
-    board['h1'].place(create_piece('rook', colour: 'white', position: 'h1'))
-  end
-
-  def setup_knights
-    board['b8'].place(create_piece('knight', colour: 'black', position: 'b8'))
-    board['g8'].place(create_piece('knight', colour: 'black', position: 'g8'))
-    board['b1'].place(create_piece('knight', colour: 'white', position: 'b1'))
-    board['g1'].place(create_piece('knight', colour: 'white', position: 'g1'))
-  end
-
-  def setup_bishops
-    board['c8'].place(create_piece('bishop', colour: 'black', position: 'c8'))
-    board['f8'].place(create_piece('bishop', colour: 'black', position: 'f8'))
-    board['c1'].place(create_piece('bishop', colour: 'white', position: 'c1'))
-    board['f1'].place(create_piece('bishop', colour: 'white', position: 'f1'))
-  end
-
-  def setup_queens
-    board['d8'].place(create_piece('queen', colour: 'black', position: 'd8'))
-    board['d1'].place(create_piece('queen', colour: 'white', position: 'd1'))
-  end
-
-  def setup_kings
-    board['e8'].place(create_piece('king', colour: 'black', position: 'e8'))
-    board['e1'].place(create_piece('king', colour: 'white', position: 'e1'))
-  end
-
-  def setup_pawns
-    row(7).each_value { |square| square.place(create_piece('pawn', colour: 'black', position: square.position)) }
-    row(2).each_value { |square| square.place(create_piece('pawn', colour: 'white', position: square.position)) }
-  end
 
   def create_odd_column(letter)
     column = {}
@@ -145,6 +113,14 @@ class Board
       coordinate = "#{letter}#{i + 1}"
       colour = i.even? ? TILES[:black_tile] : TILES[:white_tile]
       column[coordinate] = create_square(coordinate, colour)
+    end
+    column
+  end
+
+  def integer_to_column(integer)
+    column = 'a'
+    integer.times do
+      column = column.succ
     end
     column
   end
