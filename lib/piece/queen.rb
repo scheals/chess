@@ -12,57 +12,58 @@ class Queen < Piece
   end
 
   def split_moves(moves)
-    split_horizontal_vertical(moves) + split_into_diagonals(moves)
+    coordinates = moves.map { |move| Coordinate.parse(move) }
+    split_horizontal_vertical(coordinates) + split_into_diagonals(coordinates)
   end
 
-  def split_into_diagonals(moves)
+  def split_into_diagonals(coordinates)
     diagonals = []
-    diagonals << left_up(moves).reverse
-    diagonals << left_down(moves).reverse
-    diagonals << right_up(moves)
-    diagonals << right_down(moves)
+    diagonals << left_up(coordinates).reverse
+    diagonals << left_down(coordinates).reverse
+    diagonals << right_up(coordinates)
+    diagonals << right_down(coordinates)
     diagonals
   end
 
-  def split_horizontal_vertical(moves)
+  def split_horizontal_vertical(coordinates)
     horizontal_vertical = []
-    horizontal_vertical << up(moves)
-    horizontal_vertical << down(moves).reverse
-    horizontal_vertical << left(moves).reverse
-    horizontal_vertical << right(moves)
+    horizontal_vertical << up(coordinates)
+    horizontal_vertical << down(coordinates).reverse
+    horizontal_vertical << left(coordinates).reverse
+    horizontal_vertical << right(coordinates)
     horizontal_vertical
   end
 
-  def left_up(moves)
-    moves.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord < position.column.ord }
+  def left_up(coordinates)
+    coordinates.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord < position.column.ord }
   end
 
-  def left_down(moves)
-    moves.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord < position.column.ord }
+  def left_down(coordinates)
+    coordinates.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord < position.column.ord }
   end
 
-  def right_up(moves)
-    moves.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord > position.column.ord }
+  def right_up(coordinates)
+    coordinates.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord > position.column.ord }
   end
 
-  def right_down(moves)
-    moves.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord > position.column.ord }
+  def right_down(coordinates)
+    coordinates.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord > position.column.ord }
   end
 
-  def up(moves)
-    moves.select { |coordinate| coordinate.row.to_i > position.row.to_i && vertical?(coordinate) }
+  def up(coordinates)
+    coordinates.select { |coordinate| coordinate.row.to_i > position.row.to_i && vertical?(coordinate) }
   end
 
-  def down(moves)
-    moves.select { |coordinate| coordinate.row.to_i < position.row.to_i && vertical?(coordinate) }
+  def down(coordinates)
+    coordinates.select { |coordinate| coordinate.row.to_i < position.row.to_i && vertical?(coordinate) }
   end
 
-  def left(moves)
-    moves.select { |coordinate| coordinate.column.ord < position.column.ord && horizontal?(coordinate) }
+  def left(coordinates)
+    coordinates.select { |coordinate| coordinate.column.ord < position.column.ord && horizontal?(coordinate) }
   end
 
-  def right(moves)
-    moves.select { |coordinate| coordinate.column.ord > position.column.ord && horizontal?(coordinate) }
+  def right(coordinates)
+    coordinates.select { |coordinate| coordinate.column.ord > position.column.ord && horizontal?(coordinate) }
   end
 
   def on_diagonal?(space)

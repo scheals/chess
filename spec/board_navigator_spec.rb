@@ -166,8 +166,9 @@ describe BoardNavigator do
 
         let(:board) { Board.new }
         let(:black_queen) { Queen.new('c6', colour: 'black') }
-        let(:black_rook) { Rook.new(nil, colour: 'black') }
-        let(:white_knight) { Knight.new(nil, colour: 'white') }
+        let(:black_rook) { Rook.new('a6', colour: 'black') }
+        let(:white_knight) { Knight.new('c7', colour: 'white') }
+        let(:coordinate_system) { Coordinate }
 
         before do
           board.put(black_queen, 'c6')
@@ -185,16 +186,9 @@ describe BoardNavigator do
         end
 
         it 'correctly interprets collision' do
-          expect(navigate_queen.possible_moves(black_queen)).to contain_exactly('a8', 'b7',
-                                                                                'a4', 'b5',
-                                                                                'b6',
-                                                                                'c7',
-                                                                                'c5', 'c4', 'c3',
-                                                                                'd7',
-                                                                                'd6',
-                                                                                'd5',
-                                                                                'e4',
-                                                                                'f3')
+          correct_coordinates = %w[a8 b7 a4 b5 b6 c7 c5 c4 c3 d7 d6 d5 e4 f3]
+          result = correct_coordinates.map { |coordinate| coordinate_system.parse(coordinate) }
+          expect(navigate_queen.possible_moves(black_queen)).to match_array(result)
         end
       end
     end
