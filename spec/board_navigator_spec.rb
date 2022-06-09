@@ -139,9 +139,10 @@ describe BoardNavigator do
 
         let(:board) { Board.new }
         let(:white_bishop) { Bishop.new('e4', colour: 'white') }
-        let(:white_rook) { Rook.new(nil, colour: 'white') }
-        let(:black_rook) { Rook.new(nil, colour: 'black') }
-        let(:black_knight) { Knight.new(nil, colour: 'black') }
+        let(:white_rook) { Rook.new('f3', colour: 'white') }
+        let(:black_rook) { Rook.new('b1', colour: 'black') }
+        let(:black_knight) { Knight.new('d5', colour: 'black') }
+        let(:coordinate_system) { Coordinate }
 
         before do
           board.put(white_bishop, 'e4')
@@ -154,9 +155,9 @@ describe BoardNavigator do
         end
 
         it 'correctly interprets collision' do
-          expect(navigate_bishop.possible_moves(white_bishop)).to contain_exactly('b1', 'c2', 'd3',
-                                                                                  'd5',
-                                                                                  'f5')
+          correct_coordinates = %w[b1 c2 d3 d5 f5]
+          result = correct_coordinates.map { |coordinate| coordinate_system.parse(coordinate) }
+          expect(navigate_bishop.possible_moves(white_bishop)).to match_array(result)
         end
       end
 

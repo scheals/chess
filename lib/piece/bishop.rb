@@ -12,28 +12,29 @@ class Bishop < Piece
   end
 
   def split_moves(moves)
+    coordinates = moves.map { |move| Coordinate.parse(move) }
     split_moves = []
-    split_moves << left_up(moves).reverse
-    split_moves << left_down(moves).reverse
-    split_moves << right_up(moves)
-    split_moves << right_down(moves)
+    split_moves << left_up(coordinates).reverse
+    split_moves << left_down(coordinates).reverse
+    split_moves << right_up(coordinates)
+    split_moves << right_down(coordinates)
     split_moves
   end
 
-  def left_up(moves)
-    moves.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord < position.column.ord }
+  def left_up(coordinates)
+    coordinates.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord < position.column.ord }
   end
 
-  def left_down(moves)
-    moves.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord < position.column.ord }
+  def left_down(coordinates)
+    coordinates.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord < position.column.ord }
   end
 
-  def right_up(moves)
-    moves.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord > position.column.ord }
+  def right_up(coordinates)
+    coordinates.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord > position.column.ord }
   end
 
-  def right_down(moves)
-    moves.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord > position.column.ord }
+  def right_down(coordinates)
+    coordinates.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord > position.column.ord }
   end
 
   def on_diagonal?(space)
