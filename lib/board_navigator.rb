@@ -27,8 +27,8 @@ class BoardNavigator
     directions.map { |direction| handle_allies(direction, allies) }.map { |direction| handle_enemies(direction, enemies) }
   end
 
-  def occupied_coordinates(piece)
-    piece.legal(board.coordinates).select { |coordinate| board.find(coordinate.to_s).occupied? }
+  def occupied_coordinates(piece, coordinates = piece.legal(board.coordinates))
+    coordinates.select { |coordinate| board.find(coordinate.to_s).occupied? }
   end
 
   def allied_coordinates(piece, coordinates = occupied_coordinates(piece))
