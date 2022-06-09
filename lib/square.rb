@@ -8,7 +8,7 @@ class Square
   attr_reader :position, :piece
 
   def initialize(position = nil, colour: nil, coordinate: Coordinate)
-    @position = position
+    @position = coordinate.parse(position)
     @piece = NilPiece.new(position)
     @colour = colour
   end
