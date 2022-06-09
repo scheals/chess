@@ -16,8 +16,23 @@ module PieceFactory
              'bishop' => Bishop,
              'queen' => Queen,
              'king' => King }.freeze
+  FEN = { 'p' => Pawn,
+          'r' => Rook,
+          'n' => Knight,
+          'b' => Bishop,
+          'q' => Queen,
+          'k' => King }.freeze
 
   def self.for(name, colour: nil, position: nil)
     (PIECES[name.to_s.downcase] || Piece).new(position, colour: colour)
+  end
+
+  def self.fen_for(name, position)
+    colour = if name == name.upcase
+               'white'
+             else
+               'black'
+             end
+    (FEN[name.downcase] || Piece).new(position, colour:)
   end
 end

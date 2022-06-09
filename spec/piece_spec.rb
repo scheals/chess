@@ -695,5 +695,75 @@ describe PieceFactory do
       end
     end
   end
+
+  describe '@fen_for' do
+    let(:factory) { described_class }
+    let(:coordinate) { Coordinate }
+
+    it 'creates a white Pawn instance' do
+      position = coordinate.parse('a8')
+      expect(factory.fen_for('P', position)).to be_a(Pawn).and have_attributes(colour: 'white', position:)
+    end
+
+    it 'creates a black Pawn instance' do
+      position = coordinate.parse('b7')
+      expect(factory.fen_for('p', position)).to be_a(Pawn).and have_attributes(colour: 'black', position:)
+    end
+
+    it 'creates a white Rook instance' do
+      position = coordinate.parse('c5')
+      expect(factory.fen_for('R', position)).to be_a(Rook).and have_attributes(colour: 'white', position:)
+    end
+
+    it 'creates a black Rook instance' do
+      position = coordinate.parse('j5')
+      expect(factory.fen_for('r', position)).to be_a(Rook).and have_attributes(colour: 'black', position:)
+    end
+
+    it 'creates a white Knight instance' do
+      position = coordinate.parse('d4')
+      expect(factory.fen_for('N', position)).to be_a(Knight).and have_attributes(colour: 'white', position:)
+    end
+
+    it 'creates a black Knight instance' do
+      position = coordinate.parse('d4')
+      expect(factory.fen_for('n', position)).to be_a(Knight).and have_attributes(colour: 'black', position:)
+    end
+
+    it 'creates a white Bishop instance' do
+      position = coordinate.parse('b3')
+      expect(factory.fen_for('B', position)).to be_a(Bishop).and have_attributes(colour: 'white', position:)
+    end
+
+    it 'creates a black Bishop instance' do
+      position = coordinate.parse('f4')
+      expect(factory.fen_for('b', position)).to be_a(Bishop).and have_attributes(colour: 'black', position:)
+    end
+
+    it 'creates a white Queen instance' do
+      position = coordinate.parse('e5')
+      expect(factory.fen_for('Q', position)).to be_a(Queen).and have_attributes(colour: 'white', position:)
+    end
+
+    it 'creates a black Queen instance' do
+      position = coordinate.parse('e2')
+      expect(factory.fen_for('q', position)).to be_a(Queen).and have_attributes(colour: 'black', position:)
+    end
+
+    it 'creates a white King instance' do
+      position = coordinate.parse('h5')
+      expect(factory.fen_for('K', position)).to be_a(King).and have_attributes(colour: 'white', position:)
+    end
+
+    it 'creates a black King instance' do
+      position = coordinate.parse('d5')
+      expect(factory.fen_for('k', position)).to be_a(King).and have_attributes(colour: 'black', position:)
+    end
+
+    it 'defaults to a Piece instance' do
+      position = coordinate.parse('L4')
+      expect(factory.fen_for('Unicorn', position)).to be_a(Piece)
+    end
+  end
 end
 # rubocop: enable Layout/LineLength
