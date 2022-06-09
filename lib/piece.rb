@@ -64,6 +64,12 @@ class Piece
     false
   end
 
+  def ally?(piece)
+    return true if piece.colour == colour
+
+    false
+  end
+
   private
 
   def column

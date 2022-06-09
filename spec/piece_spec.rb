@@ -63,15 +63,28 @@ describe Piece do
   describe '#enemy?' do
     subject(:our_piece) { described_class.new('a1', colour: 'red') }
 
-
     it 'returns true when given a piece of a different colour' do
       enemy_piece = described_class.new('a2', colour: 'blue')
-      expect(our_piece.enemy?(enemy_piece)). to be true
+      expect(our_piece.enemy?(enemy_piece)).to be true
     end
 
     it 'returns false when given a piece of the same colour' do
       friendly_piece = described_class.new('k7', colour: 'red')
       expect(our_piece.enemy?(friendly_piece)).to be false
+    end
+  end
+
+  describe '#ally?' do
+    subject(:our_piece) { described_class.new('a1', colour: 'green') }
+
+    it 'returns false when given a piece of a different colour' do
+      enemy_piece = described_class.new('a2', colour: 'purple')
+      expect(our_piece.ally?(enemy_piece)).to be false
+    end
+
+    it 'returns true when given a piece of the same colour' do
+      friendly_piece = described_class.new('k7', colour: 'green')
+      expect(our_piece.ally?(friendly_piece)).to be true
     end
   end
 end
