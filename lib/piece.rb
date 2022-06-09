@@ -58,6 +58,12 @@ class Piece
     raise 'NotImplemented'
   end
 
+  def enemy?(piece)
+    return true if piece.colour != colour
+
+    false
+  end
+
   private
 
   def column
