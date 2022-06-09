@@ -22,19 +22,19 @@ class Bishop < Piece
   end
 
   def left_up(coordinates)
-    coordinates.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord < position.column.ord }
+    coordinates.select { |coordinate| position.to_left?(coordinate) && position.to_up?(coordinate) }
   end
 
   def left_down(coordinates)
-    coordinates.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord < position.column.ord }
+    coordinates.select { |coordinate| position.to_left?(coordinate) && position.to_down?(coordinate) }
   end
 
   def right_up(coordinates)
-    coordinates.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord > position.column.ord }
+    coordinates.select { |coordinate| position.to_right?(coordinate) && position.to_up?(coordinate) }
   end
 
   def right_down(coordinates)
-    coordinates.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord > position.column.ord }
+    coordinates.select { |coordinate| position.to_right?(coordinate) && position.to_down?(coordinate) }
   end
 
   def on_diagonal?(space)
