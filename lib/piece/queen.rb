@@ -35,35 +35,35 @@ class Queen < Piece
   end
 
   def left_up(coordinates)
-    coordinates.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord < position.column.ord }
+    coordinates.select { |coordinate| position.to_left?(coordinate) && position.to_up?(coordinate) }
   end
 
   def left_down(coordinates)
-    coordinates.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord < position.column.ord }
+    coordinates.select { |coordinate| position.to_left?(coordinate) && position.to_down?(coordinate) }
   end
 
   def right_up(coordinates)
-    coordinates.select { |coordinate| coordinate.row.to_i > position.row.to_i && coordinate.column.ord > position.column.ord }
+    coordinates.select { |coordinate| position.to_right?(coordinate) && position.to_up?(coordinate) }
   end
 
   def right_down(coordinates)
-    coordinates.select { |coordinate| coordinate.row.to_i < position.row.to_i && coordinate.column.ord > position.column.ord }
+    coordinates.select { |coordinate| position.to_right?(coordinate) && position.to_down?(coordinate) }
   end
 
   def up(coordinates)
-    coordinates.select { |coordinate| coordinate.row.to_i > position.row.to_i && vertical?(coordinate) }
+    coordinates.select { |coordinate| position.to_up?(coordinate) && vertical?(coordinate) }
   end
 
   def down(coordinates)
-    coordinates.select { |coordinate| coordinate.row.to_i < position.row.to_i && vertical?(coordinate) }
+    coordinates.select { |coordinate| position.to_down?(coordinate) && vertical?(coordinate) }
   end
 
   def left(coordinates)
-    coordinates.select { |coordinate| coordinate.column.ord < position.column.ord && horizontal?(coordinate) }
+    coordinates.select { |coordinate| position.to_left?(coordinate) && horizontal?(coordinate) }
   end
 
   def right(coordinates)
-    coordinates.select { |coordinate| coordinate.column.ord > position.column.ord && horizontal?(coordinate) }
+    coordinates.select { |coordinate| position.to_right?(coordinate) && horizontal?(coordinate) }
   end
 
   def on_diagonal?(space)
