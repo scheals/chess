@@ -9,8 +9,12 @@ class BoardNavigator
   end
 
   def possible_moves(piece)
-    coordinates = piece.legal(board.coordinates)
-    handle_collision(piece, piece.split_moves(coordinates)).compact.flatten
+    if piece.is_a?(Pawn)
+      handle_pawn(piece)
+    else
+      coordinates = piece.legal(board.coordinates)
+      handle_collision(piece, piece.split_moves(coordinates)).compact.flatten
+    end
   end
 
   def clean(coordinates)
@@ -43,5 +47,25 @@ class BoardNavigator
 
   def handle_enemies(direction, enemies)
     direction.slice_after { |coordinate| enemies.include?(coordinate.to_s) }.first
+  end
+
+  def handle_pawn(piece)
+    if piece.colour == 'white'
+      handle_white_pawn(piece)
+    else
+      handle_black_pawn(piece)
+    end
+  end
+
+  def handle_white_pawn(piece)
+    takes = [piece.position.left, piece.position.right].reject { |coordinate| piece.colour == board.find_piece(coordinate.to_s).colour }
+    forward = [piece.position.up, piece.position.up.up].reject { |coordinate| board.find_piece(coordinate.to_s).real? }
+    forward + takes
+  end
+
+  def handle_black_pawn(piece)
+    takes = [piece.position.left, piece.position.right].reject { |coordinate| piece.colour == board.find_piece(coordinate.to_s).colour }
+    forward = [piece.position.down, piece.position.down.down].reject { |coordinate| board.find_piece(coordinate.to_s).real? }
+    forward + takes
   end
 end

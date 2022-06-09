@@ -12,48 +12,49 @@ class Pawn < Piece
   end
 
   def split_moves(moves)
-    split_moves = []
-    split_moves << up(moves) if colour == 'white'
-    split_moves << down(moves).reverse if colour == 'black'
-    split_moves << left(moves).reverse
-    split_moves << right(moves)
+    coordinates = moves.map { |move| Coordinate.parse(move) }
+    split_moves = {}
+    split_moves[:up] = up(coordinates) if colour == 'white'
+    split_moves[:down] = down(coordinates).reverse if colour == 'black'
+    split_moves[:left] = left(coordinates).reverse
+    split_moves[:right] = right(coordinates)
     split_moves
   end
 
-  def up(moves)
-    moves.select { |coordinate| coordinate[1].to_i > position[1].to_i && same_column?(coordinate) }
+  def up(coordinates)
+    coordinates.select { |coordinate| coordinate.row.to_i > position.row.to_i && same_column?(coordinate) }
   end
 
-  def down(moves)
-    moves.select { |coordinate| coordinate[1].to_i < position[1].to_i && same_column?(coordinate) }
+  def down(coordinates)
+    coordinates.select { |coordinate| coordinate.row.to_i < position.row.to_i && same_column?(coordinate) }
   end
 
-  def left(moves)
-    moves.select { |coordinate| coordinate[0].ord < position[0].ord }
+  def left(coordinates)
+    coordinates.select { |coordinate| coordinate.column.ord < position.column.ord }
   end
 
-  def right(moves)
-    moves.select { |coordinate| coordinate[0].ord > position[0].ord }
+  def right(coordinates)
+    coordinates.select { |coordinate| coordinate.column.ord > position.column.ord }
   end
 
-  def handle_collision(moves)
+  def handle_collision(coordinates)
     case colour
     when 'white'
-      handle_white_pawn(moves)
+      handle_white_pawn(coordinates)
     when 'black'
-      handle_black_pawn(moves)
+      handle_black_pawn(coordinates)
     end
   end
 
-  def handle_white_pawn(moves)
-    takes = (left(moves) + right(moves)).select { |coordinate| coordinate.end_with?('E') }
-    forward = up(moves).reject { |coordinate| coordinate.end_with?('E') }
+  def handle_white_pawn(coordinates)
+    takes = (left(coordinates) + right(coordinates)).select { |coordinate| coordinate.end_with?('E') }
+    forward = up(coordinates).reject { |coordinate| coordinate.end_with?('E') }
     [forward, takes]
   end
 
-  def handle_black_pawn(moves)
-    takes = (left(moves) + right(moves)).select { |coordinate| coordinate.end_with?('E') }
-    forward = down(moves).reject { |coordinate| coordinate.end_with?('E') }
+  def handle_black_pawn(coordinates)
+    takes = (left(coordinates) + right(coordinates)).select { |coordinate| coordinate.end_with?('E') }
+    forward = down(coordinates).reject { |coordinate| coordinate.end_with?('E') }
     [forward, takes]
   end
 

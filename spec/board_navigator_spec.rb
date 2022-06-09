@@ -66,6 +66,7 @@ describe BoardNavigator do
       subject(:navigate_possibilities) { described_class.new(board) }
 
       let(:board) { Board.new }
+      let(:coordinate_system) { Coordinate }
 
       before do
         board.setup
@@ -98,12 +99,16 @@ describe BoardNavigator do
 
       it "returns a collection of white Pawn's possible coordinates" do
         white_pawn = board.find_piece('b2')
-        expect(navigate_possibilities.possible_moves(white_pawn)).to contain_exactly('b3', 'b4')
+        correct_coordinates = %w[b3 b4]
+        result = correct_coordinates.map { |coordinate| coordinate_system.parse(coordinate) }
+        expect(navigate_possibilities.possible_moves(white_pawn)).to match_array(result)
       end
 
       it "returns a collection of black Pawn's possible coordinates" do
         black_pawn = board.find_piece('d7')
-        expect(navigate_possibilities.possible_moves(black_pawn)).to contain_exactly('d6', 'd5')
+        correct_coordinates = %w[d5 d6]
+        result = correct_coordinates.map { |coordinate| coordinate_system.parse(coordinate) }
+        expect(navigate_possibilities.possible_moves(black_pawn)).to match_array(result)
       end
     end
 
