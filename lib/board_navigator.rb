@@ -58,7 +58,7 @@ class BoardNavigator
   end
 
   def handle_white_pawn(piece)
-    takes = [piece.position.left.up, piece.position.right.up].select { |coordinate| piece.enemy?(board.find_piece(coordinate.to_s)) && board.find_piece(coordinate.to_s).real? }
+    takes = [piece.position.left.up, piece.position.right.up].select { |coordinate| piece.enemy?(board.find_piece(coordinate.to_s)) }
     forward = [piece.position.up, piece.position.up.up].reject { |coordinate| board.find_piece(coordinate.to_s).real? }
     forward + takes
   end

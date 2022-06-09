@@ -59,7 +59,7 @@ class Piece
   end
 
   def enemy?(piece)
-    return true if piece.colour != colour
+    return true if piece.colour != colour && piece.real?
 
     false
   end
