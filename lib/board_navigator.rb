@@ -58,13 +58,13 @@ class BoardNavigator
   end
 
   def handle_white_pawn(piece)
-    takes = [piece.position.left, piece.position.right].reject { |coordinate| piece.colour == board.find_piece(coordinate.to_s).colour }
+    takes = [piece.position.left.up, piece.position.right.up].reject { |coordinate| piece.colour == board.find_piece(coordinate.to_s).colour }
     forward = [piece.position.up, piece.position.up.up].reject { |coordinate| board.find_piece(coordinate.to_s).real? }
     forward + takes
   end
 
   def handle_black_pawn(piece)
-    takes = [piece.position.left, piece.position.right].reject { |coordinate| piece.colour == board.find_piece(coordinate.to_s).colour }
+    takes = [piece.position.left.down, piece.position.right.down].reject { |coordinate| piece.colour == board.find_piece(coordinate.to_s).colour }
     forward = [piece.position.down, piece.position.down.down].reject { |coordinate| board.find_piece(coordinate.to_s).real? }
     forward + takes
   end
