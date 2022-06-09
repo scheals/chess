@@ -12,28 +12,29 @@ class Rook < Piece
   end
 
   def split_moves(moves)
+    coordinates = moves.map { |move| Coordinate.parse(move) }
     split_moves = []
-    split_moves << up(moves)
-    split_moves << down(moves).reverse
-    split_moves << left(moves).reverse
-    split_moves << right(moves)
+    split_moves << up(coordinates)
+    split_moves << down(coordinates).reverse
+    split_moves << left(coordinates).reverse
+    split_moves << right(coordinates)
     split_moves
   end
 
   def up(moves)
-    moves.select { |coordinate| coordinate.row.to_i > position.row.to_i }
+    moves.select { |coordinate| position.to_up?(coordinate) }
   end
 
   def down(moves)
-    moves.select { |coordinate| coordinate.row.to_i < position.row.to_i }
+    moves.select { |coordinate| position.to_down?(coordinate) }
   end
 
   def left(moves)
-    moves.select { |coordinate| coordinate.column.ord < position.column.ord }
+    moves.select { |coordinate| position.to_left?(coordinate) }
   end
 
   def right(moves)
-    moves.select { |coordinate| coordinate.column.ord > position.column.ord }
+    moves.select { |coordinate| position.to_right?(coordinate) }
   end
 
   def horizontal?(space)

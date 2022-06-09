@@ -9,30 +9,22 @@ class BoardNavigator
   end
 
   def possible_moves(piece)
-    marked_moves = mark_occupied(piece)
-    moves = piece.handle_collision(marked_moves)
-    clean(moves.compact.flatten)
+    coordinates = piece.legal(board.coordinates)
+    handle_collision(piece, piece.split_moves(coordinates)).compact.flatten
   end
 
   def clean(coordinates)
     coordinates.map { |coordinate| coordinate[0..1] }
   end
 
-  def mark_occupied(piece)
-    coordinates = piece.legal(board.coordinates)
+  def handle_collision(piece, directions)
     allies = allied_coordinates(piece)
     enemies = enemy_coordinates(piece)
-    coordinates.map do |coordinate|
-      next "#{coordinate}A" if allies.include?(coordinate)
-
-      next "#{coordinate}E" if enemies.include?(coordinate)
-
-      coordinate
-    end
+    directions.map { |direction| handle_allies(direction, allies) }.map { |direction| handle_enemies(direction, enemies) }
   end
 
   def occupied_coordinates(piece)
-    piece.legal(board.coordinates).select { |coordinate| board.find(coordinate).occupied? }
+    piece.legal(board.coordinates).select { |coordinate| board.find(coordinate.to_s).occupied? }
   end
 
   def allied_coordinates(piece)
@@ -43,5 +35,13 @@ class BoardNavigator
   def enemy_coordinates(piece)
     colour = piece.colour
     occupied_coordinates(piece).reject { |coordinate| colour == board.find_piece(coordinate).colour }
+  end
+
+  def handle_allies(direction, allies)
+    direction.take_while { |coordinate| !allies.include?(coordinate.to_s) }
+  end
+
+  def handle_enemies(direction, enemies)
+    direction.slice_after { |coordinate| enemies.include?(coordinate.to_s) }.first
   end
 end
