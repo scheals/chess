@@ -58,8 +58,8 @@ class Board
     find(square).piece
   end
 
-  def put(piece, coordinates)
-    find(coordinates).place(piece)
+  def put(piece, coordinate)
+    find(coordinate).place(piece)
   end
 
   def move_piece(start, target)
@@ -69,8 +69,8 @@ class Board
     put(piece, target)
   end
 
-  def in_bounds?(coordinates)
-    return true if find(coordinates)
+  def in_bounds?(coordinate)
+    return true if find(coordinate)
 
     false
   end
@@ -83,8 +83,8 @@ class Board
     end
   end
 
-  def create_square(coordinates, colour)
-    @square.new(coordinates, colour: colour)
+  def create_square(coordinate, colour)
+    @square.new(coordinate, colour: colour)
   end
 
   def create_piece(name, colour:, position:)
@@ -132,9 +132,9 @@ class Board
   def create_odd_column(letter)
     column = {}
     8.times do |i|
-      coordinates = "#{letter}#{i + 1}"
+      coordinate = "#{letter}#{i + 1}"
       colour = i.even? ? TILES[:white_tile] : TILES[:black_tile]
-      column[coordinates] = create_square(coordinates, colour)
+      column[coordinate] = create_square(coordinate, colour)
     end
     column
   end
@@ -142,9 +142,9 @@ class Board
   def create_even_column(letter)
     column = {}
     8.times do |i|
-      coordinates = "#{letter}#{i + 1}"
+      coordinate = "#{letter}#{i + 1}"
       colour = i.even? ? TILES[:black_tile] : TILES[:white_tile]
-      column[coordinates] = create_square(coordinates, colour)
+      column[coordinate] = create_square(coordinate, colour)
     end
     column
   end
