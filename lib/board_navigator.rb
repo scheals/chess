@@ -21,10 +21,6 @@ class BoardNavigator
     piece.legal(board.coordinates)
   end
 
-  def clean(coordinates)
-    coordinates.map { |coordinate| coordinate[0..1] }
-  end
-
   def handle_collision(piece, directions)
     allies = allied_coordinates(piece)
     enemies = enemy_coordinates(piece)
