@@ -12,7 +12,7 @@ class BoardNavigator
     if piece.is_a?(Pawn)
       handle_pawn(piece)
     else
-      coordinates = piece.legal(board.coordinates)
+      coordinates = legal_for(piece)
       handle_collision(piece, piece.split_moves(coordinates)).compact.flatten
     end
   end
@@ -31,7 +31,7 @@ class BoardNavigator
     directions.map { |direction| handle_allies(direction, allies) }.map { |direction| handle_enemies(direction, enemies) }
   end
 
-  def occupied_coordinates(piece, coordinates = piece.legal(board.coordinates))
+  def occupied_coordinates(piece, coordinates = legal_for(piece))
     coordinates.select { |coordinate| board.find(coordinate.to_s).occupied? }
   end
 
