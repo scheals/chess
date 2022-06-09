@@ -125,8 +125,8 @@ class Board
   end
 
   def setup_pawns
-    row(7).each_value { |square| square.place(create_piece('pawn', colour: 'black', position: square.coordinates)) }
-    row(2).each_value { |square| square.place(create_piece('pawn', colour: 'white', position: square.coordinates)) }
+    row(7).each_value { |square| square.place(create_piece('pawn', colour: 'black', position: square.position)) }
+    row(2).each_value { |square| square.place(create_piece('pawn', colour: 'white', position: square.position)) }
   end
 
   def create_odd_column(letter)

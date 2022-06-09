@@ -5,11 +5,11 @@ require_relative 'piece/nil_piece'
 
 # This class handles a square on a chessboard.
 class Square
-  attr_reader :coordinates, :piece
+  attr_reader :position, :piece
 
-  def initialize(coordinates = nil, colour: nil)
-    @coordinates = coordinates
-    @piece = NilPiece.new(coordinates)
+  def initialize(position = nil, colour: nil, coordinate: Coordinate)
+    @position = position
+    @piece = NilPiece.new(position)
     @colour = colour
   end
 
@@ -22,7 +22,7 @@ class Square
   def vacate
     return nil unless occupied?
 
-    @piece = NilPiece.new(coordinates)
+    @piece = NilPiece.new(position)
   end
 
   def occupied?

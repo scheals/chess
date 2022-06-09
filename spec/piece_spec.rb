@@ -601,14 +601,14 @@ describe Pawn do
       context 'when there is a piece to be taken diagonally' do
         subject(:white_take) { described_class.new('f4', colour: 'white') }
 
-        let(:occupied_space) { instance_double(Square, coordinates: 'e5') }
+        let(:occupied_space) { instance_double(Square, position: 'e5') }
 
         before do
           allow(occupied_space).to receive(:occupied?).and_return(true)
         end
 
         it 'can move one space up diagonally' do
-          space = occupied_space.coordinates
+          space = occupied_space.position
           white_take.move(space)
           expect(white_take.position).to eq(coordinate.parse('e5'))
         end
@@ -638,14 +638,14 @@ describe Pawn do
       context 'when there is a piece to be taken diagonally' do
         subject(:black_take) { described_class.new('c5', colour: 'black') }
 
-        let(:occupied_space) { instance_double(Square, coordinates: 'd4') }
+        let(:occupied_space) { instance_double(Square, position: 'd4') }
 
         before do
           allow(occupied_space).to receive(:occupied?).and_return(true)
         end
 
         it 'can move one space down diagonally' do
-          space = occupied_space.coordinates
+          space = occupied_space.position
           black_take.move(space)
           expect(black_take.position).to eq(coordinate.parse('d4'))
         end
