@@ -61,6 +61,28 @@ describe BoardNavigator do
     end
   end
 
+  describe '#legal_for' do
+    subject(:navigator) { described_class.new(board) }
+
+    let(:board) { instance_double(Board) }
+    let(:piece) { instance_double(Piece) }
+
+    before do
+      allow(board).to receive(:coordinates).twice
+      allow(piece).to receive(:legal).twice
+    end
+
+    it 'sends piece a legal message' do
+      navigator.legal_for(piece)
+      expect(piece).to have_received(:legal)
+    end
+
+    it 'sends board a coordinates message' do
+      navigator.legal_for(piece)
+      expect(board).to have_received(:coordinates)
+    end
+  end
+
   describe '#possible_moves' do
     context 'when checking starting moves' do
       subject(:navigate_possibilities) { described_class.new(board) }

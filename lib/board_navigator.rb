@@ -17,6 +17,10 @@ class BoardNavigator
     end
   end
 
+  def legal_for(piece)
+    piece.legal(board.coordinates)
+  end
+
   def clean(coordinates)
     coordinates.map { |coordinate| coordinate[0..1] }
   end
