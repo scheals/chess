@@ -32,11 +32,11 @@ class BoardNavigator
   end
 
   def allied_coordinates(piece, coordinates = occupied_coordinates(piece))
-    coordinates.select { |coordinate| piece.ally?(board.find_piece(coordinate)) }
+    coordinates.select { |coordinate| piece.ally?(board.find_piece(coordinate.to_s)) }
   end
 
   def enemy_coordinates(piece, coordinates = occupied_coordinates(piece))
-    coordinates.select { |coordinate| piece.enemy?(board.find_piece(coordinate)) }
+    coordinates.select { |coordinate| piece.enemy?(board.find_piece(coordinate.to_s)) }
   end
 
   def handle_allies(direction, allies)
