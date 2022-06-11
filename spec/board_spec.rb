@@ -267,18 +267,14 @@ describe Board do
       subject(:nil_board) { described_class.new(square, factory) }
 
       let(:square) { Square }
-      let(:factory) { PieceFactory }
+      let(:factory) { class_double(PieceFactory) }
 
       RSpec::Matchers.define :integer_as_string do
         match { |actual| actual.to_i.positive? }
       end
 
-      # before do
-      #   allow(factory).to receive(:fen_for)
-      # end
-
-      after do
-        nil_board.show
+      before do
+        allow(factory).to receive(:fen_for)
       end
 
       it "doesn't create NilPieces on regular setup" do
@@ -289,6 +285,25 @@ describe Board do
       it "doesn't create NilPieces on underway setup" do
         nil_board.setup('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R')
         expect(factory).not_to have_received(:fen_for).with(integer_as_string, anything)
+      end
+    end
+
+    context 'when rows contain empty squares' do
+      subject(:sparse_board) { described_class.new }
+
+      let(:coordinate) { Coordinate }
+
+      before do
+        notation = '3pP3/8/8/8/8/8/8/8'
+        sparse_board.setup(notation)
+      end
+
+      it 'puts a black Pawn into d8' do
+        expect(sparse_board.find_piece('d8')).to be_a(Pawn).and have_attributes(position: coordinate.parse('d8'), colour: 'black')
+      end
+
+      it 'puts a white Pawn into e8' do
+        expect(sparse_board.find_piece('e8')).to be_a(Pawn).and have_attributes(position: coordinate.parse('e8'), colour: 'white')
       end
     end
   end

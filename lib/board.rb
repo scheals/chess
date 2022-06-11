@@ -39,13 +39,7 @@ class Board
   end
 
   def fen_numbers(row)
-    row.chars.map do |char|
-      if char.to_i.positive?
-        char.rjust(char.to_i, '0')
-      else
-        char
-      end
-    end
+    row.gsub(/\d/) { |match| '1'.rjust(match.to_i, '1') }.chars
   end
 
   def show
