@@ -44,8 +44,10 @@ class Board
 
   def show
     8.times do |i|
+      print (8 - i)
       puts row(8 - i).values.join
     end
+    puts "\s\sa\sb\sc\sd\se\sf\sg\sh"
   end
 
   def row(number)
