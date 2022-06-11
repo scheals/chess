@@ -7,6 +7,7 @@ require_relative 'piece/knight'
 require_relative 'piece/bishop'
 require_relative 'piece/queen'
 require_relative 'piece/king'
+require_relative 'piece/nil_piece'
 
 # This module handles creation of particular chess pieces.
 module PieceFactory
@@ -24,7 +25,7 @@ module PieceFactory
           'k' => King }.freeze
 
   def self.for(name, colour: nil, position: nil)
-    (PIECES[name.to_s.downcase] || Piece).new(position, colour: colour)
+    (PIECES[name.to_s.downcase] || NilPiece).new(position, colour: colour)
   end
 
   def self.fen_for(name, position)
@@ -33,6 +34,6 @@ module PieceFactory
              else
                'black'
              end
-    (FEN[name.downcase] || Piece).new(position, colour:)
+    (FEN[name.downcase] || NilPiece).new(position, colour:)
   end
 end

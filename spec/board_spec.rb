@@ -262,6 +262,35 @@ describe Board do
       starting_row_pieces = starting_row_squares.map(&:piece)
       expect(starting_row_pieces).to all(be_a(Pawn).and(have_attributes(colour: 'white')))
     end
+
+    context 'when dealing with empty squares' do
+      subject(:nil_board) { described_class.new(square, factory) }
+
+      let(:square) { Square }
+      let(:factory) { PieceFactory }
+
+      RSpec::Matchers.define :integer_as_string do
+        match { |actual| actual.to_i.positive? }
+      end
+
+      # before do
+      #   allow(factory).to receive(:fen_for)
+      # end
+
+      after do
+        nil_board.show
+      end
+
+      it "doesn't create NilPieces on regular setup" do
+        nil_board.setup
+        expect(factory).not_to have_received(:fen_for).with(integer_as_string, anything)
+      end
+
+      it "doesn't create NilPieces on underway setup" do
+        nil_board.setup('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R')
+        expect(factory).not_to have_received(:fen_for).with(integer_as_string, anything)
+      end
+    end
   end
 end
 

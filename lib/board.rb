@@ -29,9 +29,21 @@ class Board
 
   def setup(notation = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
     notation.split('/').each_with_index do |row, row_number|
-      row.chars.each_with_index do |char, column|
+      fen_numbers(row).each_with_index do |char, column|
+        next if char.to_i.positive?
+
         coordinate = [integer_to_column(column), 8 - row_number].join
         board[coordinate].place(create_fen_piece(char, coordinate))
+      end
+    end
+  end
+
+  def fen_numbers(row)
+    row.chars.map do |char|
+      if char.to_i.positive?
+        char.rjust(char.to_i, '0')
+      else
+        char
       end
     end
   end
