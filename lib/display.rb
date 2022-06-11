@@ -17,6 +17,6 @@ module Display
              black_knight: "\u265E",
              black_pawn: "\u265F",
              _piece: "\u2610" }.freeze
-  TILES = { white_tile: :white,
-            black_tile: :light_black }.freeze
+  TILES = { white_tile: :light_black,
+            black_tile: :blue }.freeze
 end
