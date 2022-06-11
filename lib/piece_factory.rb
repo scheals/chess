@@ -25,7 +25,7 @@ module PieceFactory
           'k' => King }.freeze
 
   def self.for(name, colour: nil, position: nil)
-    (PIECES[name.to_s.downcase] || NilPiece).new(position, colour: colour)
+    (PIECES[name.to_s.downcase] || NilPiece).new(position, colour:)
   end
 
   def self.fen_for(name, position)

@@ -11,7 +11,6 @@ require_relative '../lib/piece/pawn'
 require_relative '../lib/piece/nil_piece'
 require_relative '../lib/square'
 
-
 # rubocop: disable Layout/LineLength
 describe Piece do
   describe '#initialize' do

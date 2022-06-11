@@ -44,7 +44,7 @@ class Board
 
   def show
     8.times do |i|
-      print (8 - i)
+      print(8 - i)
       puts row(8 - i).values.join
     end
     puts "\s\sa\sb\sc\sd\se\sf\sg\sh"
@@ -92,11 +92,11 @@ class Board
   end
 
   def create_square(coordinate, colour)
-    @square.new(coordinate, colour: colour)
+    @square.new(coordinate, colour:)
   end
 
   def create_piece(name, colour:, position:)
-    @factory.for(name, colour: colour, position: position)
+    @factory.for(name, colour:, position:)
   end
 
   def create_fen_piece(name, position)

@@ -24,7 +24,9 @@ class BoardNavigator
   def handle_collision(piece, directions)
     allies = allied_coordinates(piece)
     enemies = enemy_coordinates(piece)
-    directions.map { |direction| handle_allies(direction, allies) }.map { |direction| handle_enemies(direction, enemies) }
+    directions.map do |direction|
+      handle_allies(direction, allies)
+    end.map { |direction| handle_enemies(direction, enemies) }
   end
 
   def occupied_coordinates(piece, coordinates = legal_for(piece))
@@ -57,13 +59,17 @@ class BoardNavigator
 
   def handle_white_pawn(piece)
     takes = enemy_coordinates(piece, [piece.position.left.up, piece.position.right.up])
-    forward = [piece.position.up, piece.position.up.up].slice_after { |coordinate| board.find(coordinate.to_s).occupied? }.first
+    forward = [piece.position.up, piece.position.up.up].slice_after do |coordinate|
+      board.find(coordinate.to_s).occupied?
+    end.first
     forward + takes
   end
 
   def handle_black_pawn(piece)
     takes = enemy_coordinates(piece, [piece.position.left.down, piece.position.right.down])
-    forward = [piece.position.down, piece.position.down.down].slice_after { |coordinate| board.find(coordinate.to_s).occupied? }.first
+    forward = [piece.position.down, piece.position.down.down].slice_after do |coordinate|
+      board.find(coordinate.to_s).occupied?
+    end.first
     forward + takes
   end
 end

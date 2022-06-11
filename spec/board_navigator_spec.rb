@@ -166,19 +166,12 @@ describe BoardNavigator do
 
         let(:board) { Board.new }
         let(:white_bishop) { Bishop.new('e4', colour: 'white') }
-        let(:white_rook) { Rook.new('f3', colour: 'white') }
-        let(:black_rook) { Rook.new('b1', colour: 'black') }
-        let(:black_knight) { Knight.new('d5', colour: 'black') }
         let(:coordinate_system) { Coordinate }
 
         before do
+          board.setup('8/1n6/6R1/3n4/8/5R2/8/1r4n1')
           board.put(white_bishop, 'e4')
-          board.put(white_rook, 'f3')
-          board.put(white_rook, 'g6')
-          board.put(black_rook, 'b1')
-          board.put(black_knight, 'd5')
-          board.put(black_knight, 'b7')
-          board.put(black_knight, 'g1')
+          board.show
         end
 
         it 'correctly interprets collision' do
