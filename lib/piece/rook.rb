@@ -44,4 +44,11 @@ class Rook < Piece
   def vertical?(space)
     position.same_column?(space)
   end
+
+  def to_fen
+    case colour
+    when 'white' then 'R'
+    when 'black' then 'r'
+    end
+  end
 end

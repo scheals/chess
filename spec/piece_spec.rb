@@ -373,6 +373,24 @@ describe Rook do
       end
     end
   end
+
+  describe '#to_fen' do
+    context 'when converting a white piece' do
+      subject(:white_piece) { described_class.new('h8', colour: 'white') }
+
+      it 'returns letter R' do
+        expect(white_piece.to_fen).to eq('R')
+      end
+    end
+
+    context 'when converting a black piece' do
+      subject(:black_piece) { described_class.new('a2', colour: 'black') }
+
+      it 'returns letter r' do
+        expect(black_piece.to_fen).to eq('r')
+      end
+    end
+  end
 end
 
 describe Bishop do
