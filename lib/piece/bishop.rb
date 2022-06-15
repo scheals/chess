@@ -42,4 +42,11 @@ class Bishop < Piece
     horizontal_distance = (space.column.ord - position.column.ord).abs
     vertical_distance == horizontal_distance
   end
+
+  def to_fen
+    case colour
+    when 'white' then 'B'
+    when 'black' then 'b'
+    end
+  end
 end

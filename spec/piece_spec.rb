@@ -473,6 +473,24 @@ describe Bishop do
       end
     end
   end
+
+  describe '#to_fen' do
+    context 'when converting a white piece' do
+      subject(:white_piece) { described_class.new('h8', colour: 'white') }
+
+      it 'returns letter B' do
+        expect(white_piece.to_fen).to eq('B')
+      end
+    end
+
+    context 'when converting a black piece' do
+      subject(:black_piece) { described_class.new('a2', colour: 'black') }
+
+      it 'returns letter b' do
+        expect(black_piece.to_fen).to eq('b')
+      end
+    end
+  end
 end
 
 describe Knight do
