@@ -42,14 +42,14 @@ class Board
     row.gsub(/\d/) { |match| '1'.rjust(match.to_i, '1') }.chars
   end
 
-def dump_to_fen
-  fen = ''
-  8.times do |i|
-    fen += row(8 - i).values.map { |square| square.piece.to_fen }.join
-    fen += '/'
+  def dump_to_fen
+    fen = ''
+    8.times do |i|
+      fen += row(8 - i).values.map { |square| square.piece.to_fen }.join
+      fen += '/'
+    end
+    fen
   end
-  fen
-end
 
   def show
     8.times do |i|

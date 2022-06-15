@@ -99,6 +99,7 @@ describe NilPiece do
 
   describe '#to_fen' do
     subject(:nil_piece) { described_class.new('a6') }
+
     it 'returns string 1' do
       expect(nil_piece.to_fen).to eq('1')
     end

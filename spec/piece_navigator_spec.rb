@@ -23,8 +23,8 @@ describe PieceNavigator do
 
     it 'returns an array of occupied squares' do
       expect(navigate_collison.occupied_coordinates).to contain_exactly('d1', 'd2', 'd7', 'd8',
-                                                                               'a1', 'b2', 'g7', 'h8',
-                                                                               'g1', 'f2', 'a7')
+                                                                        'a1', 'b2', 'g7', 'h8',
+                                                                        'g1', 'f2', 'a7')
     end
   end
 
@@ -40,7 +40,7 @@ describe PieceNavigator do
 
     it 'returns an array of squares that allied pieces are on in range of the piece' do
       expect(navigate_allies.allied_coordinates).to contain_exactly('a2',
-                                                                                'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1')
+                                                                    'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1')
     end
   end
 
@@ -136,7 +136,7 @@ describe BishopNavigator do
 
       let(:board) { Board.new }
       let(:coordinate_system) { Coordinate }
-      let(:black_bishop) { board.find_piece('c8')}
+      let(:black_bishop) { board.find_piece('c8') }
 
       before do
         board.setup
