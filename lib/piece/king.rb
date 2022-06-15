@@ -26,4 +26,11 @@ class King < Piece
   def once_diagonal?(space)
     once_horizontal?(space) && once_vertical?(space)
   end
+
+  def to_fen
+    case colour
+    when 'white' then 'K'
+    when 'black' then 'k'
+    end
+  end
 end
