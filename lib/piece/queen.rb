@@ -79,4 +79,11 @@ class Queen < Piece
   def vertical?(space)
     position.same_column?(space)
   end
+
+  def to_fen
+    case colour
+    when 'white' then 'Q'
+    when 'black' then 'q'
+    end
+  end
 end
