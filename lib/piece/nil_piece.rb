@@ -11,4 +11,8 @@ class NilPiece < Piece
   def real?
     false
   end
+
+  def to_fen
+    '1'
+  end
 end
