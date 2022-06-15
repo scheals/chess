@@ -586,6 +586,24 @@ describe Knight do
       end
     end
   end
+
+  describe '#to_fen' do
+    context 'when converting a white piece' do
+      subject(:white_piece) { described_class.new('h8', colour: 'white') }
+
+      it 'returns letter N' do
+        expect(white_piece.to_fen).to eq('N')
+      end
+    end
+
+    context 'when converting a black piece' do
+      subject(:black_piece) { described_class.new('a2', colour: 'black') }
+
+      it 'returns letter n' do
+        expect(black_piece.to_fen).to eq('n')
+      end
+    end
+  end
 end
 
 describe Pawn do

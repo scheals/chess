@@ -30,4 +30,11 @@ class Knight < Piece
   def once_horizontal?(coordinate)
     position.right.column == coordinate.column || position.left.column == coordinate.column
   end
+
+  def to_fen
+    case colour
+    when 'white' then 'N'
+    when 'black' then 'n'
+    end
+  end
 end
