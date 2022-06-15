@@ -741,6 +741,24 @@ describe Pawn do
       end
     end
   end
+
+  describe '#to_fen' do
+    context 'when converting a white piece' do
+      subject(:white_piece) { described_class.new('h8', colour: 'white') }
+
+      it 'returns letter P' do
+        expect(white_piece.to_fen).to eq('P')
+      end
+    end
+
+    context 'when converting a black piece' do
+      subject(:black_piece) { described_class.new('a2', colour: 'black') }
+
+      it 'returns letter p' do
+        expect(black_piece.to_fen).to eq('p')
+      end
+    end
+  end
 end
 
 describe PieceFactory do

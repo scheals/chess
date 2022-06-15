@@ -86,4 +86,11 @@ class Pawn < Piece
   def same_row?(space)
     position.same_row?(space)
   end
+
+  def to_fen
+    case colour
+    when 'white' then 'P'
+    when 'black' then 'p'
+    end
+  end
 end
