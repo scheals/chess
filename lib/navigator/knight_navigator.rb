@@ -4,15 +4,10 @@ require_relative '../piece_navigator'
 
 # This class handles collision for Knight pieces.
 class KnightNavigator < PieceNavigator
-  attr_reader :knight
-
-  def initialize(board, knight)
-    super
-    @knight = knight
-  end
+  attr_reader :piece
 
   def possible_moves
-    coordinates = legal_for(knight)
-    handle_collision(knight, knight.split_moves(coordinates)).compact.flatten
+    coordinates = legal_for(piece)
+    handle_collision(piece.split_moves(coordinates)).compact.flatten
   end
 end

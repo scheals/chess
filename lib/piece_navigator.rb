@@ -17,23 +17,23 @@ class PieceNavigator
     piece.legal(board.coordinates)
   end
 
-  def handle_collision(piece, directions)
-    allies = allied_coordinates(piece)
-    enemies = enemy_coordinates(piece)
+  def handle_collision(directions)
+    allies = allied_coordinates
+    enemies = enemy_coordinates
     directions.map do |direction|
       handle_allies(direction, allies)
     end.map { |direction| handle_enemies(direction, enemies) }
   end
 
-  def occupied_coordinates(piece, coordinates = legal_for(piece))
+  def occupied_coordinates(coordinates = legal_for(piece))
     coordinates.select { |coordinate| board.find(coordinate.to_s).occupied? }
   end
 
-  def allied_coordinates(piece, coordinates = occupied_coordinates(piece))
+  def allied_coordinates(coordinates = occupied_coordinates)
     coordinates.select { |coordinate| piece.ally?(board.find_piece(coordinate.to_s)) }
   end
 
-  def enemy_coordinates(piece, coordinates = occupied_coordinates(piece))
+  def enemy_coordinates(coordinates = occupied_coordinates)
     coordinates.select { |coordinate| piece.enemy?(board.find_piece(coordinate.to_s)) }
   end
 

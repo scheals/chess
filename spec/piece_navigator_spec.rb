@@ -22,7 +22,7 @@ describe PieceNavigator do
     end
 
     it 'returns an array of occupied squares' do
-      expect(navigate_collison.occupied_coordinates(queen)).to contain_exactly('d1', 'd2', 'd7', 'd8',
+      expect(navigate_collison.occupied_coordinates).to contain_exactly('d1', 'd2', 'd7', 'd8',
                                                                                'a1', 'b2', 'g7', 'h8',
                                                                                'g1', 'f2', 'a7')
     end
@@ -39,7 +39,7 @@ describe PieceNavigator do
     end
 
     it 'returns an array of squares that allied pieces are on in range of the piece' do
-      expect(navigate_allies.allied_coordinates(white_rook)).to contain_exactly('a2',
+      expect(navigate_allies.allied_coordinates).to contain_exactly('a2',
                                                                                 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1')
     end
   end
@@ -56,7 +56,7 @@ describe PieceNavigator do
     end
 
     it 'returns an array of squares that enemy pieces are on in range of the piece' do
-      expect(navigate_enemies.enemy_coordinates(black_rook)).to contain_exactly('f1', 'f2')
+      expect(navigate_enemies.enemy_coordinates).to contain_exactly('f1', 'f2')
     end
   end
 
