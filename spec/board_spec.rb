@@ -126,6 +126,19 @@ describe Board do
     end
   end
 
+  describe '#dump_to_fen' do
+    subject(:usual_board) { described_class.new }
+
+    before do
+      usual_board.setup('k7/1R6/8/8/8/8/8/7r')
+    end
+
+    it 'returns a string of FEN-ish representation of the board usable by #setup' do
+      expected = 'k1111111/1R111111/11111111/11111111/11111111/11111111/11111111/1111111r/'
+      expect(usual_board.dump_to_fen).to eq(expected)
+    end
+  end
+
   describe '#find_piece' do
     subject(:pieceful_board) { described_class.new }
 
