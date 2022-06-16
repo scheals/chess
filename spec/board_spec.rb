@@ -344,6 +344,10 @@ describe Square do
 
       let(:piece) { instance_double(Piece) }
 
+      before do
+        allow(piece).to receive(:colour).and_return('white')
+      end
+
       it 'stores the piece in @piece' do
         expect { empty_square.place(piece) }.to change(empty_square, :piece)
       end
@@ -377,12 +381,14 @@ describe Square do
       let(:piece) { instance_double(Piece) }
 
       before do
+        allow(piece).to receive(:colour).and_return('white')
         occupied_square.place(piece)
         allow(piece).to receive(:real?).and_return(true)
       end
 
       it 'changes @piece into a NilPiece' do
-        expect { occupied_square.vacate }.to change { occupied_square.instance_variable_get(:@piece) }.from(piece).to be_a(NilPiece)
+        occupied_square.vacate
+        expect(occupied_square.piece).to be_a(NilPiece)
       end
     end
 
