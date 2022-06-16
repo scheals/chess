@@ -51,6 +51,12 @@ class Board
     fen
   end
 
+  def copy
+    new_copy = Board.new
+    new_copy.setup(dump_to_fen)
+    new_copy
+  end
+
   def show
     8.times do |i|
       print(8 - i)

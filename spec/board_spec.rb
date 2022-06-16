@@ -139,6 +139,21 @@ describe Board do
     end
   end
 
+  describe '#copy' do
+    subject(:polly_board) { described_class.new }
+
+    before do
+      polly_board.setup
+    end
+
+    it 'returns a new board with all pieces in the same spots' do
+      polly_pieces = polly_board.board.values.map(&:piece)
+      molly_board = polly_board.copy
+      molly_pieces = molly_board.board.values.map(&:piece)
+      expect(molly_pieces).to eq(polly_pieces)
+    end
+  end
+
   describe '#find_piece' do
     subject(:pieceful_board) { described_class.new }
 
