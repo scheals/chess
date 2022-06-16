@@ -152,6 +152,14 @@ describe Board do
       molly_pieces = molly_board.board.values.map(&:piece)
       expect(molly_pieces).to eq(polly_pieces)
     end
+
+    it 'has to remember move_history of pieces' do
+      polly_board.find_piece('a1').move('a3')
+      polly_pieces = polly_board.board.values.map(&:piece)
+      molly_board = polly_board.copy
+      molly_pieces = molly_board.board.values.map(&:piece)
+      expect(molly_pieces).to match_array(polly_pieces)
+    end
   end
 
   describe '#find_piece' do
