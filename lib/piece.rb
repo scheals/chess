@@ -58,6 +58,12 @@ class Piece
     false
   end
 
+  def ==(other)
+    return true if colour == other.colour && position == other.position
+
+    false
+  end
+
   private
 
   def column

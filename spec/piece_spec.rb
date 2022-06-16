@@ -86,6 +86,20 @@ describe Piece do
       expect(our_piece.ally?(friendly_piece)).to be true
     end
   end
+
+  describe '#==' do
+    subject(:base_piece) { described_class.new('b6', colour: 'violet') }
+
+    it 'returns true if both colour and position match' do
+      same_piece = described_class.new('b6', colour: 'violet')
+      expect(base_piece == same_piece).to be true
+    end
+
+    it 'returns false otherwise' do
+      similar_piece = described_class.new('b6', colour: 'purple')
+      expect(base_piece == similar_piece).to be false
+    end
+  end
 end
 
 describe NilPiece do
