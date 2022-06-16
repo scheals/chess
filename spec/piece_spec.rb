@@ -90,8 +90,10 @@ describe Piece do
   describe '#==' do
     subject(:base_piece) { described_class.new('b6', colour: 'violet') }
 
-    it 'returns true if both colour and position match' do
+    it 'returns true if colour, position and move history match' do
       same_piece = described_class.new('b6', colour: 'violet')
+      base_piece.instance_variable_set(:@move_history, ['a6'])
+      same_piece.instance_variable_set(:@move_history, ['a6'])
       expect(base_piece == same_piece).to be true
     end
 

@@ -59,7 +59,7 @@ class Piece
   end
 
   def ==(other)
-    return true if colour == other.colour && position == other.position
+    return true if colour == other.colour && position == other.position && move_history == other.move_history
 
     false
   end
