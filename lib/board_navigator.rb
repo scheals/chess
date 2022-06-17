@@ -28,9 +28,13 @@ class BoardNavigator
   end
 
   def under_check?(king)
-    king_navigator = navigator_factory.for(board, king)
+    king_navigator = if king.instance_of?(KingNavigator)
+                       king
+                     else
+                       navigator_factory.for(board, king)
+                     end
 
-    return true if enemy_moves(king_navigator).any? { |moves| moves.include?(king.position) }
+    return true if enemy_moves(king_navigator).any? { |moves| moves.include?(king_navigator.piece.position) }
 
     false
   end

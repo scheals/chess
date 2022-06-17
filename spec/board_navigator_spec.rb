@@ -89,15 +89,22 @@ describe BoardNavigator do
       let(:king_navigator) { instance_double(KingNavigator) }
 
       before do
+        allow(king).to receive(:instance_of?).with(KingNavigator).and_return(false)
         allow(navigator_factory).to receive(:for).with(board, king).and_return(king_navigator)
+        allow(king_navigator).to receive(:instance_of?).with(KingNavigator).and_return(true)
         allow(board).to receive(:coordinates).and_return(%w[a1 a2])
         allow(king).to receive(:position).and_return('a1')
         allow(king_navigator).to receive(:enemy_coordinates).and_return([])
       end
 
-      it 'always sends NavigatorFactory a for message with a King' do
+      it 'sends NavigatorFactory a for message with a King if KingNavigator was not passed in' do
         checking_check.under_check?(king)
         expect(navigator_factory).to have_received(:for).with(board, king)
+      end
+
+      it 'does not send NavigatorFactory a for message if KingNavigator was passed in' do
+        checking_check.under_check?(king_navigator)
+        expect(navigator_factory).not_to have_received(:for)
       end
     end
 
