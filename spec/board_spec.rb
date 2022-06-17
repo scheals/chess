@@ -105,6 +105,32 @@ describe Board do
         expect(out_of_bounds.move_piece(reachable_square, unreachable_square)).to be_nil
       end
     end
+
+    context 'when a squares are in bounds' do
+      subject(:in_bounds) { described_class.new }
+
+      let(:start_square) { instance_double(Square, position: 'a1', piece:) }
+      let(:target_square) { instance_double(Square, position: 'a2', piece: nil) }
+      let(:piece) { instance_double(Piece) }
+
+      before do
+        in_bounds.board['a1'] = start_square
+        in_bounds.board['a2'] = target_square
+        allow(start_square).to receive(:piece).and_return(piece)
+        allow(start_square).to receive(:vacate).once
+        allow(target_square).to receive(:place)
+      end
+
+      it 'sends start_square a vacate message' do
+        in_bounds.move_piece('a1', 'a2')
+        expect(start_square).to have_received(:vacate)
+      end
+
+      it 'sends target_square a place message with proper piece' do
+        in_bounds.move_piece('a1', 'a2')
+        expect(target_square).to have_received(:place).with(piece)
+      end
+    end
   end
 
   describe '#dump_to_fen' do

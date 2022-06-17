@@ -91,8 +91,9 @@ class Board
   def move_piece(start, target)
     return nil unless in_bounds?(start) && in_bounds?(target)
 
-    piece = find_piece(start)
-    put(piece, target)
+    start_square = find(start)
+    put(start_square.piece, target)
+    start_square.vacate
   end
 
   def in_bounds?(coordinate)
