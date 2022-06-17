@@ -58,39 +58,20 @@ describe Board do
   end
 
   describe '#put' do
-    context 'when square is empty' do
-      subject(:empty_board) { described_class.new }
+    subject(:empty_board) { described_class.new }
 
-      let(:piece) { instance_double(Piece) }
-      let(:empty_square) { instance_double(Square) }
-      let(:board_hash) { empty_board.board }
+    let(:piece) { instance_double(Piece) }
+    let(:empty_square) { instance_double(Square) }
+    let(:board_hash) { empty_board.board }
 
-      before do
-        board_hash['d6'] = empty_square
-        allow(empty_square).to receive(:place).with(piece)
-      end
-
-      it 'sends that square a #place message' do
-        empty_board.put(piece, 'd6')
-        expect(empty_square).to have_received(:place)
-      end
+    before do
+      board_hash['d6'] = empty_square
+      allow(empty_square).to receive(:place).with(piece)
     end
 
-    context 'when square is occupied' do
-      subject(:full_board) { described_class.new }
-
-      let(:piece) { instance_double(Piece) }
-      let(:another_piece) { instance_double(Piece) }
-      let(:occupied_square) { full_board.find('a2') }
-
-      before do
-        occupied_square.place(piece)
-        allow(piece).to receive(:real?).and_return(true)
-      end
-
-      it 'returns nil' do
-        expect(full_board.put(piece, 'a2')).to be_nil
-      end
+    it 'sends that square a #place message' do
+      empty_board.put(piece, 'd6')
+      expect(empty_square).to have_received(:place)
     end
   end
 
@@ -348,38 +329,16 @@ end
 
 describe Square do
   describe '#place' do
-    context 'when square is not occupied by a piece' do
-      subject(:empty_square) { described_class.new('c4') }
+    subject(:empty_square) { described_class.new('c4') }
 
-      let(:piece) { instance_double(Piece) }
+    let(:piece) { instance_double(Piece) }
 
-      before do
-        allow(piece).to receive(:colour).and_return('white')
-      end
-
-      it 'stores the piece in @piece' do
-        expect { empty_square.place(piece) }.to change(empty_square, :piece)
-      end
+    before do
+      allow(piece).to receive(:colour).and_return('white')
     end
 
-    context 'when square is occupied by a piece' do
-      subject(:full_square) { described_class.new('d8') }
-
-      let(:piece) { instance_double(Piece) }
-      let(:another_piece) { instance_double(Piece) }
-
-      before do
-        full_square.place(piece)
-        allow(piece).to receive(:real?).and_return(true)
-      end
-
-      it 'does not change @piece' do
-        expect { full_square.place(another_piece) }.not_to change(full_square, :piece)
-      end
-
-      it 'returns nil' do
-        expect(full_square.place(another_piece)).to be_nil
-      end
+    it 'stores the piece in @piece' do
+      expect { empty_square.place(piece) }.to change(empty_square, :piece)
     end
   end
 

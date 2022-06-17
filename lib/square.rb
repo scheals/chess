@@ -14,8 +14,6 @@ class Square
   end
 
   def place(piece)
-    return nil if occupied?
-
     @piece = piece
   end
 
