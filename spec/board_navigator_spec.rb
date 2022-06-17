@@ -161,4 +161,147 @@ describe BoardNavigator do
       expect(navigating_for_a_king.king_for(coordinate)).to eq(white_king)
     end
   end
+
+  # rubocop: disable RSpec/MultipleMemoizedHelpers
+  describe '#checks_king?' do
+    let(:navigator_factory) { class_double(NavigatorFactory) }
+    let(:board) { instance_double(Board) }
+    let(:board_copy) { instance_double(Board) }
+    let(:white_piece) { instance_double(Piece, position: 'a1', colour: 'white') }
+    let(:white_king) { instance_double(King, position: 'a3', colour: 'white') }
+    let(:black_king) { instance_double(King, position: 'h8', colour: 'black') }
+
+    context 'when called' do
+      subject(:king_checking) { described_class.new(board, navigator_factory) }
+
+      let(:white_king_navigator) { instance_double(KingNavigator, board:, piece: white_king) }
+
+      before do
+        move = 'a2'
+        allow(board).to receive(:copy).and_return(board_copy)
+        allow(board_copy).to receive(:move_piece).with(white_piece.position, move)
+        allow(board_copy).to receive(:find_kings).and_return([white_king, black_king])
+        allow(board_copy).to receive(:find_piece).with(move).and_return(white_piece)
+        allow(white_piece).to receive(:ally?).with(white_king).and_return(true)
+        allow(white_piece).to receive(:ally?).with(black_king).and_return(false)
+        allow(navigator_factory).to receive(:for).with(board_copy, white_king).and_return(white_king_navigator)
+        none = []
+        allow(white_king_navigator).to receive(:enemy_coordinates).and_return(none)
+        allow(board_copy).to receive(:coordinates).and_return(none)
+      end
+
+      it 'always sends Board a copy message' do
+        move = 'a2'
+        king_checking.checks_king?(white_piece.position, move)
+        expect(board).to have_received(:copy)
+      end
+
+      it 'always sends the copy of Board a move_piece message' do
+        move = 'a2'
+        king_checking.checks_king?(white_piece.position, move)
+        expect(board_copy).to have_received(:move_piece).with(white_piece.position, move)
+      end
+
+      it 'always sends the copy of Board a find_kings message' do
+        move = 'a2'
+        king_checking.checks_king?(white_piece.position, move)
+        expect(board_copy).to have_received(:find_kings)
+      end
+    end
+
+    context 'when it puts own King in check' do
+      subject(:navigate_check) { described_class.new(board, navigator_factory) }
+
+      let(:white_king_navigator) { instance_double(KingNavigator, board:, piece: white_king) }
+      let(:black_rook) { instance_double(Rook, position: 'a7', colour: 'black') }
+      let(:black_rook_navigator) { instance_double(RookNavigator, board:, piece: black_rook) }
+      let(:white_rook) { instance_double(Rook, position: 'a4', colour: 'white') }
+      let(:white_rook_navigator) { instance_double(RookNavigator, board:, piece: white_rook) }
+
+      before do
+        move = 'b4'
+        allow(board).to receive(:copy).and_return(board_copy)
+        allow(board_copy).to receive(:move_piece).with(white_rook.position, move)
+        allow(board_copy).to receive(:find_kings).and_return([white_king, black_king])
+        allow(board_copy).to receive(:find_piece).with(move).and_return(white_rook).thrice
+        allow(white_rook).to receive(:ally?).and_return(true, false)
+        allow(navigator_factory).to receive(:for).with(board_copy, white_king).and_return(white_king_navigator)
+        allow(board_copy).to receive(:coordinates).and_return(%w[a3 a4 a7 b4])
+        allow(white_king_navigator).to receive(:enemy_coordinates).with(%w[a3 a4 a7 b4]).and_return(['a7'])
+        allow(board_copy).to receive(:find_piece).with('a7').and_return(black_rook)
+        allow(board_copy).to receive(:find_piece).with('a3').and_return(white_king)
+        allow(white_king).to receive(:enemy?).with(white_king).and_return(false)
+        allow(board_copy).to receive(:find_piece).with('a4').and_return(white_rook)
+        allow(white_king).to receive(:enemy?).with(white_rook).and_return(false)
+        allow(white_king).to receive(:enemy?).with(black_rook).and_return(true)
+        allow(navigator_factory).to receive(:for).with(board_copy, black_rook).and_return(black_rook_navigator)
+        allow(black_rook_navigator).to receive(:possible_moves).and_return([white_king.position])
+      end
+
+      it 'sends the NavigatorFactory a for message with a King' do
+        move = 'b4'
+        navigate_check.checks_king?(white_rook.position, move)
+        expect(navigator_factory).to have_received(:for).with(board_copy, white_king)
+      end
+
+      it 'sends the NavigatorFactory a for message with enemy pieces' do
+        move = 'b4'
+        navigate_check.checks_king?(white_rook.position, move)
+        expect(navigator_factory).to have_received(:for).with(board_copy, black_rook)
+      end
+
+      it 'returns true' do
+        start = 'a4'
+        target = 'b4'
+        expect(navigate_check.checks_king?(start, target)).to be true
+      end
+    end
+
+    context 'when it does not put own King in check' do
+      subject(:navigate_checkless) { described_class.new(board, navigator_factory) }
+
+      let(:black_king_navigator) { instance_double(KingNavigator, board:, piece: black_king) }
+      let(:white_rook) { instance_double(Rook, position: 'a1', colour: 'white') }
+      let(:white_rook_navigator) { instance_double(RookNavigator, board:, piece: white_rook) }
+      let(:black_rook) { instance_double(Rook, position: 'h7', colour: 'black') }
+      let(:black_rook_navigator) { instance_double(RookNavigator, board:, piece: black_rook) }
+
+      before do
+        move = 'a7'
+        allow(board).to receive(:copy).and_return(board_copy)
+        allow(board_copy).to receive(:move_piece).with(black_rook.position, move)
+        allow(board_copy).to receive(:find_kings).and_return([white_king, black_king])
+        allow(board_copy).to receive(:find_piece).with(move).and_return(black_rook).exactly(4).times
+        allow(black_rook).to receive(:ally?).and_return(false, true)
+        allow(navigator_factory).to receive(:for).with(board_copy, black_king).and_return(black_king_navigator)
+        allow(board_copy).to receive(:coordinates).and_return(%w[a1 a7 h8])
+        allow(black_king_navigator).to receive(:enemy_coordinates).with(%w[a1 a7 h8]).and_return(['a1'])
+        allow(board_copy).to receive(:find_piece).with('h7').and_return(black_rook)
+        allow(board_copy).to receive(:find_piece).with('a1').and_return(white_rook)
+        allow(white_king).to receive(:enemy?).with(white_rook).and_return(true)
+        allow(white_king).to receive(:enemy?).with(black_rook).and_return(false)
+        allow(navigator_factory).to receive(:for).with(board_copy, white_rook).and_return(white_rook_navigator)
+        allow(white_rook_navigator).to receive(:possible_moves).and_return([])
+      end
+
+      it 'sends the NavigatorFactory a for message' do
+        move = 'a7'
+        navigate_checkless.checks_king?(black_rook.position, move)
+        expect(navigator_factory).to have_received(:for).with(board_copy, black_king)
+      end
+
+      it 'sends the NavigatorFactory a for message with enemy pieces' do
+        move = 'a7'
+        navigate_checkless.checks_king?(black_rook.position, move)
+        expect(navigator_factory).to have_received(:for).with(board_copy, white_rook)
+      end
+
+      it 'returns false' do
+        start = 'h7'
+        target = 'a7'
+        expect(navigate_checkless.checks_king?(start, target)).to be false
+      end
+    end
+  end
+  # rubocop: enable RSpec/MultipleMemoizedHelpers
 end

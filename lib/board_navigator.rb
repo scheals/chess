@@ -23,7 +23,7 @@ class BoardNavigator
     board.find_piece(coordinate)
   end
 
-  def king_for(coordinate, board = @board)
+  def king_for(coordinate)
     board.find_kings.select { |king| board.find_piece(coordinate).ally?(king) }.first
   end
 
@@ -37,6 +37,12 @@ class BoardNavigator
     return true if enemy_moves(king_navigator).any? { |moves| moves.include?(king_navigator.piece.position) }
 
     false
+  end
+
+  def checks_king?(start, target)
+    board_after_move = BoardNavigator.new(board.copy, navigator_factory)
+    board_after_move.board.move_piece(start, target)
+    board_after_move.under_check?(board_after_move.king_for(target))
   end
 
   def enemy_moves(piece_navigator)
