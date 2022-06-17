@@ -23,6 +23,10 @@ class BoardNavigator
     board.find_piece(coordinate)
   end
 
+  def king_for(coordinate, board = @board)
+    board.find_kings.select { |king| board.find_piece(coordinate).ally?(king) }.first
+  end
+
   def under_check?(king)
     king_navigator = navigator_factory.for(board, king)
 

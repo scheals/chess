@@ -132,4 +132,26 @@ describe BoardNavigator do
     end
   end
   # rubocop: enable RSpec/MultipleMemoizedHelpers
+
+  describe '#king_for' do
+    subject(:navigating_for_a_king) { described_class.new(board, navigator_factory) }
+
+    let(:board) { instance_double(Board) }
+    let(:navigator_factory) { class_double(NavigatorFactory) }
+    let(:white_king) { instance_double(King, position: 'a1', colour: 'white') }
+    let(:black_king) { instance_double(King, position: 'a2', colour: 'black') }
+    let(:white_piece) { instance_double(Piece, position: 'a3', colour: 'white') }
+
+    before do
+      allow(board).to receive(:find_kings).and_return([white_king, black_king])
+      allow(board).to receive(:find_piece).with('a3').and_return(white_piece)
+      allow(white_piece).to receive(:ally?).with(white_king).and_return true
+      allow(white_piece).to receive(:ally?).with(black_king).and_return false
+    end
+
+    it 'returns allied King of a piece' do
+      coordinate = 'a3'
+      expect(navigating_for_a_king.king_for(coordinate)).to eq(white_king)
+    end
+  end
 end
