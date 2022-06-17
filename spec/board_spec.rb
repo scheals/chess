@@ -351,6 +351,25 @@ describe Board do
       end
     end
   end
+
+  describe '#find_kings' do
+    subject(:kingful_board) { described_class.new }
+
+    let(:white_king) { instance_double(King, position: 'a1', colour: 'white') }
+    let(:black_king) { instance_double(King, position: 'h8', colour: 'black') }
+
+    before do
+      kingful_board.put(white_king, 'a1')
+      kingful_board.put(black_king, 'h8')
+      allow(white_king).to receive(:instance_of?).with(King).and_return(King)
+      allow(black_king).to receive(:instance_of?).with(King).and_return(King)
+    end
+
+    it 'returns both Kings' do
+      kings = [white_king, black_king]
+      expect(kingful_board.find_kings).to match_array(kings)
+    end
+  end
 end
 
 describe Square do
