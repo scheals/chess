@@ -144,6 +144,8 @@ describe Board do
 
     before do
       polly_board.setup
+      polly_board.find_piece('a1').move('a3')
+      polly_board.find('a1').vacate
     end
 
     it 'returns a new board with all pieces in the same spots' do
@@ -154,7 +156,6 @@ describe Board do
     end
 
     it 'has to remember move_history of pieces' do
-      polly_board.find_piece('a1').move('a3')
       polly_pieces = polly_board.board.values.map(&:piece)
       molly_board = polly_board.copy
       molly_pieces = molly_board.board.values.map(&:piece)
