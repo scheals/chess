@@ -127,6 +127,33 @@ describe RookNavigator do
       end
     end
   end
+
+  describe '#go_left' do
+    subject(:leftbound_rook) { described_class.new(board, white_rook) }
+
+    let(:board) { instance_double(Board) }
+    let(:white_rook) { instance_double(Rook, position: coordinate.parse('c1'), colour: 'white', coordinate:) }
+    let(:coordinate) { Coordinate }
+    let(:piece) { instance_double(Piece) }
+    let(:square) { instance_double(Square, piece:) }
+
+    before do
+      allow(board).to receive(:find).with(white_rook.position.left.to_s).and_return(square)
+      allow(board).to receive(:find).with(white_rook.position.left.left.to_s).and_return(square)
+      allow(white_rook).to receive(:ally?).with(piece).and_return(false, true)
+      allow(white_rook).to receive(:enemy?).with(piece).and_return(false)
+      allow(piece).to receive(:real?).and_return(false, true)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.left.left.to_s).and_return(true)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.left.left.to_s).and_return(true)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.left.left.left.to_s).and_return(false)
+      allow(square).to receive(:occupied?).and_return(false, true)
+    end
+
+    it 'returns proper moves' do
+      moves = %w[b1]
+      expect(leftbound_rook.go_left).to match_array(moves)
+    end
+  end
 end
 
 describe BishopNavigator do
