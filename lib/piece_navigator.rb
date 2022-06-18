@@ -44,4 +44,12 @@ class PieceNavigator
   def handle_enemies(direction, enemies)
     direction.slice_after { |coordinate| enemies.include?(coordinate.to_s) }.first
   end
+
+  def empty_or_enemy?(square)
+    !square.occupied? || piece.enemy?(square.piece)
+  end
+
+  def passable?(move, square)
+    board.in_bounds?(move) && !square.occupied?
+  end
 end

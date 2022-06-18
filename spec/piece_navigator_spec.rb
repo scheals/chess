@@ -81,6 +81,46 @@ describe PieceNavigator do
       expect(board).to have_received(:coordinates)
     end
   end
+
+  describe '#passable?' do
+    context 'when square is in bounds and not occupied' do
+      subject(:passable_navigator) { described_class.new(board, king) }
+
+      let(:board) { instance_double(Board) }
+      let(:king) { instance_double(King) }
+      let(:square) { instance_double(Square) }
+
+      before do
+        move = 'a4'
+        allow(board).to receive(:in_bounds?).with(move).and_return(true)
+        allow(square).to receive(:occupied?).and_return(false)
+      end
+
+      it 'returns true' do
+        move = 'a4'
+        expect(passable_navigator.passable?(move, square)).to be true
+      end
+    end
+
+    context 'when square is not in bounds or occupied' do
+      subject(:impassable_navigator) { described_class.new(board, queen) }
+
+      let(:board) { instance_double(Board) }
+      let(:queen) { instance_double(Queen) }
+      let(:square) { instance_double(Square) }
+
+      before do
+        move = 'b7'
+        allow(board).to receive(:in_bounds?).with(move).and_return(true)
+        allow(square).to receive(:occupied?).and_return(true)
+      end
+
+      it 'returns false' do
+        move = 'b7'
+        expect(impassable_navigator.passable?(move, square)).to be false
+      end
+    end
+  end
 end
 
 describe RookNavigator do
@@ -150,86 +190,6 @@ describe RookNavigator do
     it 'returns proper moves' do
       moves = %w[b1 c1]
       expect(leftbound_rook.go_left).to match_array(moves)
-    end
-  end
-
-  describe '#empty_or_enemy?' do
-    context 'when square is empty or has an enemy piece on it' do
-      subject(:navigate_empty) { described_class.new(board, rook) }
-
-      let(:piece) { instance_double(Piece) }
-      let(:rook) { instance_double(Rook) }
-      let(:board) { instance_double(Board) }
-      let(:square) { instance_double(Square, piece:) }
-
-      before do
-        allow(square).to receive(:occupied?).and_return(false)
-        allow(piece).to receive(:real?).and_return(false)
-        allow(rook).to receive(:enemy?).with(piece).and_return(false)
-      end
-
-      it 'returns true' do
-        expect(navigate_empty.empty_or_enemy?(square)).to be true
-      end
-    end
-
-    context 'when square is occupied by non-enemy' do
-      subject(:navigate_ally) { described_class.new(board, knight)}
-
-      let(:piece) { instance_double(Piece) }
-      let(:knight) { instance_double(Knight) }
-      let(:board) { instance_double(Board) }
-      let(:square) { instance_double(Square, piece:) }
-
-      before do
-        allow(square).to receive(:occupied?).and_return(true)
-        allow(piece).to receive(:real?).and_return(true)
-        allow(knight).to receive(:enemy?).with(piece).and_return(false)
-      end
-
-      it 'returns false' do
-        expect(navigate_ally.empty_or_enemy?(square)).to be false
-      end
-    end
-  end
-
-  describe '#passable?' do
-    context 'when square is in bounds and not occupied' do
-      subject(:passable_navigator) { described_class.new(board, king) }
-
-      let(:board) { instance_double(Board) }
-      let(:king) { instance_double(King) }
-      let(:square) { instance_double(Square) }
-
-      before do
-        move = 'a4'
-        allow(board).to receive(:in_bounds?).with(move).and_return(true)
-        allow(square).to receive(:occupied?).and_return(false)
-      end
-
-      it 'returns true' do
-        move = 'a4'
-        expect(passable_navigator.passable?(move, square)).to be true
-      end
-    end
-
-    context 'when square is not in bounds or occupied' do
-      subject(:impassable_navigator) { described_class.new(board, queen) }
-
-      let(:board) { instance_double(Board) }
-      let(:queen) { instance_double(Queen) }
-      let(:square) { instance_double(Square) }
-
-      before do
-        move = 'b7'
-        allow(board).to receive(:in_bounds?).with(move).and_return(true)
-        allow(square).to receive(:occupied?).and_return(true)
-      end
-
-      it 'returns false' do
-        move = 'b7'
-        expect(impassable_navigator.passable?(move, square)).to be false
-      end
     end
   end
 end

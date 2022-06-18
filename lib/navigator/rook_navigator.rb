@@ -24,12 +24,4 @@ class RookNavigator < PieceNavigator
     end
     moves
   end
-
-  def empty_or_enemy?(square)
-    !square.occupied? || piece.enemy?(square.piece)
-  end
-
-  def passable?(move, square)
-    board.in_bounds?(move) && !square.occupied?
-  end
 end
