@@ -7,7 +7,7 @@ class KnightNavigator < PieceNavigator
   attr_reader :piece
 
   def possible_moves
-    coordinates = legal_for(piece)
-    handle_collision(piece.split_moves(coordinates)).compact.flatten
+    moves_without_collision = legal_for(piece)
+    moves_without_collision.reject { |move| allied_coordinates(moves_without_collision).include?(move) }
   end
 end
