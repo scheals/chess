@@ -38,13 +38,13 @@ class Coordinate
   end
 
   def left
-    column_right = (column.ord - 1).chr
-    Coordinate.parse([column_right, row].join)
+    column_left = (column.ord - 1).chr
+    Coordinate.parse([column_left, row].join)
   end
 
   def right
-    column_left = (column.ord + 1).chr
-    Coordinate.parse([column_left, row].join)
+    column_right = (column.ord + 1).chr
+    Coordinate.parse([column_right, row].join)
   end
 
   def to_left?(coordinate)
