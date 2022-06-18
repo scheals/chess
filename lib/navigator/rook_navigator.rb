@@ -30,6 +30,6 @@ class RookNavigator < PieceNavigator
   end
 
   def passable?(move, square)
-    board.in_bounds?(move) && !piece.enemy?(square.piece) && !piece.ally?(square.piece)
+    board.in_bounds?(move) && !square.occupied?
   end
 end

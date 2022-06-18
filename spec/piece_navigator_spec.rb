@@ -132,25 +132,23 @@ describe RookNavigator do
     subject(:leftbound_rook) { described_class.new(board, white_rook) }
 
     let(:board) { instance_double(Board) }
-    let(:white_rook) { instance_double(Rook, position: coordinate.parse('c1'), colour: 'white', coordinate:) }
+    let(:white_rook) { instance_double(Rook, position: coordinate.parse('d1'), colour: 'white', coordinate:) }
     let(:coordinate) { Coordinate }
-    let(:piece) { instance_double(Piece) }
-    let(:square) { instance_double(Square, piece:) }
+    let(:black_piece) { instance_double(Piece) }
+    let(:square) { instance_double(Square, piece: black_piece) }
 
     before do
       allow(board).to receive(:find).with(white_rook.position.left.to_s).and_return(square)
+      allow(square).to receive(:occupied?).and_return(false, false, true, true)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.left.left.to_s).and_return(true)
       allow(board).to receive(:find).with(white_rook.position.left.left.to_s).and_return(square)
-      allow(white_rook).to receive(:ally?).with(piece).and_return(false, true)
-      allow(white_rook).to receive(:enemy?).with(piece).and_return(false)
-      allow(piece).to receive(:real?).and_return(false, true)
-      allow(board).to receive(:in_bounds?).with(white_rook.position.left.left.to_s).and_return(true)
-      allow(board).to receive(:in_bounds?).with(white_rook.position.left.left.to_s).and_return(true)
-      allow(board).to receive(:in_bounds?).with(white_rook.position.left.left.left.to_s).and_return(false)
-      allow(square).to receive(:occupied?).and_return(false, true)
+      allow(white_rook).to receive(:enemy?).with(black_piece).and_return(true).once
+      allow(board).to receive(:find).with(white_rook.position.left.left.left.to_s).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.left.left.left.to_s).and_return(true)
     end
 
     it 'returns proper moves' do
-      moves = %w[b1]
+      moves = %w[b1 c1]
       expect(leftbound_rook.go_left).to match_array(moves)
     end
   end
@@ -191,6 +189,46 @@ describe RookNavigator do
 
       it 'returns false' do
         expect(navigate_ally.empty_or_enemy?(square)).to be false
+      end
+    end
+  end
+
+  describe '#passable?' do
+    context 'when square is in bounds and not occupied' do
+      subject(:passable_navigator) { described_class.new(board, king) }
+
+      let(:board) { instance_double(Board) }
+      let(:king) { instance_double(King) }
+      let(:square) { instance_double(Square) }
+
+      before do
+        move = 'a4'
+        allow(board).to receive(:in_bounds?).with(move).and_return(true)
+        allow(square).to receive(:occupied?).and_return(false)
+      end
+
+      it 'returns true' do
+        move = 'a4'
+        expect(passable_navigator.passable?(move, square)).to be true
+      end
+    end
+
+    context 'when square is not in bounds or occupied' do
+      subject(:impassable_navigator) { described_class.new(board, queen) }
+
+      let(:board) { instance_double(Board) }
+      let(:queen) { instance_double(Queen) }
+      let(:square) { instance_double(Square) }
+
+      before do
+        move = 'b7'
+        allow(board).to receive(:in_bounds?).with(move).and_return(true)
+        allow(square).to receive(:occupied?).and_return(true)
+      end
+
+      it 'returns false' do
+        move = 'b7'
+        expect(impassable_navigator.passable?(move, square)).to be false
       end
     end
   end
