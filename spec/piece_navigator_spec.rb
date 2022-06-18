@@ -355,6 +355,31 @@ describe BishopNavigator do
       expect(up_right_bishop.go_up_right).to match_array(moves)
     end
   end
+
+  describe '#go_down_left' do
+    subject(:down_left_bishop) { described_class.new(board, white_bishop) }
+
+    let(:board) { instance_double(Board) }
+    let(:white_bishop) { instance_double(Rook, position: coordinate.parse('d4'), colour: 'white', coordinate:) }
+    let(:coordinate) { Coordinate }
+    let(:white_piece) { instance_double(Piece, position: coordinate.parse('b2')) }
+    let(:square) { instance_double(Square, piece: white_piece) }
+
+    before do
+      allow(board).to receive(:find).with(white_bishop.position.down.left.to_s).and_return(square)
+      allow(square).to receive(:occupied?).and_return(false, false, true, true)
+      allow(board).to receive(:in_bounds?).with(white_bishop.position.down.left.down.left.to_s).and_return(true)
+      allow(board).to receive(:find).with(white_bishop.position.down.left.down.left.to_s).and_return(square)
+      allow(white_bishop).to receive(:enemy?).with(white_piece).and_return(false)
+      allow(board).to receive(:find).with(white_bishop.position.down.left.down.left.down.left.to_s).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_bishop.position.down.left.down.left.down.left.to_s).and_return(true)
+    end
+
+    it 'returns proper moves' do
+      moves = %w[c3].map { |move| coordinate.parse(move) }
+      expect(down_left_bishop.go_down_left).to match_array(moves)
+    end
+  end
 end
 
 describe KnightNavigator do
