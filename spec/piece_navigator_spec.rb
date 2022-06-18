@@ -174,7 +174,7 @@ describe RookNavigator do
     let(:board) { instance_double(Board) }
     let(:white_rook) { instance_double(Rook, position: coordinate.parse('d1'), colour: 'white', coordinate:) }
     let(:coordinate) { Coordinate }
-    let(:black_piece) { instance_double(Piece) }
+    let(:black_piece) { instance_double(Piece, position: coordinate.parse('b1')) }
     let(:square) { instance_double(Square, piece: black_piece) }
 
     before do
@@ -188,8 +188,83 @@ describe RookNavigator do
     end
 
     it 'returns proper moves' do
-      moves = %w[b1 c1]
+      moves = %w[b1 c1].map { |move| coordinate.parse(move) }
       expect(leftbound_rook.go_left).to match_array(moves)
+    end
+  end
+
+  describe '#go_right' do
+    subject(:rightbound_rook) { described_class.new(board, white_rook) }
+
+    let(:board) { instance_double(Board) }
+    let(:white_rook) { instance_double(Rook, position: coordinate.parse('e1'), colour: 'white', coordinate:) }
+    let(:coordinate) { Coordinate }
+    let(:black_piece) { instance_double(Piece, position: coordinate.parse('g1')) }
+    let(:square) { instance_double(Square, piece: black_piece) }
+
+    before do
+      allow(board).to receive(:find).with(white_rook.position.right.to_s).and_return(square)
+      allow(square).to receive(:occupied?).and_return(false, false, true, true)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.right.right.to_s).and_return(true)
+      allow(board).to receive(:find).with(white_rook.position.right.right.to_s).and_return(square)
+      allow(white_rook).to receive(:enemy?).with(black_piece).and_return(true).once
+      allow(board).to receive(:find).with(white_rook.position.right.right.right.to_s).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.right.right.right.to_s).and_return(true)
+    end
+
+    it 'returns proper moves' do
+      moves = %w[f1 g1].map { |move| coordinate.parse(move) }
+      expect(rightbound_rook.go_right).to match_array(moves)
+    end
+  end
+
+  describe '#go_up' do
+    subject(:upbound_rook) { described_class.new(board, white_rook) }
+
+    let(:board) { instance_double(Board) }
+    let(:white_rook) { instance_double(Rook, position: coordinate.parse('f5'), colour: 'white', coordinate:) }
+    let(:coordinate) { Coordinate }
+    let(:white_piece) { instance_double(Piece, position: coordinate.parse('f6')) }
+    let(:square) { instance_double(Square, piece: white_piece) }
+
+    before do
+      allow(board).to receive(:find).with(white_rook.position.up.to_s).and_return(square)
+      allow(square).to receive(:occupied?).and_return(false, false, true, true)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.up.up.to_s).and_return(true)
+      allow(board).to receive(:find).with(white_rook.position.up.up.to_s).and_return(square)
+      allow(white_rook).to receive(:enemy?).with(white_piece).and_return(false)
+      allow(board).to receive(:find).with(white_rook.position.up.up.up.to_s).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.up.up.up.to_s).and_return(true)
+    end
+
+    it 'returns proper moves' do
+      moves = %w[f6].map { |move| coordinate.parse(move) }
+      expect(upbound_rook.go_up).to match_array(moves)
+    end
+  end
+
+  describe '#go_down' do
+    subject(:downbound_rook) { described_class.new(board, white_rook) }
+
+    let(:board) { instance_double(Board) }
+    let(:white_rook) { instance_double(Rook, position: coordinate.parse('e4'), colour: 'white', coordinate:) }
+    let(:coordinate) { Coordinate }
+    let(:white_piece) { instance_double(Piece, position: coordinate.parse('e2')) }
+    let(:square) { instance_double(Square, piece: white_piece) }
+
+    before do
+      allow(board).to receive(:find).with(white_rook.position.down.to_s).and_return(square)
+      allow(square).to receive(:occupied?).and_return(false, false, true, true)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.down.down.to_s).and_return(true)
+      allow(board).to receive(:find).with(white_rook.position.down.down.to_s).and_return(square)
+      allow(white_rook).to receive(:enemy?).with(white_piece).and_return(false)
+      allow(board).to receive(:find).with(white_rook.position.down.down.down.to_s).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.down.down.down.to_s).and_return(true)
+    end
+
+    it 'returns proper moves' do
+      moves = %w[e3].map { |move| coordinate.parse(move) }
+      expect(downbound_rook.go_down).to match_array(moves)
     end
   end
 end
