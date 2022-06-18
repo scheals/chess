@@ -154,6 +154,46 @@ describe RookNavigator do
       expect(leftbound_rook.go_left).to match_array(moves)
     end
   end
+
+  describe '#empty_or_enemy?' do
+    context 'when square is empty or has an enemy piece on it' do
+      subject(:navigate_empty) { described_class.new(board, rook) }
+
+      let(:piece) { instance_double(Piece) }
+      let(:rook) { instance_double(Rook) }
+      let(:board) { instance_double(Board) }
+      let(:square) { instance_double(Square, piece:) }
+
+      before do
+        allow(square).to receive(:occupied?).and_return(false)
+        allow(piece).to receive(:real?).and_return(false)
+        allow(rook).to receive(:enemy?).with(piece).and_return(false)
+      end
+
+      it 'returns true' do
+        expect(navigate_empty.empty_or_enemy?(square)).to be true
+      end
+    end
+
+    context 'when square is occupied by non-enemy' do
+      subject(:navigate_ally) { described_class.new(board, knight)}
+
+      let(:piece) { instance_double(Piece) }
+      let(:knight) { instance_double(Knight) }
+      let(:board) { instance_double(Board) }
+      let(:square) { instance_double(Square, piece:) }
+
+      before do
+        allow(square).to receive(:occupied?).and_return(true)
+        allow(piece).to receive(:real?).and_return(true)
+        allow(knight).to receive(:enemy?).with(piece).and_return(false)
+      end
+
+      it 'returns false' do
+        expect(navigate_ally.empty_or_enemy?(square)).to be false
+      end
+    end
+  end
 end
 
 describe BishopNavigator do
