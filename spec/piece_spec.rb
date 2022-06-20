@@ -815,8 +815,8 @@ describe PieceFactory do
       expect(factory.for('King', position: 'e1')).to be_a(King)
     end
 
-    it 'defaults to a Piece instance' do
-      expect(factory.for('Unicorn', position: 'L4')).to be_a(Piece)
+    it 'defaults to a NilPiece instance' do
+      expect(factory.for('Unicorn', position: 'L4')).to be_a(NilPiece)
     end
 
     context 'when given a colour' do
@@ -891,9 +891,9 @@ describe PieceFactory do
       expect(factory.fen_for('k', position)).to be_a(King).and have_attributes(colour: 'black', position:)
     end
 
-    it 'defaults to a Piece instance' do
+    it 'defaults to a NilPiece instance' do
       position = coordinate.parse('L4')
-      expect(factory.fen_for('Unicorn', position)).to be_a(Piece)
+      expect(factory.fen_for('Unicorn', position)).to be_a(NilPiece)
     end
   end
 end
