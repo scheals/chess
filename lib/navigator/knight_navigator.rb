@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 require_relative '../piece_navigator'
+require_relative '../moves'
 
 # This class handles collision for Knight pieces.
 class KnightNavigator < PieceNavigator
   attr_reader :piece
 
+  include Moves::CollisionlessMoves
+
   def possible_moves
-    moves_without_collision = legal_for(piece)
-    moves_without_collision.reject { |move| allied_coordinates(moves_without_collision).include?(move) }
+    collisionless_moves
   end
 end
