@@ -222,7 +222,7 @@ describe Moves::CollisionlessMoves do
     subject(:regular_knight) { PieceNavigator.new(board, white_knight) }
 
     let(:board) { instance_double(Board) }
-    let(:white_knight) { instance_double(Knight, position: coordinate.parse('a8'), colour: 'white')}
+    let(:white_knight) { instance_double(Knight, position: coordinate.parse('a8'), colour: 'white') }
     let(:coordinate) { Coordinate }
     let(:white_piece) { instance_double(Piece, position: coordinate.parse('b6')) }
     let(:nil_piece) { instance_double(NilPiece) }
@@ -240,6 +240,123 @@ describe Moves::CollisionlessMoves do
     it 'rejects spaces occupied by allies' do
       correct_moves = %w[c7]
       expect(regular_knight.collisionless_moves).to match_array(correct_moves)
+    end
+  end
+
+  # describe Moves::EnPassant do
+  # end
+
+  describe Moves::LimitedDiagonal do
+    describe '#go_up_left' do
+      context 'when limit is 1' do
+        subject(:up_left_piece) { PieceNavigator.new(board, white_piece) }
+
+        let(:board) { instance_double(Board) }
+        let(:white_piece) { instance_double(Piece, position: coordinate.parse('d5'), colour: 'white', coordinate:) }
+        let(:coordinate) { Coordinate }
+        let(:black_piece) { instance_double(Piece, position: coordinate.parse('c6')) }
+        let(:square) { instance_double(Square, piece: black_piece) }
+
+        before do
+          up_left_piece.extend(described_class)
+          allow(board).to receive(:find).with(white_piece.position.up.left.to_s).and_return(square)
+          allow(square).to receive(:occupied?).and_return(false, false)
+          allow(white_piece).to receive(:enemy?).with(black_piece).and_return(true).once
+        end
+
+        it 'returns proper moves' do
+          moves = %w[c6].map { |move| coordinate.parse(move) }
+          limit = 1
+          expect(up_left_piece.go_up_left(limit)).to match_array(moves)
+        end
+      end
+    end
+
+    describe '#go_up_right' do
+      context 'when limit is 6' do
+        subject(:up_right_piece) { PieceNavigator.new(board, white_piece) }
+
+        let(:board) { instance_double(Board) }
+        let(:white_piece) { instance_double(Piece, position: coordinate.parse('e5'), colour: 'white', coordinate:) }
+        let(:coordinate) { Coordinate }
+        let(:black_piece) { instance_double(Piece, position: coordinate.parse('g7')) }
+        let(:square) { instance_double(Square, piece: black_piece) }
+
+        before do
+          up_right_piece.extend(described_class)
+          allow(board).to receive(:find).with(white_piece.position.up.right.to_s).and_return(square)
+          allow(square).to receive(:occupied?).and_return(false, false, true, true)
+          allow(board).to receive(:in_bounds?).with(white_piece.position.up.right.up.right.to_s).and_return(true)
+          allow(board).to receive(:find).with(white_piece.position.up.right.up.right.to_s).and_return(square)
+          allow(white_piece).to receive(:enemy?).with(black_piece).and_return(true).once
+          allow(board).to receive(:find).with(white_piece.position.up.right.up.right.up.right.to_s).and_return(square)
+          allow(board).to receive(:in_bounds?).with(white_piece.position.up.right.up.right.up.right.to_s).and_return(true)
+        end
+
+        it 'returns proper moves' do
+          moves = %w[f6 g7].map { |move| coordinate.parse(move) }
+          limit = 6
+          expect(up_right_piece.go_up_right(limit)).to match_array(moves)
+        end
+      end
+    end
+
+    describe '#go_down_right' do
+      context 'when limit is 8' do
+        subject(:down_right_moving_piece) { PieceNavigator.new(board, white_moving_piece) }
+
+        let(:board) { instance_double(Board) }
+        let(:white_moving_piece) { instance_double(Piece, position: coordinate.parse('e4'), colour: 'white', coordinate:) }
+        let(:coordinate) { Coordinate }
+        let(:white_piece) { instance_double(Piece, position: coordinate.parse('g2')) }
+        let(:square) { instance_double(Square, piece: white_piece) }
+
+        before do
+          down_right_moving_piece.extend(described_class)
+          allow(board).to receive(:find).with(white_moving_piece.position.down.right.to_s).and_return(square)
+          allow(square).to receive(:occupied?).and_return(false, false, true, true)
+          allow(board).to receive(:in_bounds?).with(white_moving_piece.position.down.right.down.right.to_s).and_return(true)
+          allow(board).to receive(:find).with(white_moving_piece.position.down.right.down.right.to_s).and_return(square)
+          allow(white_moving_piece).to receive(:enemy?).with(white_piece).and_return(false)
+          allow(board).to receive(:find).with(white_moving_piece.position.down.right.down.right.down.right.to_s).and_return(square)
+          allow(board).to receive(:in_bounds?).with(white_moving_piece.position.down.right.down.right.down.right.to_s).and_return(true)
+        end
+
+        it 'returns proper moves' do
+          moves = %w[f3].map { |move| coordinate.parse(move) }
+          limit = 8
+          expect(down_right_moving_piece.go_down_right(limit)).to match_array(moves)
+        end
+      end
+    end
+
+    describe '#go_down_left' do
+      context 'when limit is 4' do
+        subject(:down_left_moving_piece) { PieceNavigator.new(board, white_moving_piece) }
+
+        let(:board) { instance_double(Board) }
+        let(:white_moving_piece) { instance_double(Piece, position: coordinate.parse('d4'), colour: 'white', coordinate:) }
+        let(:coordinate) { Coordinate }
+        let(:white_piece) { instance_double(Piece, position: coordinate.parse('b2')) }
+        let(:square) { instance_double(Square, piece: white_piece) }
+
+        before do
+          down_left_moving_piece.extend(described_class)
+          allow(board).to receive(:find).with(white_moving_piece.position.down.left.to_s).and_return(square)
+          allow(square).to receive(:occupied?).and_return(false, false, true, true)
+          allow(board).to receive(:in_bounds?).with(white_moving_piece.position.down.left.down.left.to_s).and_return(true)
+          allow(board).to receive(:find).with(white_moving_piece.position.down.left.down.left.to_s).and_return(square)
+          allow(white_moving_piece).to receive(:enemy?).with(white_piece).and_return(false)
+          allow(board).to receive(:find).with(white_moving_piece.position.down.left.down.left.down.left.to_s).and_return(square)
+          allow(board).to receive(:in_bounds?).with(white_moving_piece.position.down.left.down.left.down.left.to_s).and_return(true)
+        end
+
+        it 'returns proper moves' do
+          moves = %w[c3].map { |move| coordinate.parse(move) }
+          limit = 4
+          expect(down_left_moving_piece.go_down_left(limit)).to match_array(moves)
+        end
+      end
     end
   end
 end

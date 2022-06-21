@@ -135,4 +135,71 @@ module Moves
       moves.reject { |move| allied_coordinates(moves).include?(move) }
     end
   end
+
+  # This module holds diagonal moves that can be limited in reach.
+  module LimitedDiagonal
+    def go_up_left(limit)
+      queue = [piece.position.up.left]
+      moves = []
+      counter = 0
+      until queue.empty?
+        move = queue.shift
+        current_square = board.find(move.to_s)
+        break unless current_square
+
+        moves << move if empty_or_enemy?(current_square)
+        counter += 1
+        queue.push(move.up.left) if counter < limit && passable?(move.up.left.to_s, current_square)
+      end
+      moves
+    end
+
+    def go_up_right(limit)
+      queue = [piece.position.up.right]
+      moves = []
+      counter = 0
+      until queue.empty?
+        move = queue.shift
+        current_square = board.find(move.to_s)
+        break unless current_square
+
+        moves << move if empty_or_enemy?(current_square)
+        counter += 1
+        queue.push(move.up.right) if counter < limit && passable?(move.up.right.to_s, current_square)
+      end
+      moves
+    end
+
+    def go_down_left(limit)
+      queue = [piece.position.down.left]
+      moves = []
+      counter = 0
+      until queue.empty?
+        move = queue.shift
+        current_square = board.find(move.to_s)
+        break unless current_square
+
+        moves << move if empty_or_enemy?(current_square)
+        counter += 1
+        queue.push(move.down.left) if counter < limit && passable?(move.down.left.to_s, current_square)
+      end
+      moves
+    end
+
+    def go_down_right(limit)
+      queue = [piece.position.down.right]
+      moves = []
+      counter = 0
+      until queue.empty?
+        move = queue.shift
+        current_square = board.find(move.to_s)
+        break unless current_square
+
+        moves << move if empty_or_enemy?(current_square)
+        counter += 1
+        queue.push(move.down.right) if counter < limit && passable?(move.down.right.to_s, current_square)
+      end
+      moves
+    end
+  end
 end
