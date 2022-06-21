@@ -119,6 +119,7 @@ describe Board do
         allow(start_square).to receive(:piece).and_return(piece)
         allow(start_square).to receive(:vacate).once
         allow(target_square).to receive(:place)
+        allow(piece).to receive(:move).with('a2')
       end
 
       it 'sends start_square a vacate message' do
@@ -129,6 +130,11 @@ describe Board do
       it 'sends target_square a place message with proper piece' do
         in_bounds.move_piece('a1', 'a2')
         expect(target_square).to have_received(:place).with(piece)
+      end
+
+      it 'sends piece a move message' do
+        in_bounds.move_piece('a1', 'a2')
+        expect(piece).to have_received(:move).with('a2')
       end
     end
   end
