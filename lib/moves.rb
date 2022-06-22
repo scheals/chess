@@ -128,6 +128,66 @@ module Moves
     end
   end
 
+  # This module holds takes for Pawns.
+  module PawnTakes
+    def white_takes
+      enemy_coordinates([piece.position.left.up, piece.position.right.up])
+    end
+
+    def black_takes
+      enemy_coordinates([piece.position.left.down, piece.position.right.down])
+    end
+  end
+
+  # This module handles forward movement for Pawns.
+  module PawnForward
+    def white_forward
+      return white_double unless piece.moved?
+
+      forward = piece.position.up
+      move = []
+      move << forward unless board.find(forward.to_s).occupied?
+      move
+    end
+
+    def white_double
+      queue = [piece.position.up]
+      moves = []
+      until queue.empty?
+        move = queue.shift
+        current_square = board.find(move.to_s)
+        break unless current_square
+
+        moves << move unless current_square.occupied?
+        queue.push(move.up) if passable?(move.up.to_s, current_square) && moves.size < 2
+      end
+      moves
+    end
+
+    def black_forward
+      return black_double unless piece.moved?
+
+      forward = piece.position.down
+      move = []
+      move << forward unless board.find(forward.to_s).occupied?
+      move
+    end
+
+    def black_double
+      queue = [piece.position.down]
+      moves = []
+      until queue.empty?
+        move = queue.shift
+        current_square = board.find(move.to_s)
+        break unless current_square
+
+        moves << move unless current_square.occupied?
+        queue.push(move.down) if passable?(move.down.to_s, current_square) && moves.size < 2
+      end
+      moves
+    end
+  end
+
   # This module holds moves that don't care for collision.
   module CollisionlessMoves
     def collisionless_moves

@@ -3,8 +3,8 @@
 require_relative '../lib/moves'
 require_relative '../lib/piece_navigator'
 require_relative '../lib/board'
-# require_relative '../lib/navigator/'
 
+# rubocop: disable Layout/LineLength
 describe Moves::HorizontalMoves do
   describe '#go_left' do
     subject(:leftbound_rook) { PieceNavigator.new(board, white_rook) }
@@ -359,4 +359,111 @@ describe Moves::CollisionlessMoves do
       end
     end
   end
+
+  describe Moves::PawnTakes do
+
+    # rubocop: disable RSpec/MultipleMemoizedHelpers
+    context 'when Pawn is white' do
+      subject(:white_pawn_piece) { PieceNavigator.new(board, white_piece) }
+
+      let(:board) { instance_double(Board) }
+      let(:white_piece) { instance_double(Piece, position: coordinate.parse('b4'), colour: 'white') }
+      let(:coordinate) { Coordinate }
+      let(:black_piece) { instance_double(Piece, colour: 'black') }
+      let(:square) { instance_double(Square) }
+      let(:nil_piece) { instance_double(NilPiece) }
+
+      before do
+        white_pawn_piece.extend(described_class)
+        allow(board).to receive(:find).with('a5').and_return(square)
+        allow(board).to receive(:find_piece).with('a5').and_return(nil_piece)
+        allow(white_piece).to receive(:enemy?).with(nil_piece).and_return(false)
+        allow(white_piece).to receive(:enemy?).with(black_piece).and_return(true)
+        allow(board).to receive(:find).with('c5').and_return(square)
+        allow(board).to receive(:find_piece).with('c5').and_return(black_piece)
+      end
+
+      it 'includes takes properly' do
+        result = %w[c5].map { |possible_take| coordinate.parse(possible_take) }
+        expect(white_pawn_piece.white_takes).to match_array(result)
+      end
+    end
+    # rubocop: enable RSpec/MultipleMemoizedHelpers
+
+    context 'when Pawn is black' do
+      subject(:black_pawn_piece) { PieceNavigator.new(board, black_piece) }
+
+      let(:board) { instance_double(Board) }
+      let(:black_piece) { instance_double(Piece, position: coordinate.parse('g6'), colour: 'black') }
+      let(:coordinate) { Coordinate }
+      let(:white_piece) { instance_double(Piece, colour: 'white') }
+      let(:square) { instance_double(Square) }
+
+      before do
+        black_pawn_piece.extend(described_class)
+        allow(board).to receive(:find).with('f7').and_return(square)
+        allow(board).to receive(:find_piece).with('f7').and_return(white_piece)
+        allow(black_piece).to receive(:enemy?).with(white_piece).and_return(true).twice
+        allow(board).to receive(:find).with('h7').and_return(square)
+        allow(board).to receive(:find_piece).with('h7').and_return(white_piece)
+      end
+
+      it 'includes takes properly' do
+        result = %w[f7 h7].map { |possible_take| coordinate.parse(possible_take) }
+        expect(black_pawn_piece.white_takes).to match_array(result)
+      end
+    end
+  end
+
+  describe Moves::PawnForward do
+    describe '#white_forward' do
+      context 'when Pawn is white and not moved' do
+        subject(:white_pawn_piece) { PieceNavigator.new(board, white_piece) }
+
+        let(:board) { instance_double(Board) }
+        let(:white_piece) { instance_double(Piece, position: coordinate.parse('g6'), colour: 'white') }
+        let(:coordinate) { Coordinate }
+        let(:square) { instance_double(Square) }
+
+        before do
+          white_pawn_piece.extend(described_class)
+          allow(white_piece).to receive(:moved?).and_return(false)
+          allow(board).to receive(:find).with('g7').and_return(square)
+          allow(square).to receive(:occupied?).and_return(false, true)
+          allow(board).to receive(:find).with('g8').and_return(square)
+          allow(board).to receive(:in_bounds?).with('g8').and_return(true)
+        end
+
+        it 'includes moves properly' do
+          result = %w[g7].map { |possible_take| coordinate.parse(possible_take) }
+          expect(white_pawn_piece.white_forward).to match_array(result)
+        end
+      end
+    end
+
+    describe '#black_forward' do
+      context 'when Pawn is black and moved' do
+        subject(:black_pawn_piece) { PieceNavigator.new(board, black_piece) }
+
+        let(:board) { instance_double(Board) }
+        let(:black_piece) { instance_double(Piece, position: coordinate.parse('c3'), colour: 'black') }
+        let(:coordinate) { Coordinate }
+        let(:white_piece) { instance_double(Piece, colour: 'white') }
+        let(:square) { instance_double(Square) }
+
+        before do
+          black_pawn_piece.extend(described_class)
+          allow(black_piece).to receive(:moved?).and_return(true)
+          allow(board).to receive(:find).with('c2').and_return(square)
+          allow(square).to receive(:occupied?).and_return(true)
+        end
+
+        it 'includes moves properly' do
+          result = []
+          expect(black_pawn_piece.black_forward).to match_array(result)
+        end
+      end
+    end
+  end
 end
+# rubocop: enable Layout/LineLength
