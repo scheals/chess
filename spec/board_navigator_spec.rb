@@ -304,4 +304,101 @@ describe BoardNavigator do
     end
   end
   # rubocop: enable RSpec/MultipleMemoizedHelpers
+
+  describe '#moves_for' do
+    let(:board) { Board.new }
+    let(:coordinate) { Coordinate }
+
+    context 'when piece has no special considerations' do
+      subject(:usual_navigation) { described_class.new(board) }
+
+      before do
+        board.setup('1k2r3/2N5/r1q1r1N1/6N1/N7/5N2/2r3N1/2N4K')
+      end
+
+      it 'just returns correct moves' do
+        correct_moves = %w[a4 b5 a8 b6 b7 c7 c5 c4 c3 d7 d6 d5 e4 f3].map { |move| coordinate.parse(move) }
+        expect(usual_navigation.moves_for('c6')).to match_array(correct_moves)
+      end
+    end
+
+    context 'when a move would put own king in check' do
+      subject(:checking_move) { described_class.new(board) }
+
+      before do
+        board.setup('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR')
+      end
+
+      it 'does not include those moves' do
+        correct_moves = %w[c6 b5 a4].map { |move| coordinate.parse(move) }
+        expect(checking_move.moves_for('d7')).to match_array(correct_moves)
+      end
+    end
+
+    context 'when queenside castling is possible for a king' do
+      subject(:queenside_navigation) { described_class.new(board) }
+
+      before do
+        board.setup('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR')
+      end
+
+      it 'includes it as a possibility' do
+        correct_moves = %w[d1 d2 c1].map { |move| coordinate.parse(move) }
+        expect(queenside_navigation.moves_for('e1')).to match_array(correct_moves)
+      end
+    end
+
+    context 'when kingside castling is possible for a king' do
+      subject(:kingside_navigation) { described_class.new(board) }
+
+      before do
+        board.setup('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR')
+      end
+
+      it 'includes it as a possibility' do
+        correct_moves = %w[d8 f8 g8]
+        expect(kingside_navigation.moves_for('e8')).to match_array(correct_moves)
+      end
+    end
+
+    context 'when queenside castling puts king in check' do
+      subject(:illegal_queenside) { described_class.new(board) }
+
+      before do
+        board.setup('rnb1k2r/ppp1pp1p/5n1b/3p2p1/q1P5/2NPB3/PP2PPPP/R3KBNR')
+      end
+
+      it 'does not include it as a possibility' do
+        correct_moves = %w[d2].map { |move| coordinate.parse(move) }
+        expect(illegal_queenside.moves_for('e1')).to match_array(correct_moves)
+      end
+    end
+
+    context 'when kingside castling puts king in check' do
+      subject(:illegal_kingside) { described_class.new(board) }
+
+      before do
+        board.setup('rnb1k2r/ppp1pp1p/5nQb/3p2p1/q1P5/2NPB3/PP2PPPP/R3KBNR')
+      end
+
+      it 'does not include it as a possibility' do
+        correct_moves = %w[d8 f8].map { |move| coordinate.parse(move) }
+        expect(illegal_kingside.moves_for('e8')).to match_array(correct_moves)
+      end
+    end
+
+    context 'when en passant is possible for a pawn' do
+      subject(:en_passant) { described_class.new(board) }
+
+      before do
+        board.setup('4k3/8/8/8/3p4/8/4P3/4K3')
+      end
+
+      it 'includes it as a possibility' do
+        correct_moves = %w[d3 d2 e3].map { |move| coordinate.parse(move) }
+        board.move_piece('e2', 'e4')
+        expect(en_passant.moves_for('d4')).to match_array(correct_moves)
+      end
+    end
+  end
 end
