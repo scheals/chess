@@ -253,7 +253,7 @@ describe QueenNavigator do
       let(:coordinate_system) { Coordinate }
 
       before do
-        board.setup('4r3/2N5/r1q1r1N/6N1/N7/5N2/2r3N1/2N5')
+        board.setup('4r3/2N5/r1q1r1N1/6N1/N7/5N2/2r3N1/2N5')
       end
 
       it 'correctly interprets collision' do
