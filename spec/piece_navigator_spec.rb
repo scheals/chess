@@ -368,4 +368,60 @@ describe PawnNavigator do
       end
     end
   end
+
+  describe '#promoteable?' do
+    context 'when Pawn is white' do
+      subject(:promo_white_pawn) { described_class.new(board, white_pawn) }
+
+      let(:board) { instance_double(Board) }
+      let(:white_pawn) { instance_double(Pawn, colour: 'white') }
+
+      context 'when pawn is on the 8th row' do
+        before do
+          allow(white_pawn).to receive(:position).and_return('a8')
+        end
+
+        it 'returns true' do
+          expect(promo_white_pawn.promoteable?).to be true
+        end
+      end
+
+      context 'when pawn is not on the 8th row' do
+        before do
+          allow(white_pawn).to receive(:position).and_return('d3')
+        end
+
+        it 'returns false' do
+          expect(promo_white_pawn.promoteable?).to be false
+        end
+      end
+    end
+
+    context 'when Pawn is black' do
+      subject(:promo_black_pawn) { described_class.new(board, black_pawn) }
+
+      let(:board) { instance_double(Board) }
+      let(:black_pawn) { instance_double(Pawn, colour: 'black') }
+
+      context 'when pawn is on the 1st row' do
+        before do
+          allow(black_pawn).to receive(:position).and_return('h1')
+        end
+
+        it 'returns true when on 1st row' do
+          expect(promo_black_pawn.promoteable?).to be true
+        end
+      end
+
+      context 'when pawn is not on the 1st row' do
+        before do
+          allow(black_pawn).to receive(:position).and_return('g8')
+        end
+
+        it 'returns false otherwise' do
+          expect(promo_black_pawn.promoteable?).to be false
+        end
+      end
+    end
+  end
 end
