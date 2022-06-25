@@ -342,8 +342,24 @@ describe PawnNavigator do
       end
     end
 
-    xcontext 'when Pawn can take' do
+    context 'when Pawn can take' do
+      subject(:pawn_taking) { described_class.new(board, black_pawn) }
+
+      let(:board) { Board.new }
+      let(:black_pawn) { board.find_piece('d5') }
+      # See 'when Pawn was already moved' above? No idea why that works with let! but this doesn't. So I had to grab the piece after it's been moved.
+      let(:coordinate) { Coordinate }
+
+      before do
+        board.setup
+        board.move_piece('d7', 'd5')
+        board.move_piece('e2', 'e4')
+        board.move_piece('c2', 'c4')
+      end
+
       it 'includes takes as moves' do
+        moves = %w[c4 d4 e4].map { |move| coordinate.parse(move) }
+        expect(pawn_taking.possible_moves).to match_array(moves)
       end
     end
 
