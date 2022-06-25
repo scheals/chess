@@ -12,7 +12,7 @@ class BoardNavigator
     @coordinate_system = coordinate_system
   end
 
-  def moves_for(coordinate)
+  def moves_after_collision_for(coordinate)
     return nil unless piece_for(coordinate)
 
     navigator = navigator_factory.for(board, piece_for(coordinate))
@@ -46,6 +46,6 @@ class BoardNavigator
   end
 
   def enemy_moves(piece_navigator)
-    piece_navigator.enemy_coordinates(board.coordinates).map { |coordinate| moves_for(coordinate) }
+    piece_navigator.enemy_coordinates(board.coordinates).map { |coordinate| moves_after_collision_for(coordinate) }
   end
 end

@@ -12,7 +12,7 @@ end
 
 describe BoardNavigator do
   # rubocop: disable RSpec/MultipleMemoizedHelpers
-  describe '#moves_for' do
+  describe '#moves_after_collision_for' do
     let(:coordinate) { Coordinate }
 
     context 'when piece is found' do
@@ -31,23 +31,23 @@ describe BoardNavigator do
       end
 
       it 'sends Board a find_piece message twice' do
-        navigator.moves_for(pieceful_coordinate)
+        navigator.moves_after_collision_for(pieceful_coordinate)
         expect(board).to have_received(:find_piece).with(pieceful_coordinate).twice
       end
 
       it 'sends NavigatorFactory a for message' do
-        navigator.moves_for(pieceful_coordinate)
+        navigator.moves_after_collision_for(pieceful_coordinate)
         expect(navigator_factory).to have_received(:for).with(board, bishop)
       end
 
       it 'sends NavigatorPiece a possible_moves message' do
-        navigator.moves_for(pieceful_coordinate)
+        navigator.moves_after_collision_for(pieceful_coordinate)
         expect(bishop_navigator).to have_received(:possible_moves)
       end
 
       it 'returns correct moves' do
         correct_moves = %w[b8 c1 c7 d2 d6 e3 e5 g3 g5 h2 h6]
-        expect(navigator.moves_for(pieceful_coordinate)).to eq(correct_moves)
+        expect(navigator.moves_after_collision_for(pieceful_coordinate)).to eq(correct_moves)
       end
     end
 
@@ -64,17 +64,17 @@ describe BoardNavigator do
       end
 
       it 'sends Board a find_piece message' do
-        navigator.moves_for(empty_coordinate)
+        navigator.moves_after_collision_for(empty_coordinate)
         expect(board).to have_received(:find_piece).with(empty_coordinate)
       end
 
       it "doesn't send NavigatorFactory a message" do
-        navigator.moves_for(empty_coordinate)
+        navigator.moves_after_collision_for(empty_coordinate)
         expect(navigator_factory).not_to have_received(:for)
       end
 
       it 'returns nil' do
-        expect(navigator.moves_for(empty_coordinate)).to be_nil
+        expect(navigator.moves_after_collision_for(empty_coordinate)).to be_nil
       end
     end
   end
