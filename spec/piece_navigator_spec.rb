@@ -283,11 +283,6 @@ describe KingNavigator do
       end
     end
 
-    xcontext 'when King would put itself in check' do
-      it "doesn't include those moves" do
-      end
-    end
-
     xcontext 'when castling is possible' do
       it 'includes it as a possible move' do
       end
