@@ -131,11 +131,13 @@ module Moves
   # This module holds takes for Pawns.
   module PawnTakes
     def white_takes
-      enemy_coordinates([piece.position.left.up, piece.position.right.up])
+      coordinates = [piece.position.left.up, piece.position.right.up].select { |coordinate| board.find(coordinate.to_s) }
+      enemy_coordinates(coordinates)
     end
 
     def black_takes
-      enemy_coordinates([piece.position.left.down, piece.position.right.down])
+      coordinates = [piece.position.left.down, piece.position.right.down].select { |coordinate| board.find(coordinate.to_s) }
+      enemy_coordinates(coordinates)
     end
   end
 
