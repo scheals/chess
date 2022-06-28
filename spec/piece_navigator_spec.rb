@@ -288,6 +288,46 @@ describe KingNavigator do
       end
     end
   end
+
+  describe '#can_castle_kingside?' do
+    context 'when kingside castling is possible' do
+      subject(:possible_kingside) { described_class.new(board, white_king) }
+
+      let(:board) { Board.new }
+      let(:coordinate) { Coordinate }
+      let(:white_king) { instance_double(King, position: coordinate.parse('e1'), colour: 'white') }
+      let(:white_rook) { instance_double(Rook, position: coordinate.parse('h1'),  colour: 'white', instance_of?: Rook) }
+
+      before do
+        board.put(white_king, 'e1')
+        board.put(white_rook, 'h1')
+        allow(white_rook).to receive(:can_castle?).and_return(true)
+      end
+
+      it 'returns true' do
+        expect(possible_kingside.can_castle_kingside?).to be true
+      end
+    end
+
+    context 'when kingside castling is not possible' do
+      subject(:impossible_kingside) { described_class.new(board, black_king) }
+
+      let(:board) { Board.new }
+      let(:coordinate) { Coordinate }
+      let(:black_king) { instance_double(King, position: coordinate.parse('e8'), colour: 'black') }
+      let(:black_rook) { instance_double(Rook, position: coordinate.parse('h8'), colour: 'black', instance_of?: Rook) }
+
+      before do
+        board.put(black_king, 'e8')
+        board.put(black_rook, 'h8')
+        allow(black_rook).to receive(:can_castle?).and_return(false)
+      end
+
+      it 'returns false' do
+        expect(impossible_kingside.can_castle_kingside?).to be false
+      end
+    end
+  end
 end
 
 describe PawnNavigator do
