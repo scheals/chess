@@ -434,6 +434,25 @@ describe Rook do
       end
     end
   end
+
+  describe '#can_castle?' do
+    context 'when it has not moved' do
+      subject(:castling_rook) { described_class.new('a6', colour: 'white') }
+
+      it 'returns true' do
+        expect(castling_rook.can_castle?).to be true
+      end
+    end
+
+    context 'when it has moved' do
+      subject(:moved_rook) { described_class.new('b6', colour: 'white') }
+
+      it 'returns false' do
+        moved_rook.move('b9')
+        expect(moved_rook.can_castle?).to be false
+      end
+    end
+  end
 end
 
 describe Bishop do

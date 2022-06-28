@@ -51,4 +51,10 @@ class Rook < Piece
     when 'black' then 'r'
     end
   end
+
+  def can_castle?
+    return true unless moved?
+
+    false
+  end
 end
