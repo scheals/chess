@@ -222,6 +222,25 @@ describe King do
       end
     end
   end
+
+  describe '#can_castle?' do
+    context 'when it has not moved' do
+      subject(:castling_king) { described_class.new('a6', colour: 'white') }
+
+      it 'returns true' do
+        expect(castling_king.can_castle?).to be true
+      end
+    end
+
+    context 'when it has moved' do
+      subject(:moved_king) { described_class.new('b6', colour: 'white') }
+
+      it 'returns false' do
+        moved_king.move('a7')
+        expect(moved_king.can_castle?).to be false
+      end
+    end
+  end
 end
 
 describe Queen do

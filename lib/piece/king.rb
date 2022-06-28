@@ -33,4 +33,10 @@ class King < Piece
     when 'black' then 'k'
     end
   end
+
+  def can_castle?
+    return true unless moved?
+
+    false
+  end
 end
