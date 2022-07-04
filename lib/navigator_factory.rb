@@ -17,7 +17,7 @@ module NavigatorFactory
              'queen' => QueenNavigator,
              'king' => KingNavigator }.freeze
 
-  def self.for(board, piece)
-    (PIECES[piece.class.to_s.downcase] || PieceNavigator).new(board, piece)
+  def self.for(board_navigator, piece)
+    (PIECES[piece.class.to_s.downcase] || PieceNavigator).new(board_navigator, piece)
   end
 end

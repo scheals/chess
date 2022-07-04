@@ -9,6 +9,7 @@ require_relative '../lib/piece/queen'
 require_relative '../lib/piece/king'
 require_relative '../lib/piece/knight'
 require_relative '../lib/piece/pawn'
+require_relative '../lib/board_navigator'
 
 # rubocop: disable RSpec/MultipleMemoizedHelpers
 describe NavigatorFactory do
@@ -16,6 +17,7 @@ describe NavigatorFactory do
 
   describe '@for' do
     let(:factory) { described_class }
+    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:rook) { instance_double(Rook) }
     let(:bishop) { instance_double(Bishop) }
@@ -34,31 +36,31 @@ describe NavigatorFactory do
     end
 
     it 'creates a PawnNavigator instance' do
-      expect(factory.for(board, pawn)).to be_a(PawnNavigator)
+      expect(factory.for(board_navigator, pawn)).to be_a(PawnNavigator)
     end
 
     it 'creates a RookNavigator instance' do
-      expect(factory.for(board, rook)).to be_a(RookNavigator)
+      expect(factory.for(board_navigator, rook)).to be_a(RookNavigator)
     end
 
     it 'creates a KnightNavigator instance' do
-      expect(factory.for(board, knight)).to be_a(KnightNavigator)
+      expect(factory.for(board_navigator, knight)).to be_a(KnightNavigator)
     end
 
     it 'creates a BishopNavigator instance' do
-      expect(factory.for(board, bishop)).to be_a(BishopNavigator)
+      expect(factory.for(board_navigator, bishop)).to be_a(BishopNavigator)
     end
 
     it 'creates a QueenNavigator instance' do
-      expect(factory.for(board, queen)).to be_a(QueenNavigator)
+      expect(factory.for(board_navigator, queen)).to be_a(QueenNavigator)
     end
 
     it 'creates a KingNavigator instance' do
-      expect(factory.for(board, king)).to be_a(KingNavigator)
+      expect(factory.for(board_navigator, king)).to be_a(KingNavigator)
     end
 
     it 'defaults to a PieceNavigator instance' do
-      expect(factory.for(board, 'Unicorn')).to be_a(PieceNavigator)
+      expect(factory.for(board_navigator, 'Unicorn')).to be_a(PieceNavigator)
     end
   end
 end
