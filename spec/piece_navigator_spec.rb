@@ -130,8 +130,9 @@ end
 describe RookNavigator do
   describe '#possible_moves' do
     context 'when checking starting moves' do
-      subject(:navigate_possibilities) { described_class.new(board, white_rook) }
+      subject(:navigate_possibilities) { described_class.new(board_navigator, white_rook) }
 
+      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:white_rook) { board.find_piece('h1') }
       let(:coordinate_system) { Coordinate }
@@ -146,22 +147,15 @@ describe RookNavigator do
     end
 
     context 'when game is underway' do
-      subject(:navigate_rook) { described_class.new(board, black_rook) }
+      subject(:navigate_rook) { described_class.new(board_navigator, black_rook) }
 
+      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:black_rook) { Rook.new('e4', colour: 'black') }
-      let(:white_bishop) { Bishop.new('e2', colour: 'white') }
-      let(:black_knight) { Knight.new('f4', colour: 'black') }
       let(:coordinate_system) { Coordinate }
 
       before do
-        board.put(black_rook, 'e4')
-        board.put(white_bishop, 'e2')
-        board.put(white_bishop, 'e8')
-        board.put(white_bishop, 'g4')
-        board.put(black_knight, 'f4')
-        board.put(black_knight, 'c4')
-        board.put(black_knight, 'a4')
+        board.setup('4B3/8/8/8/n1n1rnB1/8/4B3/8')
       end
 
       it 'correctly interprets collision' do
