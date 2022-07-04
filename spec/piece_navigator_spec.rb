@@ -428,16 +428,16 @@ describe KingNavigator do
       let(:coordinate) { Coordinate }
       let(:white_king) { King.new(coordinate.parse('e8'), colour: 'white') }
       let(:white_rook) { Rook.new(coordinate.parse('a8'), colour: 'white') }
-      let(:black_rook) { Rook.new(coordinate.parse('d3'), colour: 'black') }
+      let(:black_rook) { Rook.new(coordinate.parse('c3'), colour: 'black') }
 
       before do
         board.put(white_king, 'e8')
         board.put(white_rook, 'a8')
-        board.put(black_rook, 'd3')
+        board.put(black_rook, 'c3')
       end
 
       it 'returns false' do
-        expect(checked_queenside.can_castle_kingside?).to be false
+        expect(checked_queenside.can_castle_queenside?).to be false
       end
     end
     # rubocop: enable RSpec/MultipleMemoizedHelpers
