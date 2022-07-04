@@ -62,8 +62,9 @@ describe PieceNavigator do
   end
 
   describe '#legal_for' do
-    subject(:navigator) { described_class.new(board, piece) }
+    subject(:navigator) { described_class.new(board_navigator, piece) }
 
+    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:piece) { instance_double(Piece) }
 
