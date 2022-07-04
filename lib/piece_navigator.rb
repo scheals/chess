@@ -4,8 +4,9 @@
 class PieceNavigator
   attr_reader :board, :piece
 
-  def initialize(board, piece)
-    @board = board
+  def initialize(board_navigator, piece)
+    @board_navigator = board_navigator
+    @board = board_navigator.board
     @piece = piece
   end
 

@@ -15,8 +15,12 @@ class BoardNavigator
   def moves_after_collision_for(coordinate)
     return nil unless piece_for(coordinate)
 
-    navigator = navigator_factory.for(board, piece_for(coordinate))
+    navigator = navigator_factory.for(self, piece_for(coordinate))
     navigator.possible_moves
+  end
+
+  def moves_for(coordinate)
+    moves_after_collision_for(coordinate).reject { |move| checks_king?(coordinate, move.to_s) }
   end
 
   def piece_for(coordinate)
@@ -31,7 +35,7 @@ class BoardNavigator
     king_navigator = if king.instance_of?(KingNavigator)
                        king
                      else
-                       navigator_factory.for(board, king)
+                       navigator_factory.for(self, king)
                      end
 
     return true if enemy_moves(king_navigator).any? { |moves| moves.include?(king_navigator.piece.position) }
