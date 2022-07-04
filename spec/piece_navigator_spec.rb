@@ -376,6 +376,7 @@ end
 describe PawnNavigator do
   describe '#possible_moves' do
     context 'when checking starting moves' do
+      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate_system) { Coordinate }
 
@@ -384,7 +385,7 @@ describe PawnNavigator do
       end
 
       context 'when Pawn is white' do
-        subject(:navigate_possibilities) { described_class.new(board, white_pawn) }
+        subject(:navigate_possibilities) { described_class.new(board_navigator, white_pawn) }
 
         let(:white_pawn) { board.find_piece('b2') }
 
@@ -396,7 +397,7 @@ describe PawnNavigator do
       end
 
       context 'when Pawn is black' do
-        subject(:navigate_possibilities) { described_class.new(board, black_pawn) }
+        subject(:navigate_possibilities) { described_class.new(board_navigator, black_pawn) }
 
         let(:black_pawn) { board.find_piece('d7') }
 
@@ -408,7 +409,7 @@ describe PawnNavigator do
       end
 
       context 'when Pawn was already moved' do
-        subject(:pawn_no_double) { described_class.new(board, white_pawn) }
+        subject(:pawn_no_double) { described_class.new(board_navigator, white_pawn) }
 
         let!(:white_pawn) { board.find_piece('d2') }
 
@@ -421,8 +422,9 @@ describe PawnNavigator do
     end
 
     context 'when Pawn can take' do
-      subject(:pawn_taking) { described_class.new(board, black_pawn) }
+      subject(:pawn_taking) { described_class.new(board_navigator, black_pawn) }
 
+      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:black_pawn) { board.find_piece('d5') }
       # See 'when Pawn was already moved' above? No idea why that works with let! but this doesn't. So I had to grab the piece after it's been moved.
@@ -449,8 +451,9 @@ describe PawnNavigator do
 
   describe '#promoteable?' do
     context 'when Pawn is white' do
-      subject(:promo_white_pawn) { described_class.new(board, white_pawn) }
+      subject(:promo_white_pawn) { described_class.new(board_navigator, white_pawn) }
 
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:white_pawn) { instance_double(Pawn, colour: 'white') }
 
@@ -476,8 +479,9 @@ describe PawnNavigator do
     end
 
     context 'when Pawn is black' do
-      subject(:promo_black_pawn) { described_class.new(board, black_pawn) }
+      subject(:promo_black_pawn) { described_class.new(board_navigator, black_pawn) }
 
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:black_pawn) { instance_double(Pawn, colour: 'black') }
 
