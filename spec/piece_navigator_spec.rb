@@ -170,8 +170,9 @@ end
 describe BishopNavigator do
   describe '#possible_moves' do
     context 'when checking starting moves' do
-      subject(:navigate_possibilities) { described_class.new(board, black_bishop) }
+      subject(:navigate_possibilities) { described_class.new(board_navigator, black_bishop) }
 
+      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate_system) { Coordinate }
       let(:black_bishop) { board.find_piece('c8') }
@@ -186,8 +187,9 @@ describe BishopNavigator do
     end
 
     context 'when game is underway' do
-      subject(:navigate_bishop) { described_class.new(board, white_bishop) }
+      subject(:navigate_bishop) { described_class.new(board_navigator, white_bishop) }
 
+      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:white_bishop) { board.find_piece('e4') }
       let(:coordinate_system) { Coordinate }
