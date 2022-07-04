@@ -295,8 +295,9 @@ describe KingNavigator do
 
   describe '#can_castle_kingside?' do
     context 'when kingside castling is possible' do
-      subject(:possible_kingside) { described_class.new(board, white_king) }
+      subject(:possible_kingside) { described_class.new(board_navigator, white_king) }
 
+      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
       let(:white_king) { instance_double(King, position: coordinate.parse('e1'), colour: 'white') }
@@ -314,8 +315,9 @@ describe KingNavigator do
     end
 
     context 'when kingside castling is not possible' do
-      subject(:impossible_kingside) { described_class.new(board, black_king) }
+      subject(:impossible_kingside) { described_class.new(board_navigator, black_king) }
 
+      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
       let(:black_king) { instance_double(King, position: coordinate.parse('e8'), colour: 'black') }
@@ -335,8 +337,9 @@ describe KingNavigator do
 
   describe '#can_castle_queenside?' do
     context 'when queenside castling is possible' do
-      subject(:possible_queenside) { described_class.new(board, white_king) }
+      subject(:possible_queenside) { described_class.new(board_navigator, white_king) }
 
+      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
       let(:white_king) { instance_double(King, position: coordinate.parse('e1'), colour: 'white') }
@@ -354,8 +357,9 @@ describe KingNavigator do
     end
 
     context 'when queenside castling is not possible' do
-      subject(:impossible_queenside) { described_class.new(board, black_king) }
+      subject(:impossible_queenside) { described_class.new(board_navigator, black_king) }
 
+      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
       let(:black_king) { instance_double(King, position: coordinate.parse('e8'), colour: 'black') }
