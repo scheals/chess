@@ -231,8 +231,9 @@ end
 describe QueenNavigator do
   describe '#possible_moves' do
     context 'when checking starting moves' do
-      subject(:navigate_possibilities) { described_class.new(board, black_queen) }
+      subject(:navigate_possibilities) { described_class.new(board_navigator, black_queen) }
 
+      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate_system) { Coordinate }
       let(:black_queen) { board.find_piece('d8') }
@@ -247,8 +248,9 @@ describe QueenNavigator do
     end
 
     context 'when game is underway' do
-      subject(:navigate_queen) { described_class.new(board, black_queen) }
+      subject(:navigate_queen) { described_class.new(board_navigator, black_queen) }
 
+      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:black_queen) { board.find_piece('c6') }
       let(:coordinate_system) { Coordinate }
