@@ -30,13 +30,13 @@ describe PieceNavigator do
   end
 
   describe '#allied_coordinates' do
-    subject(:navigate_allies) { described_class.new(board, white_rook) }
+    subject(:navigate_allies) { described_class.new(board_navigator, white_rook) }
 
-    let(:board) { Board.new }
-    let(:white_rook) { board.find_piece('a1') }
+    let(:board_navigator) { BoardNavigator.new(Board.new) }
+    let(:white_rook) { Rook.new('a1', colour: 'white') }
 
     before do
-      board.setup
+      navigate_allies.board.setup
     end
 
     it 'returns an array of squares that allied pieces are on in range of the piece' do
