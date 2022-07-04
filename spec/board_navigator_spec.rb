@@ -184,7 +184,7 @@ describe BoardNavigator do
         allow(board_copy).to receive(:find_piece).with(move).and_return(white_piece)
         allow(white_piece).to receive(:ally?).with(white_king).and_return(true)
         allow(white_piece).to receive(:ally?).with(black_king).and_return(false)
-        allow(navigator_factory).to receive(:for).with(board_copy, white_king).and_return(white_king_navigator)
+        allow(navigator_factory).to receive(:for).with(having_attributes(board: board_copy), white_king).and_return(white_king_navigator)
         none = []
         allow(white_king_navigator).to receive(:enemy_coordinates).and_return(none)
         allow(board_copy).to receive(:coordinates).and_return(none)
@@ -225,7 +225,7 @@ describe BoardNavigator do
         allow(board_copy).to receive(:find_kings).and_return([white_king, black_king])
         allow(board_copy).to receive(:find_piece).with(move).and_return(white_rook).thrice
         allow(white_rook).to receive(:ally?).and_return(true, false)
-        allow(navigator_factory).to receive(:for).with(board_copy, white_king).and_return(white_king_navigator)
+        allow(navigator_factory).to receive(:for).with(having_attributes(board: board_copy), white_king).and_return(white_king_navigator)
         allow(board_copy).to receive(:coordinates).and_return(%w[a3 a4 a7 b4])
         allow(white_king_navigator).to receive(:enemy_coordinates).with(%w[a3 a4 a7 b4]).and_return(['a7'])
         allow(board_copy).to receive(:find_piece).with('a7').and_return(black_rook)
@@ -234,20 +234,20 @@ describe BoardNavigator do
         allow(board_copy).to receive(:find_piece).with('a4').and_return(white_rook)
         allow(white_king).to receive(:enemy?).with(white_rook).and_return(false)
         allow(white_king).to receive(:enemy?).with(black_rook).and_return(true)
-        allow(navigator_factory).to receive(:for).with(board_copy, black_rook).and_return(black_rook_navigator)
+        allow(navigator_factory).to receive(:for).with(having_attributes(board: board_copy), black_rook).and_return(black_rook_navigator)
         allow(black_rook_navigator).to receive(:possible_moves).and_return([white_king.position])
       end
 
       it 'sends the NavigatorFactory a for message with a King' do
         move = 'b4'
         navigate_check.checks_king?(white_rook.position, move)
-        expect(navigator_factory).to have_received(:for).with(board_copy, white_king)
+        expect(navigator_factory).to have_received(:for).with(having_attributes(board: board_copy), white_king)
       end
 
       it 'sends the NavigatorFactory a for message with enemy pieces' do
         move = 'b4'
         navigate_check.checks_king?(white_rook.position, move)
-        expect(navigator_factory).to have_received(:for).with(board_copy, black_rook)
+        expect(navigator_factory).to have_received(:for).with(having_attributes(board: board_copy), black_rook)
       end
 
       it 'returns true' do
@@ -273,27 +273,27 @@ describe BoardNavigator do
         allow(board_copy).to receive(:find_kings).and_return([white_king, black_king])
         allow(board_copy).to receive(:find_piece).with(move).and_return(black_rook).exactly(4).times
         allow(black_rook).to receive(:ally?).and_return(false, true)
-        allow(navigator_factory).to receive(:for).with(board_copy, black_king).and_return(black_king_navigator)
+        allow(navigator_factory).to receive(:for).with(having_attributes(board: board_copy), black_king).and_return(black_king_navigator)
         allow(board_copy).to receive(:coordinates).and_return(%w[a1 a7 h8])
         allow(black_king_navigator).to receive(:enemy_coordinates).with(%w[a1 a7 h8]).and_return(['a1'])
         allow(board_copy).to receive(:find_piece).with('h7').and_return(black_rook)
         allow(board_copy).to receive(:find_piece).with('a1').and_return(white_rook)
         allow(white_king).to receive(:enemy?).with(white_rook).and_return(true)
         allow(white_king).to receive(:enemy?).with(black_rook).and_return(false)
-        allow(navigator_factory).to receive(:for).with(board_copy, white_rook).and_return(white_rook_navigator)
+        allow(navigator_factory).to receive(:for).with(having_attributes(board: board_copy), white_rook).and_return(white_rook_navigator)
         allow(white_rook_navigator).to receive(:possible_moves).and_return([])
       end
 
       it 'sends the NavigatorFactory a for message' do
         move = 'a7'
         navigate_checkless.checks_king?(black_rook.position, move)
-        expect(navigator_factory).to have_received(:for).with(board_copy, black_king)
+        expect(navigator_factory).to have_received(:for).with(having_attributes(board: board_copy), black_king)
       end
 
       it 'sends the NavigatorFactory a for message with enemy pieces' do
         move = 'a7'
         navigate_checkless.checks_king?(black_rook.position, move)
-        expect(navigator_factory).to have_received(:for).with(board_copy, white_rook)
+        expect(navigator_factory).to have_received(:for).with(having_attributes(board: board_copy), white_rook)
       end
 
       it 'returns false' do
