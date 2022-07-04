@@ -379,6 +379,7 @@ describe Moves::PawnTakes do
   context 'when Pawn is white' do
     subject(:white_pawn_piece) { PieceNavigator.new(board_navigator, white_piece) }
 
+    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_piece) { instance_double(Piece, position: coordinate.parse('b4'), colour: 'white') }
     let(:coordinate) { Coordinate }
@@ -401,11 +402,11 @@ describe Moves::PawnTakes do
       expect(white_pawn_piece.white_takes).to match_array(result)
     end
   end
-  # rubocop: enable RSpec/MultipleMemoizedHelpers
 
   context 'when Pawn is black' do
     subject(:black_pawn_piece) { PieceNavigator.new(board_navigator, black_piece) }
 
+    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:black_piece) { instance_double(Piece, position: coordinate.parse('g6'), colour: 'black') }
     let(:coordinate) { Coordinate }
@@ -433,6 +434,7 @@ describe Moves::PawnForward do
     context 'when Pawn is white and not moved' do
       subject(:white_pawn_piece) { PieceNavigator.new(board_navigator, white_piece) }
 
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:white_piece) { instance_double(Piece, position: coordinate.parse('g6'), colour: 'white') }
       let(:coordinate) { Coordinate }
@@ -458,6 +460,7 @@ describe Moves::PawnForward do
     context 'when Pawn is black and moved' do
       subject(:black_pawn_piece) { PieceNavigator.new(board_navigator, black_piece) }
 
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:black_piece) { instance_double(Piece, position: coordinate.parse('c3'), colour: 'black') }
       let(:coordinate) { Coordinate }
