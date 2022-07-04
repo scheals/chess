@@ -86,8 +86,9 @@ describe PieceNavigator do
 
   describe '#passable?' do
     context 'when square is in bounds and not occupied' do
-      subject(:passable_navigator) { described_class.new(board, king) }
+      subject(:passable_navigator) { described_class.new(board_navigator, king) }
 
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:king) { instance_double(King) }
       let(:square) { instance_double(Square) }
@@ -105,8 +106,9 @@ describe PieceNavigator do
     end
 
     context 'when square is not in bounds or occupied' do
-      subject(:impassable_navigator) { described_class.new(board, queen) }
+      subject(:impassable_navigator) { described_class.new(board_navigator, queen) }
 
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:queen) { instance_double(Queen) }
       let(:square) { instance_double(Square) }
