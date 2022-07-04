@@ -210,8 +210,9 @@ end
 describe KnightNavigator do
   describe '#possible_moves' do
     context 'when checking starting moves' do
-      subject(:navigate_possibilities) { described_class.new(board, white_knight) }
+      subject(:navigate_possibilities) { described_class.new(board_navigator, white_knight) }
 
+      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate_system) { Coordinate }
       let(:white_knight) { board.find_piece('g1') }
