@@ -230,6 +230,7 @@ describe Moves::CollisionlessMoves do
   describe '#collisonless_moves' do
     subject(:regular_knight) { PieceNavigator.new(board_navigator, white_knight) }
 
+    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_knight) { instance_double(Knight, position: coordinate.parse('a8'), colour: 'white') }
     let(:coordinate) { Coordinate }
