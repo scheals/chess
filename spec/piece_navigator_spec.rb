@@ -8,21 +8,22 @@ require_relative '../lib/navigator/knight_navigator'
 require_relative '../lib/navigator/queen_navigator'
 require_relative '../lib/navigator/king_navigator'
 require_relative '../lib/board'
+require_relative '../lib/board_navigator'
 
 describe PieceNavigator do
   describe '#occupied_coordinates' do
-    subject(:navigate_collison) { described_class.new(board, queen) }
+    subject(:navigate_collision) { described_class.new(board_navigator, queen) }
 
-    let(:board) { Board.new }
+    let(:board_navigator) { BoardNavigator.new(Board.new) }
     let(:queen) { Queen.new('d4') }
 
     before do
-      board.setup
-      board.put(queen, 'd4')
+      navigate_collision.board.setup
+      navigate_collision.board.put(queen, 'd4')
     end
 
     it 'returns an array of occupied squares' do
-      expect(navigate_collison.occupied_coordinates).to contain_exactly('d1', 'd2', 'd7', 'd8',
+      expect(navigate_collision.occupied_coordinates).to contain_exactly('d1', 'd2', 'd7', 'd8',
                                                                         'a1', 'b2', 'g7', 'h8',
                                                                         'g1', 'f2', 'a7')
     end
