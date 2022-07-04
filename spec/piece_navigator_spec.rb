@@ -474,6 +474,8 @@ describe KingNavigator do
         board.put(white_rook, 'h1')
         allow(white_king).to receive(:can_castle?).and_return(true)
         allow(white_rook).to receive(:can_castle?).and_return(true)
+        allow(board_navigator).to receive(:checks_king?).with('e1', 'f1').and_return(false)
+        allow(board_navigator).to receive(:checks_king?).with('e1', 'g1').and_return(false)
       end
 
       it 'includes that as a possible move' do
@@ -494,6 +496,8 @@ describe KingNavigator do
         board.put(black_rook, 'a8')
         allow(black_king).to receive(:can_castle?).and_return(true)
         allow(black_rook).to receive(:can_castle?).and_return(true)
+        allow(board_navigator).to receive(:checks_king?).with('e8', 'd8').and_return(false)
+        allow(board_navigator).to receive(:checks_king?).with('e8', 'c8').and_return(false)
       end
 
       it 'includes that as a possible move' do
@@ -517,6 +521,10 @@ describe KingNavigator do
         allow(black_king).to receive(:can_castle?).and_return(true)
         allow(kingside_rook).to receive(:can_castle?).and_return(true)
         allow(queenside_rook).to receive(:can_castle?).and_return(true)
+        allow(board_navigator).to receive(:checks_king?).with('e8', 'd8').and_return(false)
+        allow(board_navigator).to receive(:checks_king?).with('e8', 'c8').and_return(false)
+        allow(board_navigator).to receive(:checks_king?).with('e8', 'f8').and_return(false)
+        allow(board_navigator).to receive(:checks_king?).with('e8', 'g8').and_return(false)
       end
 
       it 'includes them both as possible moves' do
