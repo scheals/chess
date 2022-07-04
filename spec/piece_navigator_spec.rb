@@ -46,14 +46,14 @@ describe PieceNavigator do
   end
 
   describe '#enemy_coordinates' do
-    subject(:navigate_enemies) { described_class.new(board, black_rook) }
+    subject(:navigate_enemies) { described_class.new(board_navigator, black_rook) }
 
-    let(:board) { Board.new }
+    let(:board_navigator) { BoardNavigator.new(Board.new) }
     let(:black_rook) { Rook.new('f4', colour: 'black') }
 
     before do
-      board.setup
-      board.put(black_rook, 'f4')
+      navigate_enemies.board.setup
+      navigate_enemies.board.put(black_rook, 'f4')
     end
 
     it 'returns an array of squares that enemy pieces are on in range of the piece' do
