@@ -120,6 +120,7 @@ describe Moves::DiagonalMoves do
   describe '#go_up_left' do
     subject(:up_left_bishop) { PieceNavigator.new(board_navigator, white_bishop) }
 
+    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_bishop) { instance_double(Bishop, position: coordinate.parse('d5'), colour: 'white', coordinate:) }
     let(:coordinate) { Coordinate }
@@ -146,6 +147,7 @@ describe Moves::DiagonalMoves do
   describe '#go_up_right' do
     subject(:up_right_bishop) { PieceNavigator.new(board_navigator, white_bishop) }
 
+    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_bishop) { instance_double(Bishop, position: coordinate.parse('e5'), colour: 'white', coordinate:) }
     let(:coordinate) { Coordinate }
@@ -172,6 +174,7 @@ describe Moves::DiagonalMoves do
   describe '#go_down_right' do
     subject(:down_right_bishop) { PieceNavigator.new(board_navigator, white_bishop) }
 
+    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_bishop) { instance_double(Bishop, position: coordinate.parse('e4'), colour: 'white', coordinate:) }
     let(:coordinate) { Coordinate }
@@ -198,6 +201,7 @@ describe Moves::DiagonalMoves do
   describe '#go_down_left' do
     subject(:down_left_bishop) { PieceNavigator.new(board_navigator, white_bishop) }
 
+    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_bishop) { instance_double(Bishop, position: coordinate.parse('d4'), colour: 'white', coordinate:) }
     let(:coordinate) { Coordinate }
