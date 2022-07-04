@@ -376,6 +376,89 @@ describe KingNavigator do
       end
     end
   end
+
+  describe '#castling_moves' do
+    let(:coordinate) { Coordinate }
+
+    context 'when King has already moved' do
+      subject(:moved_king) { described_class.new(board_navigator, king) }
+
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
+      let(:king) { instance_double(King) }
+
+      before do
+        allow(king).to receive(:can_castle?).and_return(false)
+      end
+
+      it 'returns an empty array' do
+        expect(moved_king.castling_moves).to be_empty
+      end
+    end
+
+    context 'when King can castle kingside' do
+      subject(:kingsideful_king) { described_class.new(board_navigator, white_king) }
+
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { Board.new }
+      let(:white_king) { instance_double(King, position: coordinate.parse('e1'), colour: 'white') }
+      let(:white_rook) { instance_double(Rook, position: coordinate.parse('h1'), colour: 'white', instance_of?: Rook) }
+
+      before do
+        board.put(white_rook, 'h1')
+        allow(white_king).to receive(:can_castle?).and_return(true)
+        allow(white_rook).to receive(:can_castle?).and_return(true)
+      end
+
+      it 'includes that as a possible move' do
+        correct_move = ['g1']
+        expect(kingsideful_king.castling_moves).to match_array(correct_move)
+      end
+    end
+
+    context 'when King can castle queenside' do
+      subject(:queensideful_king) { described_class.new(board_navigator, black_king) }
+
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { Board.new }
+      let(:black_king) { instance_double(King, position: coordinate.parse('e8'), colour: 'black') }
+      let(:black_rook) { instance_double(Rook, position: coordinate.parse('a8'), colour: 'black', instance_of?: Rook) }
+
+      before do
+        board.put(black_rook, 'a8')
+        allow(black_king).to receive(:can_castle?).and_return(true)
+        allow(black_rook).to receive(:can_castle?).and_return(true)
+      end
+
+      it 'includes that as a possible move' do
+        correct_move = ['c8']
+        expect(queensideful_king.castling_moves).to match_array(correct_move)
+      end
+    end
+
+    context 'when King can perform both castlings' do
+      subject(:castlingful_king) { described_class.new(board_navigator, black_king) }
+
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { Board.new }
+      let(:black_king) { instance_double(King, position: coordinate.parse('e8'), colour: 'black') }
+      let(:kingside_rook) { instance_double(Rook, position: coordinate.parse('h8'), colour: 'black', instance_of?: Rook) }
+      let(:queenside_rook) { instance_double(Rook, position: coordinate.parse('a8'), colour: 'black', instance_of?: Rook) }
+
+      before do
+        board.put(kingside_rook, 'h8')
+        board.put(queenside_rook, 'a8')
+        allow(black_king).to receive(:can_castle?).and_return(true)
+        allow(kingside_rook).to receive(:can_castle?).and_return(true)
+        allow(queenside_rook).to receive(:can_castle?).and_return(true)
+      end
+
+      it 'includes them both as possible moves' do
+        correct_moves = %w[c8 g8]
+        expect(castlingful_king.castling_moves).to match_array(correct_moves)
+      end
+    end
+  end
 end
 
 describe PawnNavigator do
