@@ -300,13 +300,12 @@ describe KingNavigator do
       let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
-      let(:white_king) { instance_double(King, position: coordinate.parse('e1'), colour: 'white') }
-      let(:white_rook) { instance_double(Rook, position: coordinate.parse('h1'),  colour: 'white', instance_of?: Rook) }
+      let(:white_king) { King.new(coordinate.parse('e1'), colour: 'white') }
+      let(:white_rook) { Rook.new(coordinate.parse('h1'), colour: 'white') }
 
       before do
         board.put(white_king, 'e1')
         board.put(white_rook, 'h1')
-        allow(white_rook).to receive(:can_castle?).and_return(true)
       end
 
       it 'returns true' do
@@ -314,25 +313,69 @@ describe KingNavigator do
       end
     end
 
-    context 'when kingside castling is not possible' do
+    context 'when kingside castling is not possible because rook has already moved' do
       subject(:impossible_kingside) { described_class.new(board_navigator, black_king) }
 
       let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
-      let(:black_king) { instance_double(King, position: coordinate.parse('e8'), colour: 'black') }
-      let(:black_rook) { instance_double(Rook, position: coordinate.parse('h8'), colour: 'black', instance_of?: Rook) }
+      let(:black_king) { King.new(coordinate.parse('e8'), colour: 'black') }
+      let(:black_rook) { Rook.new(coordinate.parse('h8'), colour: 'black') }
 
       before do
         board.put(black_king, 'e8')
         board.put(black_rook, 'h8')
-        allow(black_rook).to receive(:can_castle?).and_return(false)
+        board.move_piece('h8', 'h1')
+        board.move_piece('h1', 'h8')
       end
 
       it 'returns false' do
         expect(impossible_kingside.can_castle_kingside?).to be false
       end
     end
+
+    context 'when kingside castling is not possible because path is not clear' do
+      subject(:obstructed_kingside) { described_class.new(board_navigator, white_king) }
+
+      let(:board_navigator) { BoardNavigator.new(board) }
+      let(:board) { Board.new }
+      let(:coordinate) { Coordinate }
+      let(:white_king) { King.new(coordinate.parse('e8'), colour: 'white') }
+      let(:white_rook) { Rook.new(coordinate.parse('h8'), colour: 'white') }
+
+      before do
+        board.put(white_king, 'e8')
+        board.put(white_rook, 'h8')
+        board.put(Rook.new(coordinate.parse('f8'), colour: 'black'), 'f8')
+      end
+
+      it 'returns false' do
+        expect(obstructed_kingside.can_castle_kingside?).to be false
+      end
+    end
+
+    # rubocop: disable RSpec/MultipleMemoizedHelpers
+    context 'when kingside castling is not possible because path is under check' do
+      subject(:checked_kingside) { described_class.new(board_navigator, black_king) }
+
+      let(:board_navigator) { BoardNavigator.new(board) }
+      let(:board) { Board.new }
+      let(:coordinate) { Coordinate }
+      let(:black_king) { King.new(coordinate.parse('e8'), colour: 'black') }
+      let(:black_rook) { Rook.new(coordinate.parse('h8'), colour: 'black') }
+      let(:white_rook) { Rook.new(coordinate.parse('f7'), colour: 'white') }
+
+      before do
+        board.put(black_king, 'e8')
+        board.put(black_rook, 'h8')
+        board.put(white_rook, 'f7')
+      end
+
+      it 'returns false' do
+        expect(checked_kingside.can_castle_kingside?).to be false
+      end
+    end
+    # rubocop: enable RSpec/MultipleMemoizedHelpers
   end
 
   describe '#can_castle_queenside?' do
@@ -342,13 +385,12 @@ describe KingNavigator do
       let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
-      let(:white_king) { instance_double(King, position: coordinate.parse('e1'), colour: 'white') }
-      let(:white_rook) { instance_double(Rook, position: coordinate.parse('a1'),  colour: 'white', instance_of?: Rook) }
+      let(:white_king) { King.new(coordinate.parse('e1'), colour: 'white') }
+      let(:white_rook) { Rook.new(coordinate.parse('a1'),  colour: 'white') }
 
       before do
         board.put(white_king, 'e1')
         board.put(white_rook, 'a1')
-        allow(white_rook).to receive(:can_castle?).and_return(true)
       end
 
       it 'returns true' do
@@ -356,25 +398,49 @@ describe KingNavigator do
       end
     end
 
-    context 'when queenside castling is not possible' do
+    context 'when queenside castling is not possible because rook has already moved' do
       subject(:impossible_queenside) { described_class.new(board_navigator, black_king) }
 
       let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
-      let(:black_king) { instance_double(King, position: coordinate.parse('e8'), colour: 'black') }
-      let(:black_rook) { instance_double(Rook, position: coordinate.parse('a8'), colour: 'black', instance_of?: Rook) }
+      let(:black_king) { King.new(coordinate.parse('e8'), colour: 'black') }
+      let(:black_rook) { Rook.new(coordinate.parse('a8'), colour: 'black') }
 
       before do
         board.put(black_king, 'e8')
         board.put(black_rook, 'a8')
-        allow(black_rook).to receive(:can_castle?).and_return(false)
+        board.move_piece('a8', 'a1')
+        board.move_piece('a1', 'a8')
       end
 
       it 'returns false' do
         expect(impossible_queenside.can_castle_queenside?).to be false
       end
     end
+
+    # rubocop: disable RSpec/MultipleMemoizedHelpers
+    context 'when queenside castling is not possible because path is under check' do
+      subject(:checked_queenside) { described_class.new(board_navigator, white_king) }
+
+      let(:board_navigator) { BoardNavigator.new(board) }
+      let(:board) { Board.new }
+      let(:coordinate) { Coordinate }
+      let(:white_king) { King.new(coordinate.parse('e8'), colour: 'white') }
+      let(:white_rook) { Rook.new(coordinate.parse('a8'), colour: 'white') }
+      let(:black_rook) { Rook.new(coordinate.parse('d3'), colour: 'black') }
+
+      before do
+        board.put(white_king, 'e8')
+        board.put(white_rook, 'a8')
+        board.put(black_rook, 'd3')
+      end
+
+      it 'returns false' do
+        expect(checked_queenside.can_castle_kingside?).to be false
+      end
+    end
+    # rubocop: enable RSpec/MultipleMemoizedHelpers
   end
 
   describe '#castling_moves' do

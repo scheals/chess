@@ -15,12 +15,12 @@ class KingNavigator < PieceNavigator
 
   def can_castle_kingside?
     rooks = board.board.values.map(&:piece).select { |piece| piece.instance_of?(Rook) && piece.colour == @piece.colour }
-    rooks.any? { |rook| rook.position.column == 'h' && rook.can_castle? } && kingside_path_free?
+    rooks.any? { |rook| rook.position.column == 'h' && rook.can_castle? } && kingside_path_free? && kingside_not_under_check?
   end
 
   def can_castle_queenside?
     rooks = board.board.values.map(&:piece).select { |piece| piece.instance_of?(Rook) && piece.colour == @piece.colour }
-    rooks.any? { |rook| rook.position.column == 'a' && rook.can_castle? } && queenside_path_free?
+    rooks.any? { |rook| rook.position.column == 'a' && rook.can_castle? } && queenside_path_free? && queenside_not_under_check?
   end
 
   def castling_moves
@@ -42,6 +42,22 @@ class KingNavigator < PieceNavigator
     return true if free_kingside_coordinates.length == 2
 
     false
+  end
+
+  def kingside_not_under_check?
+    kings_position = piece.position
+    return false if @board_navigator.checks_king?(kings_position.to_s, kings_position.right.to_s) ||
+                    @board_navigator.checks_king?(kings_position.to_s, kings_position.right.right.to_s)
+
+    true
+  end
+
+  def queenside_not_under_check?
+    kings_position = piece.position
+    return false if @board_navigator.checks_king?(kings_position.to_s, kings_position.left.to_s) ||
+                    @board_navigator.checks_king?(kings_position.to_s, kings_position.left.left.to_s)
+
+    true
   end
 
   def free_queenside_coordinates
