@@ -52,12 +52,7 @@ class Board
   end
 
   def copy
-    new_copy = Board.new
-    original_pieces = board.values.map(&:piece)
-    original_pieces.each do |piece|
-      new_copy.put(piece.clone, piece.position.to_s)
-    end
-    new_copy
+    Marshal.load(Marshal.dump(self))
   end
 
   def show

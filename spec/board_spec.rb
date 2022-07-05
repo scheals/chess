@@ -174,6 +174,13 @@ describe Board do
       molly_pieces = molly_board.board.values.map(&:piece)
       expect(molly_pieces).to match_array(polly_pieces)
     end
+
+    it 'gets a deep copy of move_history for pieces' do
+      polly_piece = polly_board.find_piece('a1')
+      molly_board = polly_board.copy
+      molly_piece = molly_board.find_piece('a1')
+      expect(molly_piece.move_history).not_to be(polly_piece.move_history)
+    end
   end
 
   describe '#find_piece' do
