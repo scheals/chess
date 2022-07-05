@@ -316,6 +316,10 @@ describe BoardNavigator do
         board.setup('1k2r3/2N5/r1q1r1N1/6N1/N7/5N2/2r3N1/2N4K')
       end
 
+      after do
+        p board.find_piece('c6')
+      end
+
       it 'just returns correct moves' do
         correct_moves = %w[a4 b5 a8 b6 b7 c7 c5 c4 c3 d7 d6 d5 e4 f3].map { |move| coordinate.parse(move) }
         expect(usual_navigation.moves_for('c6')).to match_array(correct_moves)

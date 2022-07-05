@@ -371,6 +371,10 @@ describe KingNavigator do
         board.put(white_rook, 'f7')
       end
 
+      after do
+        p black_king
+      end
+
       it 'returns false' do
         expect(checked_kingside.can_castle_kingside?).to be false
       end

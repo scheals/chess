@@ -27,6 +27,10 @@ class BoardNavigator
     board.find_piece(coordinate)
   end
 
+  def make_move(start, target)
+    board.move_piece(start, target)
+  end
+
   def king_for(coordinate)
     board.find_kings.select { |king| board.find_piece(coordinate).ally?(king) }.first
   end
@@ -45,7 +49,7 @@ class BoardNavigator
 
   def checks_king?(start, target)
     board_after_move = BoardNavigator.new(board.copy, navigator_factory)
-    board_after_move.board.move_piece(start, target)
+    board_after_move.make_move(start, target)
     board_after_move.under_check?(board_after_move.king_for(target))
   end
 
