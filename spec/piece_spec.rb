@@ -51,6 +51,30 @@ describe Piece do
     end
   end
 
+  describe '#insecure_move' do
+    subject(:moving_piece) { described_class.new('b6', coordinate:) }
+
+    let(:coordinate) { class_double(Coordinate) }
+
+    before do
+      allow(coordinate).to receive(:parse).with('b6')
+      allow(coordinate).to receive(:parse).with('b7')
+      allow(coordinate).to receive(:parse).with('b8').and_return(Coordinate.parse('b8'))
+    end
+
+    it 'sends coordinate a parse message' do
+      to_coordinate = 'b7'
+      moving_piece.insecure_move(to_coordinate)
+      expect(coordinate).to have_received(:parse).with(to_coordinate)
+    end
+
+    it 'changes move_history to contain the new position' do
+      new_position = 'b8'
+      new_history = ['b8']
+      expect { moving_piece.insecure_move(new_position) }.to change(moving_piece, :move_history).to(new_history)
+    end
+  end
+
   describe '#real?' do
     subject(:real_piece) { described_class.new('a1') }
 

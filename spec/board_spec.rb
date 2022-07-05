@@ -119,7 +119,7 @@ describe Board do
         allow(start_square).to receive(:piece).and_return(piece)
         allow(start_square).to receive(:vacate).once
         allow(target_square).to receive(:place)
-        allow(piece).to receive(:move).with('a2')
+        allow(piece).to receive(:insecure_move).with('a2')
       end
 
       it 'sends start_square a vacate message' do
@@ -132,9 +132,9 @@ describe Board do
         expect(target_square).to have_received(:place).with(piece)
       end
 
-      it 'sends piece a move message' do
+      it 'sends piece a insecure_move message' do
         in_bounds.move_piece('a1', 'a2')
-        expect(piece).to have_received(:move).with('a2')
+        expect(piece).to have_received(:insecure_move).with('a2')
       end
     end
   end
@@ -157,7 +157,7 @@ describe Board do
 
     before do
       polly_board.setup
-      polly_board.find_piece('a1').move('a3')
+      polly_board.find_piece('a1').insecure_move('a3')
       polly_board.find('a1').vacate
     end
 

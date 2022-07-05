@@ -97,7 +97,7 @@ class Board
 
     start_square = find(start)
     put(start_square.piece, target)
-    start_square.piece.move(target)
+    start_square.piece.insecure_move(target)
     start_square.vacate
   end
 

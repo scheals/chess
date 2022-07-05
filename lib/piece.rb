@@ -22,6 +22,11 @@ class Piece
     @position = coordinate.parse(space)
   end
 
+  def insecure_move(space)
+    @move_history << space
+    @position = coordinate.parse(space)
+  end
+
   def moved?
     !move_history.empty?
   end
