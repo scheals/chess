@@ -618,10 +618,11 @@ describe PawnNavigator do
       let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:white_pawn) { instance_double(Pawn, colour: 'white') }
+      let(:coordinate) { Coordinate }
 
       context 'when pawn is on the 8th row' do
         before do
-          allow(white_pawn).to receive(:position).and_return('a8')
+          allow(white_pawn).to receive(:position).and_return(coordinate.parse('a8'))
         end
 
         it 'returns true' do
@@ -631,7 +632,7 @@ describe PawnNavigator do
 
       context 'when pawn is not on the 8th row' do
         before do
-          allow(white_pawn).to receive(:position).and_return('d3')
+          allow(white_pawn).to receive(:position).and_return(coordinate.parse('d3'))
         end
 
         it 'returns false' do
