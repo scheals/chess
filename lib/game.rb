@@ -1,10 +1,23 @@
 # frozen_string_literal: true
 
+require_relative './player'
+
 # This class handles a game of Chess.
 class Game
-  attr_reader :board
+  attr_accessor :current_player
+  attr_reader :board_navigator
 
-  def initialize(board = Board.new.board)
-    @board = board
+  def initialize(player1 = Player.new, player2 = Player.new, board_navigator = BoardNavigator.new(Board.new))
+    @board_navigator = board_navigator
+    @player1 = player1
+    @player2 = player2
+    @current_player = nil
+  end
+
+  def pick_piece(coordinate)
+    piece = board_navigator.piece_for(coordinate)
+    return nil unless piece.colour == current_player.colour
+
+    piece
   end
 end
