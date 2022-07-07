@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './player'
+require_relative './move'
 
 # This class handles a game of Chess.
 class Game
@@ -19,5 +20,9 @@ class Game
     return nil unless piece.colour == current_player.colour
 
     piece
+  end
+
+  def create_move(coordinate, move_system = Move)
+    move_system.parse(coordinate)
   end
 end

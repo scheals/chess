@@ -34,7 +34,6 @@ describe Game do
       let(:player_black) { instance_double(Player, colour: :black) }
       let(:player_white) { instance_double(Player, colour: :white) }
 
-
       before do
         invalid_piece_picking.current_player = player_black
         allow(board_navigator).to receive(:piece_for).with('a2').and_return(white_piece)
@@ -43,6 +42,22 @@ describe Game do
       it 'returns nil' do
         expect(invalid_piece_picking.pick_piece('a2')).to be_nil
       end
+    end
+  end
+
+  describe '#create_move' do
+    subject(:game_move) { described_class.new }
+
+    let(:move_system) { class_double(Move) }
+    let(:coordinate) { 'a4b6' }
+
+    before do
+      allow(move_system).to receive(:parse).with(coordinate)
+    end
+
+    it 'sends Move a parse message' do
+      game_move.create_move(coordinate, move_system)
+      expect(move_system).to have_received(:parse).with(coordinate)
     end
   end
 end
