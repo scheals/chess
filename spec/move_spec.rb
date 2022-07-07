@@ -44,4 +44,40 @@ describe Move do
       end
     end
   end
+
+  describe '#full_move?' do
+    context 'when the move has a start and a target' do
+      subject(:full_move) { described_class.parse('a4b4') }
+
+      it 'returns true' do
+        expect(full_move.full_move?).to be true
+      end
+    end
+
+    context 'when the move does not have both start and a target' do
+      subject(:partial_move) { described_class.parse('b4') }
+
+      it 'returns false' do
+        expect(partial_move.full_move?).to be false
+      end
+    end
+  end
+
+  describe '#partial_move?' do
+    context 'when the move has a start only' do
+      subject(:partial_move) { described_class.parse('a4') }
+
+      it 'returns true' do
+        expect(partial_move.partial_move?).to be true
+      end
+    end
+
+    context 'when the move has more than just start' do
+      subject(:full_move) { described_class.parse('a4b4') }
+
+      it 'returns false' do
+        expect(full_move.partial_move?).to be false
+      end
+    end
+  end
 end

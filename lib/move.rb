@@ -19,4 +19,16 @@ class Move
       Move.new(coordinate.chars.first(2).join)
     end
   end
+
+  def full_move?
+    return true if start && target
+
+    false
+  end
+
+  def partial_move?
+    return true if target.nil?
+
+    false
+  end
 end
