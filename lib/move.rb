@@ -31,4 +31,9 @@ class Move
 
     false
   end
+
+  def in_bounds?(board)
+    return board.in_bounds?(start) && board.in_bounds?(target) if full_move?
+    return board.in_bounds?(start) if partial_move?
+  end
 end

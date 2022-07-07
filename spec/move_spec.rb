@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../lib/move'
+require_relative '../lib/board'
 
 describe Move do
   describe '@parse' do
@@ -77,6 +78,70 @@ describe Move do
 
       it 'returns false' do
         expect(full_move.partial_move?).to be false
+      end
+    end
+  end
+
+  describe '#in_bounds?' do
+    context 'when it is a full move' do
+      context 'when it is in bounds' do
+        subject(:full_in_bounds) { described_class.parse('a1b1') }
+
+        let(:board) { instance_double(Board) }
+
+        before do
+          allow(board).to receive(:in_bounds?).with(full_in_bounds.start).and_return(true)
+          allow(board).to receive(:in_bounds?).with(full_in_bounds.target).and_return(true)
+        end
+
+        it 'returns true' do
+          expect(full_in_bounds.in_bounds?(board)).to be true
+        end
+      end
+
+      context 'when it is not in bounds' do
+        subject(:full_out_bounds) { described_class.parse('a1b1') }
+
+        let(:board) { instance_double(Board) }
+
+        before do
+          allow(board).to receive(:in_bounds?).with(full_out_bounds.start).and_return(true)
+          allow(board).to receive(:in_bounds?).with(full_out_bounds.target).and_return(false)
+        end
+
+        it 'returns false' do
+          expect(full_out_bounds.in_bounds?(board)).to be false
+        end
+      end
+    end
+
+    context 'when it is a partial move' do
+      context 'when it is in bounds' do
+        subject(:partial_in_bounds) { described_class.parse('a1') }
+
+        let(:board) { instance_double(Board) }
+
+        before do
+          allow(board).to receive(:in_bounds?).with(partial_in_bounds.start).and_return(true)
+        end
+
+        it 'returns true' do
+          expect(partial_in_bounds.in_bounds?(board)).to be true
+        end
+      end
+
+      context 'when it is not in bounds' do
+        subject(:partial_out_bounds) { described_class.parse('a1') }
+
+        let(:board) { instance_double(Board) }
+
+        before do
+          allow(board).to receive(:in_bounds?).with(partial_out_bounds.start).and_return(false)
+        end
+
+        it 'returns false' do
+          expect(partial_out_bounds.in_bounds?(board)).to be false
+        end
       end
     end
   end
