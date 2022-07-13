@@ -60,4 +60,32 @@ describe Game do
       expect(move_system).to have_received(:parse).with(coordinate)
     end
   end
+
+  describe '#valid_move?' do
+    context 'when the move is valid' do
+      subject(:game_valid_move) { described_class.new(player, player, board_navigator) }
+
+      let(:player) { instance_double(Player) }
+      let(:board_navigator) { instance_double(BoardNavigator) }
+
+      it 'returns true' do
+        moves = %w[a1 a2 a3 a4 a5]
+        move = %w[a1]
+        expect(game_valid_move.valid_move?(moves, move)).to be true
+      end
+    end
+
+    context 'when the move is not valid' do
+      subject(:game_invalid_move) { described_class.new(player, player, board_navigator) }
+
+      let(:player) { instance_double(Player) }
+      let(:board_navigator) { instance_double(BoardNavigator) }
+
+      it 'returns false' do
+        moves = []
+        move = %w[b8]
+        expect(game_invalid_move.valid_move?(moves, move)).to be false
+      end
+    end
+  end
 end

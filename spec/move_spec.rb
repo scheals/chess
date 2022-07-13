@@ -38,7 +38,7 @@ describe Move do
     context 'when it is given too short or too long of a string' do
       subject(:nil_parse) { described_class }
 
-      let(:long_coordinate) { 'a11b99'}
+      let(:long_coordinate) { 'a11b99' }
 
       it 'returns nil' do
         expect(nil_parse.parse(long_coordinate)).to be_nil
