@@ -9,14 +9,14 @@ class Move
     @target = target
   end
 
-  def self.parse(coordinate)
-    return coordinate if coordinate.is_a?(Move)
+  def self.parse(move)
+    return move if move.is_a?(Move)
 
-    case coordinate.length
+    case move.length
     when 4
-      Move.new(coordinate.chars.first(2).join, coordinate.chars.last(2).join)
+      Move.new(move.chars.first(2).join, move.chars.last(2).join)
     when 2
-      Move.new(coordinate.chars.first(2).join)
+      Move.new(move.chars.first(2).join)
     end
   end
 
@@ -35,5 +35,9 @@ class Move
   def in_bounds?(board)
     return board.in_bounds?(start) && board.in_bounds?(target) if full_move?
     return board.in_bounds?(start) if partial_move?
+  end
+
+  def ==(other)
+    start == other.start && target == other.target
   end
 end
