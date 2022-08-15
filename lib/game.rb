@@ -6,8 +6,7 @@ require_relative './coordinate'
 
 # This class handles a game of Chess.
 class Game
-  attr_accessor :current_player
-  attr_reader :board_navigator
+  attr_reader :board_navigator, :current_player
 
   def initialize(player1 = Player.new('White', 'white'), player2 = Player.new('Black', 'black'), board_navigator = BoardNavigator.new(Board.new))
     @board_navigator = board_navigator
@@ -30,6 +29,7 @@ class Game
   def ask_for_move
     unvalidated_move = nil
     loop do
+      puts "#{current_player} it is your turn!"
       puts 'Enter a full move like \'a8c8\' or a partial move like \'a8\' to see possible moves of that piece.'
       unvalidated_move = Move.parse(gets.chomp.downcase)
       break if unvalidated_move
@@ -82,5 +82,13 @@ class Game
     puts 'Your move lacks a target.' unless move.target
     puts 'This move can not be made by this piece.' if move.target
     false
+  end
+
+  def switch_players
+    @current_player = if current_player == @player1
+                        @player2
+                      else
+                        @player1
+                      end
   end
 end

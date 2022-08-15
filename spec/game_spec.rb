@@ -16,7 +16,6 @@ describe Game do
       let(:player_black) { instance_double(Player, colour: :black) }
 
       before do
-        valid_piece_picking.current_player = player_white
         allow(board_navigator).to receive(:piece_for).with('a1').and_return(white_piece)
       end
 
@@ -35,7 +34,6 @@ describe Game do
       let(:player_white) { instance_double(Player, colour: :white) }
 
       before do
-        invalid_piece_picking.current_player = player_black
         allow(board_navigator).to receive(:piece_for).with('a2').and_return(white_piece)
       end
 
@@ -161,7 +159,6 @@ describe Game do
       let(:piece) { instance_double(Piece, colour: 'white') }
 
       before do
-        game_current_player_owns.current_player = player
         allow(board_navigator).to receive(:piece_for).with(move.start).and_return(piece)
       end
 
@@ -272,6 +269,14 @@ describe Game do
           expect(game_target_quit.validate_target(move)).to be_nil
         end
       end
+    end
+  end
+
+  describe '#switch_players' do
+    subject(:game_switch_players) { described_class.new }
+
+    it 'changes the current player to the other one' do
+      expect{ game_switch_players.switch_players }.to change { game_switch_players.current_player}
     end
   end
 end
