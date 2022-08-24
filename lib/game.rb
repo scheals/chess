@@ -42,6 +42,18 @@ class Game
     validate_target(unvalidated_move)
   end
 
+  def game_loop
+    loop do
+      puts 'This is how the board looks like:'
+      board_navigator.board.show
+      board_navigator.board.move_piece(ask_for_move)
+      break if game_over?
+
+      switch_players
+    end
+    puts "Thanks for playing, #{first_player.name} and #{second_player.name}!"
+  end
+
   def validate_target(move)
     if legal_target?(move)
       move
@@ -90,5 +102,13 @@ class Game
                       else
                         @player1
                       end
+  end
+
+  def game_over?
+    enemy_king = board_navigator.board.find_kings.find { |king| king.colour != current_player.colour }
+    return true if board_navigator.moves_for(enemy_king.position.to_s).empty? && board_navigator.under_check?(enemy_king)
+    # return true if tie?
+
+    false
   end
 end

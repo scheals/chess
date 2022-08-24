@@ -106,7 +106,7 @@ describe Game do
         allow(incomplete_input).to receive(:gets).and_return(half_move)
       end
 
-      xit 'does not return that move' do
+      it 'does not return that move' do
         expect(incomplete_input.ask_for_move).not_to eq(Move.parse(half_move))
       end
     end
@@ -277,6 +277,40 @@ describe Game do
 
     it 'changes the current player to the other one' do
       expect{ game_switch_players.switch_players }.to change { game_switch_players.current_player}
+    end
+  end
+
+  describe '#game_over?' do
+    context 'when game is still on' do
+      subject(:game_continue) { described_class.new }
+
+      before do
+        game_continue.board_navigator.board.setup
+      end
+
+      it 'returns false' do
+        expect(game_continue.game_over?).to be false
+      end
+    end
+
+    context 'when game is won' do
+      subject(:game_won) { described_class.new }
+
+      before do
+        game_won.board_navigator.board.setup('R3k3/7R/8/8/8/8/PPPPPPPP/1NBQKBN1')
+      end
+
+      it 'returns true' do
+        expect(game_won.game_over?).to be true
+      end
+    end
+
+    xcontext 'when game is tied' do
+
+      it 'sends a message about a tie' do
+      end
+      it 'returns true' do
+      end
     end
   end
 end
