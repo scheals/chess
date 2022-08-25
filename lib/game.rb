@@ -29,15 +29,13 @@ class Game
   def ask_for_move
     unvalidated_move = nil
     loop do
-      puts "#{current_player} it is your turn!"
+      puts "#{current_player.name} as #{current_player.colour} it is your turn!"
       puts 'Enter a full move like \'a8c8\' or a partial move like \'a8\' to see possible moves of that piece.'
       unvalidated_move = Move.parse(gets.chomp.downcase)
-      break if unvalidated_move
-
-      puts 'Your move is either too long or too short in length.'
+      break if correct_length?(unvalidated_move) &&
+               in_bounds?(unvalidated_move) &&
+               current_player_owns?(unvalidated_move.start)
     end
-
-    return nil unless in_bounds?(unvalidated_move) && current_player_owns?(unvalidated_move.start)
 
     validate_target(unvalidated_move)
   end
@@ -46,7 +44,8 @@ class Game
     loop do
       puts 'This is how the board looks like:'
       board_navigator.board.show
-      board_navigator.board.move_piece(ask_for_move)
+      move = ask_for_move until move
+      board_navigator.board.move_piece(move.start, move.target)
       break if game_over?
 
       switch_players
@@ -66,7 +65,8 @@ class Game
     possible_moves = board_navigator.moves_for(move.start)
     loop do
       # chess_display.highlight_moves(possible_moves)
-      puts "Those are your possible moves: #{possible_moves}"
+      puts 'Those are your possible moves:'
+      possible_moves.each { |possible_move| print "#{possible_move} \t" }
       puts 'Which one do you want to make? Type \'q\' if you want to restart making your move.'
       completed_move = Move.new(move.start, gets.chomp.downcase)
       break nil if completed_move.target == 'q'
@@ -89,10 +89,14 @@ class Game
   end
 
   def legal_target?(move)
+    unless move.target
+      puts 'Your move lacks a target.'
+      return false
+    end
+
     return true if board_navigator.moves_for(move.start).include?(Coordinate.parse(move.target))
 
-    puts 'Your move lacks a target.' unless move.target
-    puts 'This move can not be made by this piece.' if move.target
+    puts 'This move can not be made by this piece.'
     false
   end
 
@@ -109,6 +113,13 @@ class Game
     return true if board_navigator.moves_for(enemy_king.position.to_s).empty? && board_navigator.under_check?(enemy_king)
     # return true if tie?
 
+    false
+  end
+
+  def correct_length?(move)
+    return true if move
+
+    puts 'Your move is either too long or too short in length.'
     false
   end
 end

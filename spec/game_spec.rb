@@ -78,7 +78,7 @@ describe Game do
       end
     end
 
-    context 'when move is complete but not valid' do
+    xcontext 'when move is complete but not valid' do
       subject(:out_of_bounds_input) { described_class.new }
 
       let(:improper_move) { 'a9k3' }
@@ -97,7 +97,7 @@ describe Game do
       end
     end
 
-    context 'when move is incomplete' do
+    xcontext 'when move is incomplete' do
       subject(:incomplete_input) { described_class.new }
 
       let(:half_move) { 'c3' }
@@ -310,6 +310,28 @@ describe Game do
       it 'sends a message about a tie' do
       end
       it 'returns true' do
+      end
+    end
+  end
+
+  describe '#correct_length?' do
+    context 'when the move is correct length' do
+      subject(:good_move_game) { described_class.new }
+
+      let(:correct_move) { Move.parse('a3a4') }
+
+      it 'returns true' do
+        expect(good_move_game.correct_length?(correct_move)).to be true
+      end
+    end
+
+    context 'when the move is not the correct length' do
+      subject(:bad_move_game) { described_class.new }
+
+      let(:incorrect_move) { Move.parse('a333a4') }
+
+      it 'returns false' do
+        expect(bad_move_game.correct_length?(incorrect_move)).to be false
       end
     end
   end
