@@ -20,7 +20,7 @@ class BoardNavigator
   end
 
   def moves_for(coordinate)
-    moves_after_collision_for(coordinate).reject { |move| checks_king?(coordinate, move.to_s) }
+    moves_after_collision_for(coordinate).reject { |move| checks_king?(coordinate, move.to_s) }.map { |move| Coordinate.parse(move) }
   end
 
   def piece_for(coordinate)

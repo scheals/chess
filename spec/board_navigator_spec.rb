@@ -343,7 +343,7 @@ describe BoardNavigator do
       end
 
       it 'includes it as a possibility' do
-        correct_moves = %w[d1 d2 c1]
+        correct_moves = %w[d1 d2 c1].map { |move| coordinate.parse(move) }
         expect(queenside_navigation.moves_for('e1')).to match_array(correct_moves)
       end
     end
@@ -356,7 +356,7 @@ describe BoardNavigator do
       end
 
       it 'includes it as a possibility' do
-        correct_moves = %w[d8 f8 g8]
+        correct_moves = %w[d8 f8 g8].map { |move| coordinate.parse(move) }
         expect(kingside_navigation.moves_for('e8')).to match_array(correct_moves)
       end
     end
@@ -369,7 +369,7 @@ describe BoardNavigator do
       end
 
       it 'does not include it as a possibility' do
-        correct_moves = %w[d2]
+        correct_moves = %w[d2].map { |move| coordinate.parse(move) }
         expect(illegal_queenside.moves_for('e1')).to match_array(correct_moves)
       end
     end
@@ -382,7 +382,7 @@ describe BoardNavigator do
       end
 
       it 'does not include it as a possibility' do
-        correct_moves = %w[d7 d8 f8]
+        correct_moves = %w[d7 d8 f8].map { |move| coordinate.parse(move) }
         expect(illegal_kingside.moves_for('e8')).to match_array(correct_moves)
       end
     end
