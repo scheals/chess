@@ -109,9 +109,15 @@ class Game
   end
 
   def game_over?
+    return true if win?
+    # return true if tie?
+
+    false
+  end
+
+  def win?
     enemy_king = board_navigator.board.find_kings.find { |king| king.colour != current_player.colour }
     return true if board_navigator.moves_for(enemy_king.position.to_s).empty? && board_navigator.under_check?(enemy_king)
-    # return true if tie?
 
     false
   end
