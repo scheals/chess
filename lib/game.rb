@@ -67,7 +67,7 @@ class Game
       # chess_display.highlight_moves(possible_moves)
       puts 'Those are your possible moves:'
       possible_moves.each { |possible_move| print "#{possible_move} \t" }
-      puts 'Which one do you want to make? Type \'q\' if you want to restart making your move.'
+      puts "\nWhich one do you want to make? Type 'q' if you want to restart making your move."
       completed_move = Move.new(move.start, gets.chomp.downcase)
       break nil if completed_move.target == 'q'
       break completed_move if legal_target?(completed_move)

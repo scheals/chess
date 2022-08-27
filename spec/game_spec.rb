@@ -78,36 +78,19 @@ describe Game do
       end
     end
 
-    xcontext 'when move is complete but not valid' do
+    context 'when move is invalid' do
       subject(:out_of_bounds_input) { described_class.new }
 
       let(:improper_move) { 'a9k3' }
+      let(:proper_move) { 'a2a4' }
 
       before do
-        allow(out_of_bounds_input).to receive(:gets).and_return(improper_move)
-        allow(out_of_bounds_input).to receive(:in_bounds?).with(Move.parse(improper_move)).and_return(false)
+        out_of_bounds_input.board_navigator.board.setup
+        allow(out_of_bounds_input).to receive(:gets).and_return(improper_move, proper_move)
       end
 
-      it 'does not return that move' do
-        expect(out_of_bounds_input.ask_for_move).not_to eq(Move.parse(improper_move))
-      end
-
-      it 'returns nil' do
-        expect(out_of_bounds_input.ask_for_move).to be_nil
-      end
-    end
-
-    xcontext 'when move is incomplete' do
-      subject(:incomplete_input) { described_class.new }
-
-      let(:half_move) { 'c3' }
-
-      before do
-        allow(incomplete_input).to receive(:gets).and_return(half_move)
-      end
-
-      it 'does not return that move' do
-        expect(incomplete_input.ask_for_move).not_to eq(Move.parse(half_move))
+      it 'loops until it gets a correct move' do
+        expect(out_of_bounds_input.ask_for_move).to eq(Move.parse(proper_move))
       end
     end
   end
