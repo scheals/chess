@@ -6,7 +6,7 @@ require_relative './coordinate'
 
 # This class handles a game of Chess.
 class Game
-  attr_reader :board_navigator, :current_player
+  attr_reader :board_navigator, :current_player, :player1, :player2
 
   def initialize(player1 = Player.new('White', 'white'), player2 = Player.new('Black', 'black'), board_navigator = BoardNavigator.new(Board.new))
     @board_navigator = board_navigator
@@ -50,7 +50,7 @@ class Game
 
       switch_players
     end
-    puts "Thanks for playing, #{first_player.name} and #{second_player.name}!"
+    puts "Thanks for playing, #{player1.name} and #{player2.name}!"
   end
 
   def validate_target(move)
