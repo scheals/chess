@@ -8,7 +8,8 @@ class Pawn < Piece
     to_coordinate = Coordinate.parse(space)
     return false if position == to_coordinate
 
-    once_diagonal?(to_coordinate) || (once_vertical?(to_coordinate) && position.same_column?(to_coordinate)) || (double_vertical?(to_coordinate) && position.same_column?(to_coordinate))
+    once_diagonal?(to_coordinate) || (once_vertical?(to_coordinate) && position.same_column?(to_coordinate)) ||
+      (double_vertical?(to_coordinate) && position.same_column?(to_coordinate))
   end
 
   def split_moves(moves)

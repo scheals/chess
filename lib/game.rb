@@ -8,7 +8,9 @@ require_relative './coordinate'
 class Game
   attr_reader :board_navigator, :current_player, :player1, :player2
 
-  def initialize(player1 = Player.new('White', 'white'), player2 = Player.new('Black', 'black'), board_navigator = BoardNavigator.new(Board.new))
+  def initialize(player1 = Player.new('White', 'white'),
+                 player2 = Player.new('Black', 'black'),
+                 board_navigator = BoardNavigator.new(Board.new))
     @board_navigator = board_navigator
     @player1 = player1
     @player2 = player2

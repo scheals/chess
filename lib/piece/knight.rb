@@ -8,7 +8,8 @@ class Knight < Piece
     to_coordinate = Coordinate.parse(space)
     return false if position == to_coordinate
 
-    (twice_vertical?(to_coordinate) && once_horizontal?(to_coordinate)) || (twice_horizontal?(to_coordinate) && once_vertical?(to_coordinate))
+    (twice_vertical?(to_coordinate) && once_horizontal?(to_coordinate)) ||
+      (twice_horizontal?(to_coordinate) && once_vertical?(to_coordinate))
   end
 
   def split_moves(moves)

@@ -24,8 +24,8 @@ describe PieceNavigator do
 
     it 'returns an array of occupied squares' do
       expect(navigate_collision.occupied_coordinates).to contain_exactly('d1', 'd2', 'd7', 'd8',
-                                                                        'a1', 'b2', 'g7', 'h8',
-                                                                        'g1', 'f2', 'a7')
+                                                                         'a1', 'b2', 'g7', 'h8',
+                                                                         'g1', 'f2', 'a7')
     end
   end
 
@@ -386,7 +386,7 @@ describe KingNavigator do
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
       let(:white_king) { King.new(coordinate.parse('e1'), colour: 'white') }
-      let(:white_rook) { Rook.new(coordinate.parse('a1'),  colour: 'white') }
+      let(:white_rook) { Rook.new(coordinate.parse('a1'), colour: 'white') }
 
       before do
         board.put(white_king, 'e1')
@@ -595,7 +595,8 @@ describe PawnNavigator do
       let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:black_pawn) { board.find_piece('d5') }
-      # See 'when Pawn was already moved' above? No idea why that works with let! but this doesn't. So I had to grab the piece after it's been moved.
+      # See 'when Pawn was already moved' above? No idea why that works with let! but this doesn't.
+      # So I had to grab the piece after it's been moved.
       let(:coordinate) { Coordinate }
 
       before do

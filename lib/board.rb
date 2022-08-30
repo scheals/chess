@@ -80,7 +80,7 @@ class Board
   end
 
   def pieces
-    board.values.map(&:piece).select { |piece| piece.real? }
+    board.values.map(&:piece).select(&:real?)
   end
 
   def find_kings
