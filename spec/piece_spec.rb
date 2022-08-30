@@ -826,6 +826,46 @@ describe Pawn do
         end
       end
     end
+
+    describe '#promoteable?' do
+      let(:coordinate) { Coordinate }
+
+      context 'when Pawn is white' do
+        context 'when pawn is on the 8th row' do
+          subject(:promoteable_white_pawn) { described_class.new(coordinate.parse('a8'), colour: 'white') }
+
+          it 'returns true' do
+            expect(promoteable_white_pawn.promoteable?).to be true
+          end
+        end
+
+        context 'when pawn is not on the 8th row' do
+          subject(:nonpromoteable_white_pawn) { described_class.new(coordinate.parse('h5'), colour: 'white') }
+
+          it 'returns false' do
+            expect(nonpromoteable_white_pawn.promoteable?).to be false
+          end
+        end
+      end
+
+      context 'when Pawn is black' do
+        context 'when pawn is on the 1st row' do
+          subject(:promoteable_black_pawn) { described_class.new(coordinate.parse('c1'), colour: 'black') }
+
+          it 'returns true when on 1st row' do
+            expect(promoteable_black_pawn.promoteable?).to be true
+          end
+        end
+
+        context 'when pawn is not on the 1st row' do
+          subject(:nonpromoteable_black_pawn) { described_class.new(coordinate.parse('g6'), colour: 'black') }
+          
+          it 'returns false otherwise' do
+            expect(nonpromoteable_black_pawn.promoteable?).to be false
+          end
+        end
+      end
+    end
   end
 
   describe '#to_fen' do

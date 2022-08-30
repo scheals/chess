@@ -21,12 +21,4 @@ class PawnNavigator < PieceNavigator
       black_forward + black_takes
     end
   end
-
-  def promoteable?
-    if piece.colour == 'white'
-      %w[a8 b8 c8 d8 e8 f8 g8 h8].include?(piece.position.to_s)
-    else
-      %w[a1 b1 c1 d1 e1 f1 g1 h1].include?(piece.position.to_s)
-    end
-  end
 end
