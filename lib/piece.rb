@@ -69,6 +69,10 @@ class Piece
     false
   end
 
+  def promoteable?
+    false
+  end
+  
   private
 
   def column

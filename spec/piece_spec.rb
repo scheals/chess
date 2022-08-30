@@ -83,6 +83,14 @@ describe Piece do
     end
   end
 
+  describe '#promoteable?' do
+    subject(:not_a_pawn) { described_class.new('h8') }
+
+    it 'always returns false' do
+      expect(not_a_pawn.promoteable?).to be false
+    end
+  end
+
   describe '#enemy?' do
     subject(:our_piece) { described_class.new('a1', colour: 'red') }
 
@@ -859,7 +867,7 @@ describe Pawn do
 
         context 'when pawn is not on the 1st row' do
           subject(:nonpromoteable_black_pawn) { described_class.new(coordinate.parse('g6'), colour: 'black') }
-          
+
           it 'returns false otherwise' do
             expect(nonpromoteable_black_pawn.promoteable?).to be false
           end
