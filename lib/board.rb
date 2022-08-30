@@ -79,8 +79,12 @@ class Board
     find(square).piece
   end
 
+  def pieces
+    board.values.map(&:piece).select { |piece| piece.real? }
+  end
+
   def find_kings
-    board.values.map(&:piece).select { |piece| piece.instance_of?(King) }
+    pieces.select { |piece| piece.instance_of?(King) }
   end
 
   def put(piece, coordinate)

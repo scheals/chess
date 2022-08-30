@@ -162,16 +162,16 @@ describe Board do
     end
 
     it 'returns a new board with all pieces in the same spots' do
-      polly_pieces = polly_board.board.values.map(&:piece)
+      polly_pieces = polly_board.pieces
       molly_board = polly_board.copy
-      molly_pieces = molly_board.board.values.map(&:piece)
+      molly_pieces = molly_board.pieces
       expect(molly_pieces).to eq(polly_pieces)
     end
 
     it 'has to remember move_history of pieces' do
-      polly_pieces = polly_board.board.values.map(&:piece)
+      polly_pieces = polly_board.pieces
       molly_board = polly_board.copy
-      molly_pieces = molly_board.board.values.map(&:piece)
+      molly_pieces = molly_board.pieces
       expect(molly_pieces).to match_array(polly_pieces)
     end
 
@@ -374,6 +374,8 @@ describe Board do
     before do
       kingful_board.put(white_king, 'a1')
       kingful_board.put(black_king, 'h8')
+      allow(white_king).to receive(:real?).and_return(true)
+      allow(black_king).to receive(:real?).and_return(true)
       allow(white_king).to receive(:instance_of?).with(King).and_return(King)
       allow(black_king).to receive(:instance_of?).with(King).and_return(King)
     end
@@ -381,6 +383,25 @@ describe Board do
     it 'returns both Kings' do
       kings = [white_king, black_king]
       expect(kingful_board.find_kings).to match_array(kings)
+    end
+  end
+
+  describe '#pieces' do
+    subject(:board_and_pieces) { described_class.new }
+
+    let(:piece) { instance_double(Piece, position: 'whatever') }
+
+    before do
+      allow(piece).to receive(:real?).and_return(true)
+      coordinates = %w[a1 a2 a3]
+      coordinates.each do |coordinate|
+        board_and_pieces.put(piece, coordinate)
+      end
+    end
+
+    it 'returns all the pieces on board' do
+      proper_pieces = [piece, piece, piece]
+      expect(board_and_pieces.pieces).to eq(proper_pieces)
     end
   end
 end

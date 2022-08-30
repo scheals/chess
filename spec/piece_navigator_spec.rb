@@ -473,7 +473,9 @@ describe KingNavigator do
       before do
         board.put(white_rook, 'h1')
         allow(white_king).to receive(:can_castle?).and_return(true)
+        allow(white_king).to receive(:real?).and_return(true)
         allow(white_rook).to receive(:can_castle?).and_return(true)
+        allow(white_rook).to receive(:real?).and_return(true)
         allow(board_navigator).to receive(:checks_king?).with('e1', 'f1').and_return(false)
         allow(board_navigator).to receive(:checks_king?).with('e1', 'g1').and_return(false)
       end
@@ -495,7 +497,9 @@ describe KingNavigator do
       before do
         board.put(black_rook, 'a8')
         allow(black_king).to receive(:can_castle?).and_return(true)
+        allow(black_king).to receive(:real?).and_return(true)
         allow(black_rook).to receive(:can_castle?).and_return(true)
+        allow(black_rook).to receive(:real?).and_return(true)
         allow(board_navigator).to receive(:checks_king?).with('e8', 'd8').and_return(false)
         allow(board_navigator).to receive(:checks_king?).with('e8', 'c8').and_return(false)
       end
@@ -518,9 +522,11 @@ describe KingNavigator do
       before do
         board.put(kingside_rook, 'h8')
         board.put(queenside_rook, 'a8')
-        allow(black_king).to receive(:can_castle?).and_return(true)
-        allow(kingside_rook).to receive(:can_castle?).and_return(true)
-        allow(queenside_rook).to receive(:can_castle?).and_return(true)
+        pieces = [black_king, kingside_rook, queenside_rook]
+        pieces.each do |piece|
+          allow(piece).to receive(:can_castle?).and_return(true)
+          allow(piece).to receive(:real?).and_return(true)
+        end
         allow(board_navigator).to receive(:checks_king?).with('e8', 'd8').and_return(false)
         allow(board_navigator).to receive(:checks_king?).with('e8', 'c8').and_return(false)
         allow(board_navigator).to receive(:checks_king?).with('e8', 'f8').and_return(false)

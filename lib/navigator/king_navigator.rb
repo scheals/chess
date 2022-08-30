@@ -14,12 +14,12 @@ class KingNavigator < PieceNavigator
   end
 
   def can_castle_kingside?
-    rooks = board.board.values.map(&:piece).select { |piece| piece.instance_of?(Rook) && piece.colour == @piece.colour }
+    rooks = board.pieces.select { |piece| piece.instance_of?(Rook) && piece.colour == @piece.colour }
     rooks.any? { |rook| rook.position.column == 'h' && rook.can_castle? } && kingside_path_free? && kingside_not_under_check?
   end
 
   def can_castle_queenside?
-    rooks = board.board.values.map(&:piece).select { |piece| piece.instance_of?(Rook) && piece.colour == @piece.colour }
+    rooks = board.pieces.select { |piece| piece.instance_of?(Rook) && piece.colour == @piece.colour }
     rooks.any? { |rook| rook.position.column == 'a' && rook.can_castle? } && queenside_path_free? && queenside_not_under_check?
   end
 
