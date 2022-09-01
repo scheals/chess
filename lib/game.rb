@@ -48,7 +48,7 @@ class Game
       puts 'This is how the board looks like:'
       board_navigator.board.show
       move = ask_for_move until move
-      board_navigator.board.move_piece(move.start, move.target)
+      board_navigator.move_piece(move.start, move.target)
       break if game_over?
 
       switch_players

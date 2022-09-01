@@ -455,4 +455,21 @@ describe BoardNavigator do
       end
     end
   end
+
+  describe '#move_piece' do
+    subject(:moving_navigator) { described_class.new(board) }
+
+    let(:board) { instance_double(Board) }
+    let(:start) { 'a2' }
+    let(:target) { 'a3' }
+
+    before do
+      allow(board).to receive(:move_piece).with(start, target)
+    end
+
+    it 'sends board a move_piece message' do
+      moving_navigator.move_piece(start, target)
+      expect(board).to have_received(:move_piece).with(start,target)
+    end
+  end
 end
