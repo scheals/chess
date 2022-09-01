@@ -69,4 +69,11 @@ class BoardNavigator
   def move_piece(start, target)
     board.move_piece(start, target)
   end
+
+  def promote(coordinate, chosen_piece)
+    piece_to_promote = piece_for(coordinate)
+    promoted_piece = board.create_piece(chosen_piece, position: coordinate, colour: piece_to_promote.colour)
+    board.put(promoted_piece, piece_to_promote.position)
+    promoted_piece
+  end
 end

@@ -472,4 +472,24 @@ describe BoardNavigator do
       expect(board).to have_received(:move_piece).with(start,target)
     end
   end
+
+  describe '#promote' do
+    subject(:promotion_navigation) { described_class.new(Board.new) }
+
+    let(:coordinate) { 'g8' }
+    let(:chosen_piece) { 'queen' }
+    let(:promoted_piece) { Queen.new('g8', colour: 'white') }
+
+    before do
+      promotion_navigation.board.setup('4k1P1/4p3/8/8/8/8/4P3/4K3')
+    end
+
+    it 'promotes a piece to chosen piece' do
+      expect(promotion_navigation.promote(coordinate, chosen_piece)).to eq(promoted_piece)
+    end
+
+    it 'changes the board' do
+      expect { promotion_navigation.promote(coordinate, chosen_piece) }.to change { promotion_navigation.piece_for(coordinate) }
+    end
+  end
 end

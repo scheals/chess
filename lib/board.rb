@@ -72,11 +72,11 @@ class Board
   end
 
   def find(square)
-    @board[square]
+    @board[square.to_s]
   end
 
   def find_piece(square)
-    find(square).piece
+    find(square.to_s).piece
   end
 
   def pieces
@@ -88,7 +88,7 @@ class Board
   end
 
   def put(piece, coordinate)
-    find(coordinate).place(piece)
+    find(coordinate.to_s).place(piece)
   end
 
   def move_piece(start, target)

@@ -354,4 +354,27 @@ describe Game do
       end
     end
   end
+
+  describe '#promote' do
+    subject(:promoted_game) { described_class.new(player, player, board_navigator) }
+
+    let(:player) { instance_double(Player, name: 'Tester') }
+    let(:board_navigator) { instance_double(BoardNavigator) }
+    let(:queen) { Queen.new(coordinate, colour: 'black') }
+    let(:coordinate) { 'c8' }
+
+    before do
+      allow(promoted_game).to receive(:gets).and_return('q')
+      allow(board_navigator).to receive(:promote).with(coordinate, 'queen').and_return(queen)
+    end
+
+    it 'sends BoardNavigator a promote message' do
+      promoted_game.promote(coordinate)
+      expect(board_navigator).to have_received(:promote).with(coordinate, 'queen')
+    end
+
+    it 'returns piece that was promoted to' do
+      expect(promoted_game.promote(coordinate)).to be_a(Queen)
+    end
+  end
 end

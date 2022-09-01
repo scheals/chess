@@ -77,10 +77,28 @@ class Game
     end
   end
 
+  def promote(coordinate)
+    chosen_piece = ask_for_promotion until chosen_piece
+    board_navigator.promote(coordinate, chosen_piece)
+  end
+
   def promoteable?(coordinate)
     return true if board_navigator.promoteable?(coordinate)
 
     false
+  end
+
+  def ask_for_promotion
+    pieces = { 'r' => 'rook',
+               'n' => 'knight',
+               'b' => 'bishop',
+               'q' => 'queen',
+               'rook' => 'rook',
+               'knight' => 'knight',
+               'bishop' => 'bishop',
+               'queen' => 'queen' }
+    puts "#{current_player.name} promote your Pawn! FEN and full names accepted."
+    pieces[gets.chomp.downcase]
   end
 
   def in_bounds?(move)
