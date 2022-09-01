@@ -98,7 +98,13 @@ class Game
                'bishop' => 'bishop',
                'queen' => 'queen' }
     puts "#{current_player.name} promote your Pawn! FEN and full names accepted."
-    pieces[gets.chomp.downcase]
+    player_input = gets.chomp.downcase
+    unless pieces[player_input]
+      puts 'Incorrect input!'
+      return nil
+    end
+
+    pieces[player_input]
   end
 
   def in_bounds?(move)
