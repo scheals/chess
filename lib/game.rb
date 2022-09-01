@@ -115,6 +115,15 @@ class Game
     false
   end
 
+  def castle(move)
+    case move.to_s
+    when 'e1c1' then board_navigator.move_piece('a1', 'd1')
+    when 'e8c8' then board_navigator.move_piece('a8', 'd8')
+    when 'e1g1' then board_navigator.move_piece('h1', 'f1')
+    when 'e8g8' then board_navigator.move_piece('h8', 'f8')
+    end
+  end
+
   def in_bounds?(move)
     return true if move.in_bounds?(board_navigator.board)
 

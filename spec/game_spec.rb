@@ -473,4 +473,78 @@ describe Game do
       end
     end
   end
+
+  describe '#castle' do
+    context 'when black is performing queenside castling' do
+      subject(:castle_move_game) { described_class.new(player, player, board_navigator) }
+
+      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:player) { instance_double(Player) }
+      let(:queenside_move) { Move.parse('e8c8') }
+      let(:rook_move) { Move.parse('a8d8') }
+
+      before do
+        allow(board_navigator).to receive(:move_piece).with(rook_move.start, rook_move.target)
+      end
+
+      it 'sends BoardNavigator a move_piece a proper message' do
+        castle_move_game.castle(queenside_move)
+        expect(board_navigator).to have_received(:move_piece).with(rook_move.start, rook_move.target)
+      end
+    end
+
+    context 'when black is performing kingside castling' do
+      subject(:castle_move_game) { described_class.new(player, player, board_navigator) }
+
+      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:player) { instance_double(Player) }
+      let(:kingside_move) { Move.parse('e8g8') }
+      let(:rook_move) { Move.parse('h8f8') }
+
+      before do
+        allow(board_navigator).to receive(:move_piece).with(rook_move.start, rook_move.target)
+      end
+
+      it 'sends BoardNavigator a move_piece a proper message' do
+        castle_move_game.castle(kingside_move)
+        expect(board_navigator).to have_received(:move_piece).with(rook_move.start, rook_move.target)
+      end
+    end
+
+    context 'when white is performing queenside castling' do
+      subject(:castle_move_game) { described_class.new(player, player, board_navigator) }
+
+      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:player) { instance_double(Player) }
+      let(:queenside_move) { Move.parse('e1c1') }
+      let(:rook_move) { Move.parse('a1d1') }
+
+      before do
+        allow(board_navigator).to receive(:move_piece).with(rook_move.start, rook_move.target)
+      end
+
+      it 'sends BoardNavigator a move_piece a proper message' do
+        castle_move_game.castle(queenside_move)
+        expect(board_navigator).to have_received(:move_piece).with(rook_move.start, rook_move.target)
+      end
+    end
+
+    context 'when white is performing kingside castling' do
+      subject(:castle_move_game) { described_class.new(player, player, board_navigator) }
+
+      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:player) { instance_double(Player) }
+      let(:kingside_move) { Move.parse('e1g1') }
+      let(:rook_move) { Move.parse('h1f1') }
+
+      before do
+        allow(board_navigator).to receive(:move_piece).with(rook_move.start, rook_move.target)
+      end
+
+      it 'sends BoardNavigator a move_piece a proper message' do
+        castle_move_game.castle(kingside_move)
+        expect(board_navigator).to have_received(:move_piece).with(rook_move.start, rook_move.target)
+      end
+    end
+  end
 end
