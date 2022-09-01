@@ -58,4 +58,11 @@ class BoardNavigator
 
     false
   end
+
+  def win?(current_players_colour)
+    enemy_king = board.find_kings.find { |king| king.colour != current_players_colour }
+    return true if moves_for(enemy_king.position.to_s).empty? && under_check?(enemy_king)
+
+    false
+  end
 end

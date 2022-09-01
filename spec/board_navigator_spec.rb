@@ -429,4 +429,30 @@ describe BoardNavigator do
       end
     end
   end
+
+  describe '#win?' do
+    context 'when game is still on' do
+      subject(:board_continue) { described_class.new(Board.new) }
+
+      before do
+        board_continue.board.setup
+      end
+
+      it 'returns false' do
+        expect(board_continue.win?('black')).to be false
+      end
+    end
+
+    context 'when game is won' do
+      subject(:board_won) { described_class.new(Board.new) }
+
+      before do
+        board_won.board.setup('R3k3/7R/8/8/8/8/PPPPPPPP/1NBQKBN1')
+      end
+
+      it 'returns true' do
+        expect(board_won.win?('white')).to be true
+      end
+    end
+  end
 end
