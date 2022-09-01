@@ -377,4 +377,19 @@ describe Game do
       expect(promoted_game.promote(coordinate)).to eq(queen)
     end
   end
+
+  describe '#game_loop' do
+    context 'when promotion ends the game' do
+      subject(:promoted_to_win) { described_class.new }
+
+      before do
+        promoted_to_win.board_navigator.board.setup('4kbnr/P3pppp/8/8/8/8/1PP1PPPP/RNBQKBNR')
+        allow(promoted_to_win).to receive(:gets).and_return('a7a8', 'queen')
+      end
+
+      it 'correctly reflects that by ending the loop' do
+        expect { promoted_to_win.game_loop }.not_to change(promoted_to_win, :current_player)
+      end
+    end
+  end
 end

@@ -49,6 +49,7 @@ class Game
       board_navigator.board.show
       move = ask_for_move until move
       board_navigator.move_piece(move.start, move.target)
+      promote(move.target) if promoteable?(move.target)
       break if game_over?
 
       switch_players
