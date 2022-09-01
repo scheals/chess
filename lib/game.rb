@@ -78,7 +78,7 @@ class Game
   end
 
   def promoteable?(coordinate)
-    return true if board_navigator.board.find_piece(coordinate).promoteable?
+    return true if board_navigator.promoteable?(coordinate)
 
     false
   end

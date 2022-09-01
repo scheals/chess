@@ -321,27 +321,35 @@ describe Game do
 
   describe '#promoteable?' do
     context 'when piece at the coordinate is promoteable' do
-      subject(:promoteable_game) { described_class.new }
+      subject(:promoteable_game) { described_class.new(player, player, board_navigator) }
+
+      let(:player) { instance_double(Player) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
+      let(:coordinate) { 'a8' }
 
       before do
-        promoteable_game.board_navigator.board.setup('P3k3/4p3/8/8/8/8/4P3/4K3')
+        allow(board_navigator).to receive(:promoteable?).with(coordinate).and_return(true)
       end
 
       it 'returns true' do
-        coordinate = 'a8'
         expect(promoteable_game.promoteable?(coordinate)).to be true
       end
     end
 
     context 'when piece at the coordinate is not promoteable' do
-      subject(:nonpromoteable_game) { described_class.new }
+      subject(:nonpromoteable_game) { described_class.new(player, player, board_navigator) }
+
+      let(:player) { instance_double(Player) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
+      let(:coordinate) { 'a8' }
 
       before do
-        nonpromoteable_game.board_navigator.board.setup('R3k3/4p3/8/8/8/8/4P3/4K3')
+        allow(board_navigator).to receive(:promoteable?).with(coordinate).and_return(false)
       end
 
       it 'returns false' do
-        coordinate = 'a8'
         expect(nonpromoteable_game.promoteable?(coordinate)).to be false
       end
     end

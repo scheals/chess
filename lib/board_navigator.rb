@@ -52,4 +52,10 @@ class BoardNavigator
   def enemy_moves(piece_navigator)
     piece_navigator.enemy_coordinates(board.coordinates).map { |coordinate| moves_after_collision_for(coordinate) }
   end
+
+  def promoteable?(coordinate)
+    return true if board.find_piece(coordinate).promoteable?
+
+    false
+  end
 end

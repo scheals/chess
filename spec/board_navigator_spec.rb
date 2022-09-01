@@ -401,4 +401,32 @@ describe BoardNavigator do
       end
     end
   end
+
+  describe '#promoteable?' do
+    context 'when piece at the coordinate is promoteable' do
+      subject(:promoteable_board) { described_class.new(Board.new) }
+
+      before do
+        promoteable_board.board.setup('P3k3/4p3/8/8/8/8/4P3/4K3')
+      end
+
+      it 'returns true' do
+        coordinate = 'a8'
+        expect(promoteable_board.promoteable?(coordinate)).to be true
+      end
+    end
+
+    context 'when piece at the coordinate is not promoteable' do
+      subject(:nonpromoteable_board) { described_class.new(Board.new) }
+
+      before do
+        nonpromoteable_board.board.setup('R3k3/4p3/8/8/8/8/4P3/4K3')
+      end
+
+      it 'returns false' do
+        coordinate = 'a8'
+        expect(nonpromoteable_board.promoteable?(coordinate)).to be false
+      end
+    end
+  end
 end
