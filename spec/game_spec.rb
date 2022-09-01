@@ -391,5 +391,18 @@ describe Game do
         expect { promoted_to_win.game_loop }.not_to change(promoted_to_win, :current_player)
       end
     end
+
+    context "when Fool's mate occurs" do
+      subject(:fools_game) { described_class.new }
+
+      before do
+        fools_game.board_navigator.board.setup
+        allow(fools_game).to receive(:gets).and_return('f2f3', 'e7e6', 'g2g4', 'd8h4')
+      end
+
+      it 'correctly reflects that by ending the loop' do
+        expect { fools_game.game_loop }.to change(fools_game, :current_player).to be(fools_game.player2)
+      end
+    end
   end
 end
