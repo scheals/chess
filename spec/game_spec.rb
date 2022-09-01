@@ -69,7 +69,7 @@ describe Game do
       before do
         allow(good_input).to receive(:gets).and_return(proper_move)
         allow(good_input).to receive(:in_bounds?).with(Move.parse(proper_move)).and_return(true)
-        allow(good_input).to receive(:current_player_owns?).with((Move.parse(proper_move)).start).and_return(true)
+        allow(good_input).to receive(:current_player_owns?).with(Move.parse(proper_move).start).and_return(true)
         allow(good_input).to receive(:legal_target?).with(Move.parse(proper_move)).and_return(true)
       end
 
@@ -134,7 +134,7 @@ describe Game do
 
   describe '#current_player_owns?' do
     context 'when the current player owns the piece' do
-      subject(:game_current_player_owns) { described_class.new(player, player, board_navigator)}
+      subject(:game_current_player_owns) { described_class.new(player, player, board_navigator) }
 
       let(:player) { instance_double(Player, colour: 'white') }
       let(:board_navigator) { instance_double(BoardNavigator) }
@@ -151,7 +151,7 @@ describe Game do
     end
 
     context 'when the current players does not own the piece' do
-      subject(:game_current_player_does_not_own) { described_class.new(player, player, board_navigator)}
+      subject(:game_current_player_does_not_own) { described_class.new(player, player, board_navigator) }
 
       let(:player) { instance_double(Player, colour: 'black') }
       let(:board_navigator) { instance_double(BoardNavigator) }
@@ -171,7 +171,7 @@ describe Game do
 
   describe '#legal_target?' do
     context 'when target is legal' do
-      subject(:game_legal_target) { described_class.new(player, player, board_navigator)}
+      subject(:game_legal_target) { described_class.new(player, player, board_navigator) }
 
       let(:player) { instance_double(Player, colour: 'black') }
       let(:board_navigator) { instance_double(BoardNavigator) }
@@ -187,14 +187,14 @@ describe Game do
     end
 
     context 'when target is illegal' do
-      subject(:game_illegal_target) { described_class.new(player, player, board_navigator)}
+      subject(:game_illegal_target) { described_class.new(player, player, board_navigator) }
 
       let(:player) { instance_double(Player, colour: 'black') }
       let(:board_navigator) { instance_double(BoardNavigator) }
       let(:move) { Move.parse('b7h2') }
 
       before do
-        allow(board_navigator).to receive(:moves_for).with(move.start).and_return(['d6', 'd3'])
+        allow(board_navigator).to receive(:moves_for).with(move.start).and_return(%w[d6 d3])
       end
 
       it 'returns false' do
@@ -259,7 +259,7 @@ describe Game do
     subject(:game_switch_players) { described_class.new }
 
     it 'changes the current player to the other one' do
-      expect{ game_switch_players.switch_players }.to change { game_switch_players.current_player}
+      expect { game_switch_players.switch_players }.to change(game_switch_players, :current_player)
     end
   end
 
@@ -315,6 +315,34 @@ describe Game do
 
       it 'returns false' do
         expect(bad_move_game.correct_length?(incorrect_move)).to be false
+      end
+    end
+  end
+
+  describe '#promoteable?' do
+    context 'when piece at the coordinate is promoteable' do
+      subject(:promoteable_game) { described_class.new }
+
+      before do
+        promoteable_game.board_navigator.board.setup('P3k3/4p3/8/8/8/8/4P3/4K3')
+      end
+
+      it 'returns true' do
+        coordinate = 'a8'
+        expect(promoteable_game.promoteable?(coordinate)).to be true
+      end
+    end
+
+    context 'when piece at the coordinate is not promoteable' do
+      subject(:nonpromoteable_game) { described_class.new }
+
+      before do
+        nonpromoteable_game.board_navigator.board.setup('R3k3/4p3/8/8/8/8/4P3/4K3')
+      end
+
+      it 'returns false' do
+        coordinate = 'a8'
+        expect(nonpromoteable_game.promoteable?(coordinate)).to be false
       end
     end
   end

@@ -4,6 +4,7 @@ require_relative './player'
 require_relative './move'
 require_relative './coordinate'
 
+# rubocop: disable Metrics/ClassLength
 # This class handles a game of Chess.
 class Game
   attr_reader :board_navigator, :current_player, :player1, :player2
@@ -76,6 +77,12 @@ class Game
     end
   end
 
+  def promoteable?(coordinate)
+    return true if board_navigator.board.find_piece(coordinate).promoteable?
+
+    false
+  end
+
   def in_bounds?(move)
     return true if move.in_bounds?(board_navigator.board)
 
@@ -131,3 +138,4 @@ class Game
     false
   end
 end
+# rubocop: enable Metrics/ClassLength
