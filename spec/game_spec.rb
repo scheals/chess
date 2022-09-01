@@ -374,7 +374,7 @@ describe Game do
     end
 
     it 'returns piece that was promoted to' do
-      expect(promoted_game.promote(coordinate)).to be_a(Queen)
+      expect(promoted_game.promote(coordinate)).to eq(queen)
     end
   end
 end
