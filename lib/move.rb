@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'coordinate'
+
 # This class stores start and end of a move.
 class Move
   attr_reader :start, :target
@@ -39,5 +41,9 @@ class Move
 
   def ==(other)
     start == other.start && target == other.target
+  end
+
+  def to_s
+    [start, target].join
   end
 end
