@@ -108,6 +108,13 @@ class Game
     pieces[player_input]
   end
 
+  def castling?(move)
+    castling_moves = %w[e1c1 e8c8 e1g1 e8g8]
+    return true if board_navigator.piece_for(move.start).is_a?(King) && castling_moves.include?(move.to_s)
+
+    false
+  end
+
   def in_bounds?(move)
     return true if move.in_bounds?(board_navigator.board)
 
