@@ -50,6 +50,7 @@ class Game
       move = ask_for_move until move
       board_navigator.move_piece(move.start, move.target)
       promote(move.target) if promoteable?(move.target)
+      castle(move) if castling?(move)
       break if game_over?
 
       switch_players
@@ -110,7 +111,7 @@ class Game
 
   def castling?(move)
     castling_moves = %w[e1c1 e8c8 e1g1 e8g8]
-    return true if board_navigator.piece_for(move.start).is_a?(King) && castling_moves.include?(move.to_s)
+    return true if board_navigator.piece_for(move.target).is_a?(King) && castling_moves.include?(move.to_s)
 
     false
   end

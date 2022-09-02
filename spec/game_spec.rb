@@ -392,6 +392,19 @@ describe Game do
       end
     end
 
+    context 'when castling ends the game' do
+      subject(:castled_to_win) { described_class.new }
+
+      before do
+        castled_to_win.board_navigator.board.setup('rnb2kr1/pppp2pp/8/8/8/8/PPPPQ1PP/RNB1K2R')
+        allow(castled_to_win).to receive(:gets).and_return('e1g1').once
+      end
+
+      it 'correctly reflects that by ending the loop' do
+        expect { castled_to_win.game_loop }.not_to change(castled_to_win, :current_player)
+      end
+    end
+
     context "when Fool's mate occurs" do
       subject(:fools_game) { described_class.new }
 
@@ -416,12 +429,12 @@ describe Game do
       let(:move) { Move.new('e1c1') }
 
       before do
-        allow(board_navigator).to receive(:piece_for).with(move.start).and_return(king)
+        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(king)
       end
 
       it 'sends BoardNavigator a piece_for message' do
         castling_game.castling?(move)
-        expect(board_navigator).to have_received(:piece_for).with(move.start)
+        expect(board_navigator).to have_received(:piece_for).with(move.target)
       end
 
       it 'returns true' do
@@ -438,12 +451,12 @@ describe Game do
       let(:move) { Move.new('e1f1') }
 
       before do
-        allow(board_navigator).to receive(:piece_for).with(move.start).and_return(king)
+        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(king)
       end
 
       it 'sends BoardNavigator a piece_for message' do
         noncastling_game.castling?(move)
-        expect(board_navigator).to have_received(:piece_for).with(move.start)
+        expect(board_navigator).to have_received(:piece_for).with(move.target)
       end
 
       it 'returns false' do
@@ -460,12 +473,12 @@ describe Game do
       let(:move) { Move.new('e1g1') }
 
       before do
-        allow(board_navigator).to receive(:piece_for).with(move.start).and_return(rook)
+        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(rook)
       end
 
       it 'sends BoardNavigator a piece_for message' do
         rook_castle_attempt_game.castling?(move)
-        expect(board_navigator).to have_received(:piece_for).with(move.start)
+        expect(board_navigator).to have_received(:piece_for).with(move.target)
       end
 
       it 'returns false' do

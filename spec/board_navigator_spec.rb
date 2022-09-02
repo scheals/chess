@@ -469,7 +469,7 @@ describe BoardNavigator do
 
     it 'sends board a move_piece message' do
       moving_navigator.move_piece(start, target)
-      expect(board).to have_received(:move_piece).with(start,target)
+      expect(board).to have_received(:move_piece).with(start, target)
     end
   end
 
