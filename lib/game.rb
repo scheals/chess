@@ -125,6 +125,13 @@ class Game
     end
   end
 
+  def en_passant_opportunity?(move)
+    return true if board_navigator.piece_for(move.target).is_a?(Pawn) &&
+                   (move.start[1].to_i - move.target[1].to_i).abs == 2
+
+    false
+  end
+
   def in_bounds?(move)
     return true if move.in_bounds?(board_navigator.board)
 

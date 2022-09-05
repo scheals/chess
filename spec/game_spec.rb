@@ -560,4 +560,52 @@ describe Game do
       end
     end
   end
+
+  describe '#en_passant_opportunity?' do
+    context 'when it creates an en passant opportunity' do
+      subject(:en_passant_opportunity) { described_class.new(player, player, board_navigator) }
+
+      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:player) { instance_double(Player) }
+      let(:move) { Move.parse('a2a4') }
+      let(:pawn) { instance_double(Pawn) }
+
+      before do
+        allow(pawn).to receive(:is_a?).and_return(Pawn)
+        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(pawn)
+      end
+
+      it 'sends BoardNavigator a piece_for message' do
+        en_passant_opportunity.en_passant_opportunity?(move)
+        expect(board_navigator).to have_received(:piece_for).with(move.target).once
+      end
+
+      it 'returns true' do
+        expect(en_passant_opportunity.en_passant_opportunity?(move)).to be true
+      end
+    end
+
+    context 'when it does not create an en passant opportunity' do
+      subject(:no_en_passant) { described_class.new(player, player, board_navigator) }
+
+      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:player) { instance_double(Player) }
+      let(:move) { Move.parse('a2a3') }
+      let(:pawn) { instance_double(Pawn) }
+
+      before do
+        allow(pawn).to receive(:is_a?).and_return(Pawn)
+        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(pawn)
+      end
+
+      it 'sends BoardNavigator a piece_for message' do
+        no_en_passant.en_passant_opportunity?(move)
+        expect(board_navigator).to have_received(:piece_for).with(move.target).once
+      end
+
+      it 'returns false' do
+        expect(no_en_passant.en_passant_opportunity?(move)).to be false
+      end
+    end
+  end
 end
