@@ -34,7 +34,7 @@ class Game
     loop do
       puts "#{current_player.name} as #{current_player.colour} it is your turn!"
       puts 'Enter a full move like \'a8c8\' or a partial move like \'a8\' to see possible moves of that piece.'
-      unvalidated_move = Move.parse(gets.chomp.downcase)
+      unvalidated_move = create_move(gets.chomp.downcase)
       break if correct_length?(unvalidated_move) &&
                in_bounds?(unvalidated_move) &&
                current_player_owns?(unvalidated_move.start)
