@@ -4,12 +4,13 @@ require_relative 'navigator_factory'
 
 # This class handles movement logic for a chessboard.
 class BoardNavigator
-  attr_reader :board, :navigator_factory, :coordinate_system
+  attr_reader :board, :navigator_factory, :coordinate_system, :en_passant_coordinate
 
   def initialize(board, navigator_factory = NavigatorFactory, coordinate_system = Coordinate)
     @board = board
     @navigator_factory = navigator_factory
     @coordinate_system = coordinate_system
+    @en_passant_coordinate = nil
   end
 
   def moves_after_collision_for(coordinate)
@@ -75,5 +76,18 @@ class BoardNavigator
     promoted_piece = board.create_piece(chosen_piece, position: coordinate, colour: piece_to_promote.colour)
     board.put(promoted_piece, piece_to_promote.position)
     promoted_piece
+  end
+
+  def create_en_passant_coordinate(move)
+    piece_colour = piece_for(move.target).colour
+
+    case piece_colour
+    when 'white' then @en_passant_coordinate = move.target.down
+    when 'black' then @en_passant_coordinate = move.target.up
+    end
+  end
+
+  def clear_en_passant_coordinate
+    @en_passant_coordinate = nil
   end
 end

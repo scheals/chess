@@ -3,6 +3,7 @@
 require_relative '../lib/board_navigator'
 require_relative '../lib/board'
 require_relative '../lib/navigator_factory'
+require_relative '../lib/move'
 
 RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
@@ -490,6 +491,35 @@ describe BoardNavigator do
 
     it 'changes the board' do
       expect { promotion_navigation.promote(coordinate, chosen_piece) }.to change { promotion_navigation.piece_for(coordinate) }
+    end
+  end
+
+  describe '#create_en_passant_coordinate' do
+    subject(:navigate_en_passant) { described_class.new(Board.new) }
+
+    let(:move) { Move.parse('d7d5') }
+
+    before do
+      navigate_en_passant.board.setup('rnbqkbnr/ppp1pppp/8/3p4/8/8/PPPPPPPP/RNBQKBNR')
+    end
+
+    it 'changes @en_passant_coordinate to the proper coordinate' do
+      expect { navigate_en_passant.create_en_passant_coordinate(move) }.to change(navigate_en_passant, :en_passant_coordinate).from(nil).to(move.target.up)
+    end
+  end
+
+  describe '#clear_en_passant_coordinate' do
+    subject(:clear_en_passant) { described_class.new(Board.new) }
+
+    let(:move) { Move.parse('g7g5') }
+
+    before do
+      clear_en_passant.board.setup('rnbqkbnr/pppppp1p/8/6p1/8/8/PPPPPPPP/RNBQKBNR')
+      clear_en_passant.create_en_passant_coordinate(move)
+    end
+
+    it 'changes @en_passant_coordinate to nil' do
+      expect { clear_en_passant.clear_en_passant_coordinate }.to change(clear_en_passant, :en_passant_coordinate).to(nil)
     end
   end
 end
