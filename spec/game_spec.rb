@@ -611,4 +611,21 @@ describe Game do
       end
     end
   end
+
+  describe '#send_en_passant_opportunity' do
+    subject(:en_passant_game) { described_class.new(player, player, board_navigator) }
+
+    let(:board_navigator) { instance_double(BoardNavigator) }
+    let(:player) { instance_double(Player) }
+    let(:move) { Move.parse('d7d5') }
+
+    before do
+      allow(board_navigator).to receive(:create_en_passant_coordinate).with(move)
+    end
+
+    it 'sends BoardNavigator a create_en_passant_coordinate message' do
+      en_passant_game.send_en_passant_opportunity(move)
+      expect(board_navigator).to have_received(:create_en_passant_coordinate).with(move)
+    end
+  end
 end

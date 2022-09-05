@@ -51,6 +51,7 @@ class Game
       board_navigator.move_piece(move.start, move.target)
       promote(move.target) if promoteable?(move.target)
       castle(move) if castling?(move)
+      send_en_passant_opportunity(move) if en_passant_opportunity?(move)
       break if game_over?
 
       switch_players
@@ -130,6 +131,10 @@ class Game
                    (move.start.row.to_i - move.target.row.to_i).abs == 2
 
     false
+  end
+
+  def send_en_passant_opportunity(move)
+    board_navigator.create_en_passant_coordinate(move)
   end
 
   def in_bounds?(move)
