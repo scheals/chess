@@ -74,7 +74,7 @@ class Game
       possible_moves.each { |possible_move| print "#{possible_move} \t" }
       puts "\nWhich one do you want to make? Type 'q' if you want to restart making your move."
       completed_move = Move.new(move.start, gets.chomp.downcase)
-      break nil if completed_move.target == 'q'
+      break nil if completed_move.target.to_s == 'q'
       break completed_move if legal_target?(completed_move)
     end
   end
@@ -127,7 +127,7 @@ class Game
 
   def en_passant_opportunity?(move)
     return true if board_navigator.piece_for(move.target).is_a?(Pawn) &&
-                   (move.start[1].to_i - move.target[1].to_i).abs == 2
+                   (move.start.row.to_i - move.target.row.to_i).abs == 2
 
     false
   end

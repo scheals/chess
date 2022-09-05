@@ -425,10 +425,11 @@ describe Game do
 
       let(:board_navigator) { instance_double(BoardNavigator) }
       let(:player) { instance_double(Player) }
-      let(:king) { instance_double(King, is_a?: King) }
-      let(:move) { Move.new('e1c1') }
+      let(:king) { instance_double(King) }
+      let(:move) { Move.parse('e1c1') }
 
       before do
+        allow(king).to receive(:is_a?).with(King).and_return(true)
         allow(board_navigator).to receive(:piece_for).with(move.target).and_return(king)
       end
 
@@ -451,6 +452,7 @@ describe Game do
       let(:move) { Move.new('e1f1') }
 
       before do
+        allow(king).to receive(:is_a?).with(King).and_return(true)
         allow(board_navigator).to receive(:piece_for).with(move.target).and_return(king)
       end
 
@@ -473,6 +475,7 @@ describe Game do
       let(:move) { Move.new('e1g1') }
 
       before do
+        allow(rook).to receive(:is_a?).with(King).and_return(false)
         allow(board_navigator).to receive(:piece_for).with(move.target).and_return(rook)
       end
 
@@ -497,12 +500,12 @@ describe Game do
       let(:rook_move) { Move.parse('a8d8') }
 
       before do
-        allow(board_navigator).to receive(:move_piece).with(rook_move.start, rook_move.target)
+        allow(board_navigator).to receive(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s.to_s)
       end
 
       it 'sends BoardNavigator a move_piece a proper message' do
         castle_move_game.castle(queenside_move)
-        expect(board_navigator).to have_received(:move_piece).with(rook_move.start, rook_move.target)
+        expect(board_navigator).to have_received(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
       end
     end
 
@@ -515,12 +518,12 @@ describe Game do
       let(:rook_move) { Move.parse('h8f8') }
 
       before do
-        allow(board_navigator).to receive(:move_piece).with(rook_move.start, rook_move.target)
+        allow(board_navigator).to receive(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
       end
 
       it 'sends BoardNavigator a move_piece a proper message' do
         castle_move_game.castle(kingside_move)
-        expect(board_navigator).to have_received(:move_piece).with(rook_move.start, rook_move.target)
+        expect(board_navigator).to have_received(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
       end
     end
 
@@ -533,12 +536,12 @@ describe Game do
       let(:rook_move) { Move.parse('a1d1') }
 
       before do
-        allow(board_navigator).to receive(:move_piece).with(rook_move.start, rook_move.target)
+        allow(board_navigator).to receive(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
       end
 
       it 'sends BoardNavigator a move_piece a proper message' do
         castle_move_game.castle(queenside_move)
-        expect(board_navigator).to have_received(:move_piece).with(rook_move.start, rook_move.target)
+        expect(board_navigator).to have_received(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
       end
     end
 
@@ -551,12 +554,12 @@ describe Game do
       let(:rook_move) { Move.parse('h1f1') }
 
       before do
-        allow(board_navigator).to receive(:move_piece).with(rook_move.start, rook_move.target)
+        allow(board_navigator).to receive(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
       end
 
       it 'sends BoardNavigator a move_piece a proper message' do
         castle_move_game.castle(kingside_move)
-        expect(board_navigator).to have_received(:move_piece).with(rook_move.start, rook_move.target)
+        expect(board_navigator).to have_received(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
       end
     end
   end

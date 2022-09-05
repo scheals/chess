@@ -21,7 +21,7 @@ describe Move do
       let(:single_coordinate) { 'a1' }
 
       it 'creates new Move with @start' do
-        expect(two_parse.parse(single_coordinate)).to have_attributes(start: 'a1')
+        expect(two_parse.parse(single_coordinate)).to have_attributes(start: Coordinate.parse('a1'))
       end
     end
 
@@ -31,7 +31,7 @@ describe Move do
       let(:double_coordinate) { 'h8d4' }
 
       it 'creates new Move with @start and @target' do
-        expect(four_parse.parse(double_coordinate)).to have_attributes(start: 'h8', target: 'd4')
+        expect(four_parse.parse(double_coordinate)).to have_attributes(start: Coordinate.parse('h8'), target: Coordinate.parse('d4'))
       end
     end
 

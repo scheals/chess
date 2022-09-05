@@ -7,8 +7,8 @@ class Move
   attr_reader :start, :target
 
   def initialize(start, target = nil)
-    @start = start
-    @target = target
+    @start = Coordinate.parse(start)
+    @target = Coordinate.parse(target) if target
   end
 
   def self.parse(move)
@@ -44,6 +44,6 @@ class Move
   end
 
   def to_s
-    [start, target].join
+    [start, target].map(&:to_s).join
   end
 end
