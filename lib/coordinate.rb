@@ -16,6 +16,8 @@ class Coordinate
   end
 
   def ==(other)
+    return false if other.nil?
+    
     column == other.column && row == other.row
   end
 
