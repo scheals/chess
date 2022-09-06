@@ -404,6 +404,23 @@ describe Board do
       expect(board_and_pieces.pieces).to eq(proper_pieces)
     end
   end
+
+  describe '#vacate' do
+    subject(:vacate_board) { Board.new(square_class) }
+
+    let(:square_class) { class_double(Square) }
+    let(:square) { instance_double(Square, position: 'a1') }
+
+    before do
+      allow(square_class).to receive(:new).and_return(square)
+      allow(square).to receive(:vacate).once
+    end
+
+    it 'sends Square a vacate message' do
+      vacate_board.vacate('a1')
+      expect(square).to have_received(:vacate)
+    end
+  end
 end
 
 describe Square do

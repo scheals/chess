@@ -100,6 +100,10 @@ class Board
     start_square.vacate
   end
 
+  def vacate(coordinate)
+    find(coordinate).vacate
+  end
+
   def in_bounds?(coordinate)
     return true if find(coordinate)
 
