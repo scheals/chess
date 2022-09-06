@@ -649,4 +649,42 @@ describe PawnNavigator do
       end
     end
   end
+
+  describe '#en_passant_checks_king?' do
+    context 'when it does check the king' do
+      subject(:passant_check) { described_class.new(board_navigator, black_pawn) }
+
+      let(:board_navigator) { BoardNavigator.new(Board.new) }
+      let(:black_pawn) { board_navigator.piece_for('e4') }
+
+      before do
+        board_navigator.board.setup('rnbpkpnr/pppp1ppp/8/8/3Pp3/8/PPP1QPPP/RNBPKBNR')
+        board_navigator.create_en_passant_coordinate(Move.parse('d2d4'))
+      end
+
+      it 'returns true' do
+        start = black_pawn.position
+        target = board_navigator.en_passant_coordinate
+        expect(passant_check.en_passant_checks_king?(start, target)).to be true
+      end
+    end
+
+    context 'when it does not check the king' do
+      subject(:no_passant_check) { described_class.new(board_navigator, white_pawn) }
+
+      let(:board_navigator) { BoardNavigator.new(Board.new) }
+      let(:white_pawn) { board_navigator.piece_for('d5') }
+
+      before do
+        board_navigator.board.setup('rnbqkbnr/pp1ppppp/8/2pP4/8/8/PPP1PPPP/RNBQKBNR')
+        board_navigator.create_en_passant_coordinate(Move.parse('c7c5'))
+      end
+
+      it 'returns false' do
+        start = white_pawn.position
+        target = board_navigator.en_passant_coordinate
+        expect(no_passant_check.en_passant_checks_king?(start, target)).to be false
+      end
+    end
+  end
 end

@@ -388,16 +388,18 @@ describe BoardNavigator do
       end
     end
 
-    xcontext 'when en passant is possible for a pawn' do
+    context 'when en passant is possible for a pawn' do
       subject(:en_passant) { described_class.new(board) }
 
       before do
         board.setup('4k3/8/8/8/3p4/8/4P3/4K3')
+        en_passant.move_piece('e2', 'e4')
+        en_passant.create_en_passant_coordinate(Move.parse('e2e4'))
       end
 
       it 'includes it as a possibility' do
         correct_moves = %w[d3 d2 e3].map { |move| coordinate.parse(move) }
-        board.move_piece('e2', 'e4')
+
         expect(en_passant.moves_for('d4')).to match_array(correct_moves)
       end
     end
