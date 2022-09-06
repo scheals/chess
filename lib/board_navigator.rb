@@ -1,16 +1,17 @@
 # frozen_string_literal: true
 
 require_relative 'navigator_factory'
+require_relative 'en_passant_pair'
 
 # This class handles movement logic for a chessboard.
 class BoardNavigator
-  attr_reader :board, :navigator_factory, :coordinate_system, :en_passant_coordinate
+  attr_reader :board, :navigator_factory, :coordinate_system
 
   def initialize(board, navigator_factory = NavigatorFactory, coordinate_system = Coordinate)
     @board = board
     @navigator_factory = navigator_factory
     @coordinate_system = coordinate_system
-    @en_passant_coordinate = nil
+    @en_passant_pair = nil
   end
 
   def moves_after_collision_for(coordinate)
@@ -79,15 +80,25 @@ class BoardNavigator
   end
 
   def create_en_passant_coordinate(move)
-    piece_colour = piece_for(move.target).colour
+    piece = piece_for(move.target)
 
-    case piece_colour
-    when 'white' then @en_passant_coordinate = move.target.down
-    when 'black' then @en_passant_coordinate = move.target.up
+    case piece.colour
+    when 'white'
+      @en_passant_pair = create_passant_pair(piece, move.target.down)
+    when 'black'
+      @en_passant_pair = create_passant_pair(piece, move.target.up)
     end
   end
 
   def clear_en_passant_coordinate
-    @en_passant_coordinate = nil
+    @en_passant_pair = create_passant_pair(nil, nil)
+  end
+
+  def en_passant_coordinate
+    @en_passant_pair&.en_passant_coordinate
+  end
+
+  def create_passant_pair(piece, coordinate)
+    EnPassantPair.new(piece, coordinate)
   end
 end
