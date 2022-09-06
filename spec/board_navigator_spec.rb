@@ -510,7 +510,7 @@ describe BoardNavigator do
     end
   end
 
-  describe '#clear_en_passant_coordinate' do
+  describe '#clear_en_passant_pair' do
     subject(:clear_en_passant) { described_class.new(Board.new) }
 
     let(:move) { Move.parse('g7g5') }
@@ -521,7 +521,7 @@ describe BoardNavigator do
     end
 
     it 'changes @en_passant_coordinate to nil' do
-      expect { clear_en_passant.clear_en_passant_coordinate }.to change(clear_en_passant, :en_passant_coordinate).to(nil)
+      expect { clear_en_passant.clear_en_passant_pair }.to change(clear_en_passant, :en_passant_coordinate).to(nil)
     end
   end
 end

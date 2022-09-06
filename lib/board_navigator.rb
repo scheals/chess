@@ -90,7 +90,7 @@ class BoardNavigator
     end
   end
 
-  def clear_en_passant_coordinate
+  def clear_en_passant_pair
     @en_passant_pair = create_passant_pair(nil, nil)
   end
 
