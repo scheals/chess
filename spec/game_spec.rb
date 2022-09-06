@@ -628,4 +628,43 @@ describe Game do
       expect(board_navigator).to have_received(:create_en_passant_coordinate).with(move)
     end
   end
+
+  describe '#en_passant?' do
+    context 'when the move is en passant' do
+      subject(:passant_game) { described_class.new }
+
+      let(:passant_opportunity) { Move.parse('c7c5') }
+      let(:passant_attacker_coordinate) { Coordinate.parse('d5') }
+
+      before do
+        passant_game.board_navigator.board.setup('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
+        passant_game.board_navigator.move_piece(passant_opportunity.start, passant_opportunity.target)
+        passant_game.send_en_passant_opportunity(passant_opportunity)
+      end
+
+      it 'returns true' do
+        passant_move = Move.new(passant_game.board_navigator.piece_for(passant_attacker_coordinate).position,
+                                passant_game.board_navigator.en_passant_coordinate)
+        expect(passant_game.en_passant?(passant_move)).to be true
+      end
+    end
+
+    context 'when the move is not en passant' do
+      subject(:no_passant_game) { described_class.new }
+
+      let(:no_passant_opportunity) { Move.parse('c7c6') }
+      let(:regular_attacker_coordinate) { Coordinate.parse('d5') }
+
+      before do
+        no_passant_game.board_navigator.board.setup('rnbqkbnr/pp1ppppp/2p5/3P4/8/8/PPP1PPPP/RNBQKBNR')
+        no_passant_game.board_navigator.move_piece(no_passant_opportunity.start, no_passant_opportunity.target)
+      end
+
+      it 'returns false' do
+        no_passant_move = Move.new(no_passant_game.board_navigator.piece_for(regular_attacker_coordinate).position,
+                                   no_passant_game.board_navigator.piece_for(no_passant_opportunity.target).position)
+        expect(no_passant_game.en_passant?(no_passant_move)).to be false
+      end
+    end
+  end
 end

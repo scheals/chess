@@ -137,6 +137,13 @@ class Game
     board_navigator.create_en_passant_coordinate(move)
   end
 
+  def en_passant?(move)
+    return true if move.target == board_navigator.en_passant_coordinate &&
+                   board_navigator.piece_for(move.start).is_a?(Pawn)
+
+    false
+  end
+
   def in_bounds?(move)
     return true if move.in_bounds?(board_navigator.board)
 
