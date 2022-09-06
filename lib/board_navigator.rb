@@ -79,7 +79,7 @@ class BoardNavigator
     promoted_piece
   end
 
-  def create_en_passant_coordinate(move)
+  def create_en_passant_pair(move)
     piece = piece_for(move.target)
 
     case piece.colour

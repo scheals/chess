@@ -134,7 +134,7 @@ class Game
   end
 
   def send_en_passant_opportunity(move)
-    board_navigator.create_en_passant_coordinate(move)
+    board_navigator.create_en_passant_pair(move)
   end
 
   def en_passant?(move)

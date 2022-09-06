@@ -623,7 +623,7 @@ describe PawnNavigator do
 
       before do
         board_navigator.board.setup('3qk3/8/3p4/2pP4/4P3/8/8/3QK3')
-        board_navigator.create_en_passant_coordinate(Move.parse('c7c5'))
+        board_navigator.create_en_passant_pair(Move.parse('c7c5'))
       end
 
       it 'includes that as a possible move' do
@@ -640,7 +640,7 @@ describe PawnNavigator do
 
       before do
         board_navigator.board.setup('3qk3/8/3p4/2pP4/4P3/8/8/3QK3')
-        board_navigator.create_en_passant_coordinate(Move.parse('d3d5'))
+        board_navigator.create_en_passant_pair(Move.parse('d3d5'))
       end
 
       it 'includes that as a possible move' do
@@ -659,7 +659,7 @@ describe PawnNavigator do
 
       before do
         board_navigator.board.setup('rnbpkpnr/pppp1ppp/8/8/3Pp3/8/PPP1QPPP/RNBPKBNR')
-        board_navigator.create_en_passant_coordinate(Move.parse('d2d4'))
+        board_navigator.create_en_passant_pair(Move.parse('d2d4'))
       end
 
       it 'returns true' do
@@ -677,7 +677,7 @@ describe PawnNavigator do
 
       before do
         board_navigator.board.setup('rnbqkbnr/pp1ppppp/8/2pP4/8/8/PPP1PPPP/RNBQKBNR')
-        board_navigator.create_en_passant_coordinate(Move.parse('c7c5'))
+        board_navigator.create_en_passant_pair(Move.parse('c7c5'))
       end
 
       it 'returns false' do

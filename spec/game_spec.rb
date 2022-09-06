@@ -620,12 +620,12 @@ describe Game do
     let(:move) { Move.parse('d7d5') }
 
     before do
-      allow(board_navigator).to receive(:create_en_passant_coordinate).with(move)
+      allow(board_navigator).to receive(:create_en_passant_pair).with(move)
     end
 
-    it 'sends BoardNavigator a create_en_passant_coordinate message' do
+    it 'sends BoardNavigator a create_en_passant_pair message' do
       en_passant_game.send_en_passant_opportunity(move)
-      expect(board_navigator).to have_received(:create_en_passant_coordinate).with(move)
+      expect(board_navigator).to have_received(:create_en_passant_pair).with(move)
     end
   end
 

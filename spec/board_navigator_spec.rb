@@ -394,7 +394,7 @@ describe BoardNavigator do
       before do
         board.setup('4k3/8/8/8/3p4/8/4P3/4K3')
         en_passant.move_piece('e2', 'e4')
-        en_passant.create_en_passant_coordinate(Move.parse('e2e4'))
+        en_passant.create_en_passant_pair(Move.parse('e2e4'))
       end
 
       it 'includes it as a possibility' do
@@ -496,7 +496,7 @@ describe BoardNavigator do
     end
   end
 
-  describe '#create_en_passant_coordinate' do
+  describe '#create_en_passant_pair' do
     subject(:navigate_en_passant) { described_class.new(Board.new) }
 
     let(:move) { Move.parse('d7d5') }
@@ -506,7 +506,7 @@ describe BoardNavigator do
     end
 
     it 'changes @en_passant_coordinate to the proper coordinate' do
-      expect { navigate_en_passant.create_en_passant_coordinate(move) }.to change(navigate_en_passant, :en_passant_coordinate).from(nil).to(move.target.up)
+      expect { navigate_en_passant.create_en_passant_pair(move) }.to change(navigate_en_passant, :en_passant_coordinate).from(nil).to(move.target.up)
     end
   end
 
@@ -517,7 +517,7 @@ describe BoardNavigator do
 
     before do
       clear_en_passant.board.setup('rnbqkbnr/pppppp1p/8/6p1/8/8/PPPPPPPP/RNBQKBNR')
-      clear_en_passant.create_en_passant_coordinate(move)
+      clear_en_passant.create_en_passant_pair(move)
     end
 
     it 'changes @en_passant_coordinate to nil' do
