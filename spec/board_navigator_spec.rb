@@ -47,7 +47,7 @@ describe BoardNavigator do
       end
 
       it 'returns correct moves' do
-        correct_moves = %w[b8 c1 c7 d2 d6 e3 e5 g3 g5 h2 h6]
+        correct_moves = %w[b8 c1 c7 d2 d6 e3 e5 g3 g5 h2 h6].map { |move| Coordinate.parse(move) }
         expect(navigator.moves_after_collision_for(pieceful_coordinate)).to eq(correct_moves)
       end
     end
@@ -168,9 +168,9 @@ describe BoardNavigator do
     let(:navigator_factory) { class_double(NavigatorFactory) }
     let(:board) { instance_double(Board) }
     let(:board_copy) { instance_double(Board) }
-    let(:white_piece) { instance_double(Piece, position: 'a1', colour: 'white') }
-    let(:white_king) { instance_double(King, position: 'a3', colour: 'white') }
-    let(:black_king) { instance_double(King, position: 'h8', colour: 'black') }
+    let(:white_piece) { instance_double(Piece, position: Coordinate.parse('a1'), colour: 'white') }
+    let(:white_king) { instance_double(King, position: Coordinate.parse('a3'), colour: 'white') }
+    let(:black_king) { instance_double(King, position: Coordinate.parse('h8'), colour: 'black') }
 
     context 'when called' do
       subject(:king_checking) { described_class.new(board, navigator_factory) }

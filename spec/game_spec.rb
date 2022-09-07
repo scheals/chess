@@ -417,6 +417,20 @@ describe Game do
         expect { fools_game.game_loop }.to change(fools_game, :current_player).to be(fools_game.player2)
       end
     end
+
+    context 'when en passant ends the game' do
+      subject(:en_passant_finish) { described_class.new }
+
+      before do
+        en_passant_finish.board_navigator.board.setup
+        allow(en_passant_finish).to receive(:gets).and_return('e2e4', 'e7e6', 'e4e5', 'g7g5', 'b1c3', 'g8h6', 'd1h5', 'e8e7', 'c3e4', 'f7f5', 'e5f6')
+        # allow(en_passant_finish).to receive(:puts)
+      end
+
+      it 'correctly reflects that by ending the loop' do
+        expect { en_passant_finish.game_loop }.not_to change(en_passant_finish, :current_player)
+      end
+    end
   end
 
   describe '#castling?' do
@@ -621,11 +635,17 @@ describe Game do
 
     before do
       allow(board_navigator).to receive(:create_en_passant_pair).with(move)
+      allow(board_navigator).to receive(:clear_en_passant_pair)
     end
 
     it 'sends BoardNavigator a create_en_passant_pair message' do
       en_passant_game.send_en_passant_opportunity(move)
       expect(board_navigator).to have_received(:create_en_passant_pair).with(move)
+    end
+
+    it 'sends BoardNavigator a clear_en_passant_pair message' do
+      en_passant_game.send_en_passant_opportunity(move)
+      expect(board_navigator).to have_received(:clear_en_passant_pair)
     end
   end
 
@@ -634,16 +654,18 @@ describe Game do
       subject(:passant_game) { described_class.new }
 
       let(:passant_opportunity) { Move.parse('c7c5') }
-      let(:passant_attacker_coordinate) { Coordinate.parse('d5') }
+      let(:black_pawn) { passant_game.board_navigator.piece_for('c7') }
+      let(:white_pawn) { passant_game.board_navigator.piece_for('d5') }
 
       before do
         passant_game.board_navigator.board.setup('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
         passant_game.board_navigator.move_piece(passant_opportunity.start, passant_opportunity.target)
         passant_game.send_en_passant_opportunity(passant_opportunity)
+        passant_game.board_navigator.move_piece(white_pawn.position, passant_game.board_navigator.en_passant_coordinate)
       end
 
       it 'returns true' do
-        passant_move = Move.new(passant_game.board_navigator.piece_for(passant_attacker_coordinate).position,
+        passant_move = Move.new(white_pawn.position,
                                 passant_game.board_navigator.en_passant_coordinate)
         expect(passant_game.en_passant?(passant_move)).to be true
       end
@@ -652,17 +674,19 @@ describe Game do
     context 'when the move is not en passant' do
       subject(:no_passant_game) { described_class.new }
 
+      let(:black_pawn) { no_passant_game.board_navigator.piece_for('c7') }
       let(:no_passant_opportunity) { Move.parse('c7c6') }
-      let(:regular_attacker_coordinate) { Coordinate.parse('d5') }
+      let(:white_pawn) { no_passant_game.board_navigator.piece_for('d5') }
 
       before do
-        no_passant_game.board_navigator.board.setup('rnbqkbnr/pp1ppppp/2p5/3P4/8/8/PPP1PPPP/RNBQKBNR')
-        no_passant_game.board_navigator.move_piece(no_passant_opportunity.start, no_passant_opportunity.target)
+        no_passant_game.board_navigator.board.setup('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
+        no_passant_game.board_navigator.move_piece(black_pawn.position, no_passant_opportunity.target)
+        no_passant_game.board_navigator.move_piece(white_pawn.position, black_pawn.position)
       end
 
       it 'returns false' do
-        no_passant_move = Move.new(no_passant_game.board_navigator.piece_for(regular_attacker_coordinate).position,
-                                   no_passant_game.board_navigator.piece_for(no_passant_opportunity.target).position)
+        no_passant_move = Move.new(white_pawn.position,
+                                   black_pawn.position)
         expect(no_passant_game.en_passant?(no_passant_move)).to be false
       end
     end

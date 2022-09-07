@@ -18,11 +18,11 @@ class BoardNavigator
     return nil unless piece_for(coordinate)
 
     navigator = navigator_factory.for(self, piece_for(coordinate))
-    navigator.possible_moves
+    navigator.possible_moves.map { |move| Coordinate.parse(move) }
   end
 
   def moves_for(coordinate)
-    moves_after_collision_for(coordinate).reject { |move| checks_king?(coordinate, move.to_s) }.map { |move| Coordinate.parse(move) }
+    moves_after_collision_for(coordinate).reject { |move| checks_king?(coordinate, move.to_s) }
   end
 
   def piece_for(coordinate)
@@ -96,6 +96,10 @@ class BoardNavigator
 
   def en_passant_coordinate
     @en_passant_pair&.en_passant_coordinate
+  end
+
+  def en_passant
+    board.vacate(@en_passant_pair.piece.position)
   end
 
   def create_passant_pair(piece, coordinate)

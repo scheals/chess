@@ -52,10 +52,13 @@ class Game
       promote(move.target) if promoteable?(move.target)
       castle(move) if castling?(move)
       send_en_passant_opportunity(move) if en_passant_opportunity?(move)
+      en_passant if en_passant?(move)
       break if game_over?
 
       switch_players
     end
+    board_navigator.board.show
+    puts "Checkmate! Congratulations, #{current_player.name}!"
     puts "Thanks for playing, #{player1.name} and #{player2.name}!"
   end
 
@@ -134,14 +137,19 @@ class Game
   end
 
   def send_en_passant_opportunity(move)
+    board_navigator.clear_en_passant_pair
     board_navigator.create_en_passant_pair(move)
   end
 
   def en_passant?(move)
     return true if move.target == board_navigator.en_passant_coordinate &&
-                   board_navigator.piece_for(move.start).is_a?(Pawn)
+                   board_navigator.piece_for(move.target).is_a?(Pawn)
 
     false
+  end
+
+  def en_passant
+    board_navigator.en_passant
   end
 
   def in_bounds?(move)
