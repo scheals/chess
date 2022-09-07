@@ -288,11 +288,39 @@ describe Game do
       end
     end
 
-    xcontext 'when game is tied' do
+    context 'when game is tied' do
+      subject(:game_tied) { described_class.new }
 
-      it 'sends a message about a tie' do
+      before do
+        game_tied.board_navigator.board.setup('5bnr/4p1pq/4Qpkr/7p/7P/4P3/PPPP1PP1/RNB1KBNR')
       end
+
       it 'returns true' do
+        expect(game_tied.game_over?).to be true
+      end
+    end
+  end
+
+  describe '#tie?' do
+    context 'when it is a stalemate' do
+      subject(:stalemate) { described_class.new(player, player, board_navigator) }
+
+      let(:player) { instance_double(Player) }
+      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:current_player_colour) { 'white' }
+
+      before do
+        allow(player).to receive(:colour).and_return(current_player_colour).twice
+        allow(board_navigator).to receive(:stalemate?).with(stalemate.current_player.colour).and_return(true)
+      end
+
+      it 'sends BoardNavigator a stalemate? message' do
+        stalemate.tie?
+        expect(board_navigator).to have_received(:stalemate?).with(current_player_colour)
+      end
+
+      it 'returns true' do
+        expect(stalemate.tie?).to be true
       end
     end
   end

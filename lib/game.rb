@@ -187,14 +187,19 @@ class Game
   end
 
   def game_over?
-    return true if win?
-    # return true if tie?
+    return true if win? || tie?
 
     false
   end
 
   def win?
     return true if board_navigator.win?(current_player.colour)
+
+    false
+  end
+
+  def tie?
+    return true if board_navigator.stalemate?(current_player.colour)
 
     false
   end
