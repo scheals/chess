@@ -46,9 +46,9 @@ class Board
     fen = ''
     8.times do |i|
       fen += row(8 - i).values.map { |square| square.piece.to_fen }.join
-      fen += '/'
+      fen += '/' unless i == 7
     end
-    fen
+    fen.gsub(/(\d)+/) { |match| match.count('1') }
   end
 
   def copy
