@@ -19,6 +19,7 @@ class Game
     @current_player = player1
     @full_move_clock = 1
     @half_move_clock = 0
+    @board_state_history = []
   end
 
   def pick_piece(coordinate)
@@ -58,6 +59,7 @@ class Game
       send_en_passant_opportunity(move) if en_passant_opportunity?(move)
       en_passant if en_passant?(move)
       increment_fullmove_clock if current_player.colour == 'black'
+      @board_state_history << to_fen.chars[0...-4]
       break if game_over?
 
       switch_players
