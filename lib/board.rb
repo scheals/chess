@@ -80,6 +80,8 @@ class Board
   end
 
   def pieces
+    return yield board.values.map(&:piece).select(&:real?) if block_given?
+
     board.values.map(&:piece).select(&:real?)
   end
 
