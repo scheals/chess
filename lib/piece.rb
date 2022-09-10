@@ -64,7 +64,7 @@ class Piece
   end
 
   def ==(other)
-    return true if colour == other.colour && position == other.position && move_history == other.move_history
+    return true if colour == other.colour && position == other.position
 
     false
   end
@@ -72,7 +72,7 @@ class Piece
   def promoteable?
     false
   end
-  
+
   private
 
   def column
