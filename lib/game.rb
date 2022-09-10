@@ -16,6 +16,7 @@ class Game
     @player1 = player1
     @player2 = player2
     @current_player = player1
+    @full_move_clock = 1
   end
 
   def pick_piece(coordinate)
@@ -53,6 +54,7 @@ class Game
       castle(move) if castling?(move)
       send_en_passant_opportunity(move) if en_passant_opportunity?(move)
       en_passant if en_passant?(move)
+      increment_fullmove_clock if current_player.colour == 'black'
       break if game_over?
 
       switch_players
@@ -202,6 +204,10 @@ class Game
     return true if board_navigator.stalemate?(current_player.colour)
 
     false
+  end
+
+  def increment_fullmove_clock
+    @full_move_clock += 1
   end
 
   def correct_length?(move)
