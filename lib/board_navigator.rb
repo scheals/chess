@@ -139,6 +139,22 @@ class BoardNavigator
     false
   end
 
+  def record_castling_rights
+    castling_rights = []
+    colours = %w[white black]
+
+    colours.each do |colour|
+      letters = %w[K Q]
+      letters.map!(&:downcase) if colour == 'black'
+      castling_rights << letters.first if kingside_castling_rights?(colour)
+      castling_rights << letters.last if queenside_castling_rights?(colour)
+    end
+
+    return '-' if castling_rights.empty?
+
+    castling_rights.join
+  end
+
   def create_passant_pair(piece, coordinate)
     EnPassantPair.new(piece, coordinate)
   end

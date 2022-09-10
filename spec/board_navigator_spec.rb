@@ -645,4 +645,45 @@ describe BoardNavigator do
       end
     end
   end
+
+  describe '#record_castling_rights' do
+    context 'when everyone has full castling rights' do
+      subject(:full_castling_rights) { described_class.new(Board.new) }
+
+      before do
+        full_castling_rights.board.setup
+      end
+
+      it 'returns a proper string' do
+        string = 'KQkq'
+        expect(full_castling_rights.record_castling_rights).to eq(string)
+      end
+    end
+
+    context 'when only black has castling rights' do
+      subject(:black_castling_rights) { described_class.new(Board.new) }
+
+      before do
+        black_castling_rights.board.setup('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1')
+      end
+
+      it 'returns a proper string' do
+        string = 'kq'
+        expect(black_castling_rights.record_castling_rights).to eq(string)
+      end
+    end
+
+    context 'when no one has castling rights' do
+      subject(:no_castling_rights) { described_class.new(Board.new) }
+
+      before do
+        no_castling_rights.board.setup('1nbqkbn1/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1')
+      end
+
+      it 'returns a proper string' do
+        string = '-'
+        expect(no_castling_rights.record_castling_rights).to eq(string)
+      end
+    end
+  end
 end
