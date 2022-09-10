@@ -323,6 +323,40 @@ describe Game do
         expect(stalemate.tie?).to be true
       end
     end
+
+    context 'when fifty move rule triggers' do
+      subject(:fifty_move_rule) { described_class.new }
+
+      before do
+        fifty_move_rule.instance_variable_set(:@full_move_clock, 50)
+      end
+
+      it 'returns true' do
+        expect(fifty_move_rule.tie?).to be true
+      end
+    end
+
+    context 'when threefold repetition happens' do
+      subject(:threefold_repetition) { described_class.new }
+
+      before do
+        history = ['2b1nrk1/p2p1npp/1q2p3/2N5/5P2/P5P1/1P3QBP/R3K2R b KQ -',
+                   '2b1nrk1/p2p1npp/4p3/1qN5/5P2/P5P1/1P3QBP/R3K2R w KQ -',
+                   '2b1nrk1/p2p1npp/4p3/1qN5/5P2/P5P1/1P3Q1P/R3KB1R b KQ -',
+                   '2b1nrk1/p2p1npp/2q1p3/2N5/5P2/P5P1/1P3Q1P/R3KB1R w KQ -',
+                   '2b1nrk1/p2p1npp/2q1p3/2N5/5P2/P5P1/1P3QBP/R3K2R b KQ -',
+                   '2b1nrk1/p2p1npp/4p3/1qN5/5P2/P5P1/1P3QBP/R3K2R w KQ -',
+                   '2b1nrk1/p2p1npp/4p3/1qN5/5P2/P5P1/1P3Q1P/R3KB1R b KQ -',
+                   '2b1nrk1/p2p1npp/2q1p3/2N5/5P2/P5P1/1P3Q1P/R3KB1R w KQ -',
+                   '2b1nrk1/p2p1npp/2q1p3/2N5/5P2/P5P1/1P3QBP/R3K2R b KQ -',
+                   '2b1nrk1/p2p1npp/4p3/1qN5/5P2/P5P1/1P3QBP/R3K2R w KQ -']
+        threefold_repetition.instance_variable_set(:@board_state_history, history)
+      end
+
+      it 'returns true' do
+        expect(threefold_repetition.tie?).to be true
+      end
+    end
   end
 
   describe '#correct_length?' do

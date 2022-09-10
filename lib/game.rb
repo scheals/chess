@@ -206,7 +206,19 @@ class Game
   end
 
   def tie?
-    return true if board_navigator.stalemate?(current_player.colour)
+    return true if threefold_repetition? || fifty_move_rule? || board_navigator.stalemate?(current_player.colour)
+
+    false
+  end
+
+  def fifty_move_rule?
+    return true if @full_move_clock == 50
+
+    false
+  end
+
+  def threefold_repetition?
+    return true if @board_state_history.tally.values.any? { |value| value == 3 }
 
     false
   end
