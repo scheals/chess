@@ -664,4 +664,88 @@ describe Game do
       end
     end
   end
+
+  describe '#calculate_halfmove_clock' do
+    context 'when piece is a Pawn' do
+      subject(:halfmove_pawn_reset) { described_class.new(player, player, board_navigator) }
+
+      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:player) { instance_double(Player) }
+      let(:move) { Move.parse('a2b3') }
+      let(:pawn) { instance_double(Pawn) }
+
+      before do
+        halfmove_pawn_reset.instance_variable_set(:@half_move_clock, 12)
+        allow(board_navigator).to receive(:piece_for).with(move.start).and_return(pawn).once
+        allow(pawn).to receive(:is_a?).with(Pawn).and_return(true).once
+        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(pawn).once
+        allow(pawn).to receive(:real?).and_return(true).once
+      end
+
+      it 'sends BoardNavigator a piece_for message twice' do
+        halfmove_pawn_reset.calculate_halfmove_clock(move)
+        expect(board_navigator).to have_received(:piece_for).twice
+      end
+
+      it 'makes @half_move_clock equal to 0' do
+        halfmove_pawn_reset.calculate_halfmove_clock(move)
+        halfmove_clock = halfmove_pawn_reset.instance_variable_get(:@half_move_clock)
+        expect(halfmove_clock).to eq(0)
+      end
+    end
+
+    context 'when move is a capture' do
+      subject(:halfmove_capture_reset) { described_class.new(player, player, board_navigator) }
+
+      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:player) { instance_double(Player) }
+      let(:move) { Move.parse('a2a6') }
+      let(:rook) { instance_double(Rook) }
+
+      before do
+        halfmove_capture_reset.instance_variable_set(:@half_move_clock, 12)
+        allow(board_navigator).to receive(:piece_for).with(move.start).and_return(rook).once
+        allow(rook).to receive(:is_a?).with(Pawn).and_return(false).once
+        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(rook).once
+        allow(rook).to receive(:real?).and_return(true).once
+      end
+
+      it 'sends BoardNavigator a piece_for message twice' do
+        halfmove_capture_reset.calculate_halfmove_clock(move)
+        expect(board_navigator).to have_received(:piece_for).twice
+      end
+
+      it 'makes @half_move_clock equal to 0' do
+        halfmove_capture_reset.calculate_halfmove_clock(move)
+        halfmove_clock = halfmove_capture_reset.instance_variable_get(:@half_move_clock)
+        expect(halfmove_clock).to eq(0)
+      end
+    end
+
+    context 'when move is not a capture nor made by a Pawn' do
+      subject(:halfmove_increment) { described_class.new(player, player, board_navigator) }
+
+      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:player) { instance_double(Player) }
+      let(:move) { Move.parse('a2a4') }
+      let(:rook) { instance_double(Rook) }
+
+      before do
+        halfmove_increment.instance_variable_set(:@half_move_clock, 12)
+        allow(board_navigator).to receive(:piece_for).with(move.start).and_return(rook).once
+        allow(rook).to receive(:is_a?).with(Pawn).and_return(false).once
+        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(rook).once
+        allow(rook).to receive(:real?).and_return(false).once
+      end
+
+      it 'sends BoardNavigator a piece_for message twice' do
+        halfmove_increment.calculate_halfmove_clock(move)
+        expect(board_navigator).to have_received(:piece_for).twice
+      end
+
+      it 'increments @half_move_clock by 1' do
+        expect{ halfmove_increment.calculate_halfmove_clock(move) }.to change{ halfmove_increment.instance_variable_get(:@half_move_clock) }.by(1)
+      end
+    end
+  end
 end

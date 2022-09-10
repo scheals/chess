@@ -3,6 +3,7 @@
 require_relative './player'
 require_relative './move'
 require_relative './coordinate'
+require_relative './piece_move'
 
 # rubocop: disable Metrics/ClassLength
 # This class handles a game of Chess.
@@ -17,6 +18,7 @@ class Game
     @player2 = player2
     @current_player = player1
     @full_move_clock = 1
+    @half_move_clock = 0
   end
 
   def pick_piece(coordinate)
@@ -49,6 +51,7 @@ class Game
       puts 'This is how the board looks like:'
       board_navigator.board.show
       move = ask_for_move until move
+      calculate_halfmove_clock(move)
       board_navigator.move_piece(move.start, move.target)
       promote(move.target) if promoteable?(move.target)
       castle(move) if castling?(move)
@@ -208,6 +211,16 @@ class Game
 
   def increment_fullmove_clock
     @full_move_clock += 1
+  end
+
+  def calculate_halfmove_clock(move)
+    piece = board_navigator.piece_for(move.start)
+    capture = board_navigator.piece_for(move.target).real?
+    if piece.is_a?(Pawn) || capture
+      @half_move_clock = 0
+    else
+      @half_move_clock += 1
+    end
   end
 
   def correct_length?(move)
