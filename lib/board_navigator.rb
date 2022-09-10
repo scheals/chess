@@ -116,6 +116,29 @@ class BoardNavigator
     board.vacate(@en_passant_pair.piece.position)
   end
 
+  def queenside_castling_rights?(colour)
+    colour_pieces = board.pieces { |piece| piece.colour == colour }
+    king = colour_pieces.select { |piece| piece.is_a?(King) }.first
+    queenside_rook = colour_pieces.select { |piece| piece.is_a?(Rook) && piece.position.column == 'a'}
+
+    return true if king.can_castle? &&
+                   queenside_rook.any?(&:can_castle?)
+
+
+    false
+  end
+
+  def kingside_castling_rights?(colour)
+    colour_pieces = board.pieces { |piece| piece.colour == colour }
+    king = colour_pieces.select { |piece| piece.is_a?(King) }.first
+    kingside_rook = colour_pieces.select { |piece| piece.is_a?(Rook) && piece.position.column == 'h' }
+
+    return true if king.can_castle? &&
+                   kingside_rook.any?(&:can_castle?)
+
+    false
+  end
+
   def create_passant_pair(piece, coordinate)
     EnPassantPair.new(piece, coordinate)
   end

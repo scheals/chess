@@ -551,4 +551,98 @@ describe BoardNavigator do
       expect { clear_en_passant.clear_en_passant_pair }.to change(clear_en_passant, :en_passant_coordinate).to(nil)
     end
   end
+
+  describe '#queenside_castling_rights?' do
+    context 'when it has those rights' do
+      subject(:queenside_castling) { described_class.new(board) }
+
+      let(:board) { instance_double(Board) }
+      let(:king) { instance_double(King, can_castle?: true, colour: 'white') }
+      let(:left_rook) { instance_double(Rook, can_castle?: true, colour: 'white', position: Coordinate.parse('a1')) }
+      let(:right_rook) { instance_double(Rook, can_castle?: true, colour: 'white', position: Coordinate.parse('h1')) }
+
+      before do
+        allow(king).to receive(:is_a?).with(King).and_return(true)
+        allow(king).to receive(:is_a?).with(Rook).and_return(false)
+        allow(left_rook).to receive(:is_a?).with(King).and_return(false)
+        allow(right_rook).to receive(:is_a?).with(King).and_return(false)
+        allow(left_rook).to receive(:is_a?).with(Rook).and_return(true)
+        allow(right_rook).to receive(:is_a?).with(Rook).and_return(true)
+        allow(board).to receive(:pieces).and_return([king, left_rook, right_rook])
+      end
+
+      it 'returns true' do
+        colour = 'white'
+        expect(queenside_castling.queenside_castling_rights?(colour)).to be true
+      end
+    end
+
+    context 'when it does not have those rights because of missing queenside rook' do
+      subject(:queenside_castling) { described_class.new(board) }
+
+      let(:board) { instance_double(Board) }
+      let(:king) { instance_double(King, can_castle?: true, colour: 'black') }
+      let(:right_rook) { instance_double(Rook, can_castle?: true, colour: 'black', position: Coordinate.parse('h1')) }
+
+      before do
+        allow(king).to receive(:is_a?).with(King).and_return(true)
+        allow(king).to receive(:is_a?).with(Rook).and_return(false)
+        allow(right_rook).to receive(:is_a?).with(King).and_return(false)
+        allow(right_rook).to receive(:is_a?).with(Rook).and_return(true)
+        allow(board).to receive(:pieces).and_return([king, right_rook])
+      end
+
+      it 'returns false' do
+        colour = 'black'
+        expect(queenside_castling.queenside_castling_rights?(colour)).to be false
+      end
+    end
+  end
+
+  describe '#kingside_castling_rights?' do
+    context 'when it has those rights' do
+      subject(:kingside_castling) { described_class.new(board) }
+
+      let(:board) { instance_double(Board) }
+      let(:king) { instance_double(King, can_castle?: true, colour: 'white') }
+      let(:left_rook) { instance_double(Rook, can_castle?: true, colour: 'white', position: Coordinate.parse('a1')) }
+      let(:right_rook) { instance_double(Rook, can_castle?: true, colour: 'white', position: Coordinate.parse('h1')) }
+
+      before do
+        allow(king).to receive(:is_a?).with(King).and_return(true)
+        allow(king).to receive(:is_a?).with(Rook).and_return(false)
+        allow(left_rook).to receive(:is_a?).with(King).and_return(false)
+        allow(right_rook).to receive(:is_a?).with(King).and_return(false)
+        allow(left_rook).to receive(:is_a?).with(Rook).and_return(true)
+        allow(right_rook).to receive(:is_a?).with(Rook).and_return(true)
+        allow(board).to receive(:pieces).and_return([king, left_rook, right_rook])
+      end
+
+      it 'returns true' do
+        colour = 'white'
+        expect(kingside_castling.kingside_castling_rights?(colour)).to be true
+      end
+    end
+
+    context 'when it does not have those rights because of missing kingside rook' do
+      subject(:kingside_castling) { described_class.new(board) }
+
+      let(:board) { instance_double(Board) }
+      let(:king) { instance_double(King, can_castle?: true, colour: 'black') }
+      let(:left_rook) { instance_double(Rook, can_castle?: true, colour: 'black', position: Coordinate.parse('a1')) }
+
+      before do
+        allow(king).to receive(:is_a?).with(King).and_return(true)
+        allow(king).to receive(:is_a?).with(Rook).and_return(false)
+        allow(left_rook).to receive(:is_a?).with(King).and_return(false)
+        allow(left_rook).to receive(:is_a?).with(Rook).and_return(true)
+        allow(board).to receive(:pieces).and_return([king, left_rook])
+      end
+
+      it 'returns false' do
+        colour = 'black'
+        expect(kingside_castling.kingside_castling_rights?(colour)).to be false
+      end
+    end
+  end
 end
