@@ -223,6 +223,17 @@ class Game
     end
   end
 
+  def to_fen
+    result = []
+    result << board_navigator.board.dump_to_fen
+    result << current_player.colour[0]
+    result << board_navigator.record_castling_rights
+    result << board_navigator.record_en_passant_coordinate
+    result << @half_move_clock
+    result << @full_move_clock
+    result.join(' ')
+  end
+
   def correct_length?(move)
     return true if move
 
