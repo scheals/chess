@@ -686,4 +686,32 @@ describe BoardNavigator do
       end
     end
   end
+
+  describe '#record_en_passant_coordinate' do
+    context 'when there is a coordinate to be recorded' do
+      subject(:en_passant) { described_class.new(Board.new) }
+
+      before do
+        en_passant.instance_variable_set(:@en_passant_pair, EnPassantPair.new(nil, Coordinate.parse('a3')))
+      end
+
+      it 'returns a proper string of it' do
+        string = 'a3'
+        expect(en_passant.record_en_passant_coordinate).to eq(string)
+      end
+    end
+
+    context 'when there is no coordiante to be recorded' do
+      subject(:no_en_passant) { described_class.new(Board.new) }
+
+      before do
+        no_en_passant.instance_variable_set(:@en_passant_pair, EnPassantPair.new(nil, nil))
+      end
+
+      it 'returns a proper string of it' do
+        string = '-'
+        expect(no_en_passant.record_en_passant_coordinate).to eq(string)
+      end
+    end
+  end
 end

@@ -155,6 +155,12 @@ class BoardNavigator
     castling_rights.join
   end
 
+  def record_en_passant_coordinate
+    return en_passant_coordinate.to_s if en_passant_coordinate
+
+    '-'
+  end
+
   def create_passant_pair(piece, coordinate)
     EnPassantPair.new(piece, coordinate)
   end
