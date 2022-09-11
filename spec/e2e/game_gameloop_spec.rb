@@ -57,6 +57,11 @@ describe Game do
         allow(en_passant_finish).to receive(:puts)
       end
 
+      it 'captures the piece correctly' do
+        en_passant_finish.game_loop
+        expect(en_passant_finish.board_navigator.piece_for('f5')).to be_a(NilPiece)
+      end
+
       it 'correctly reflects that by ending the loop' do
         expect { en_passant_finish.game_loop }.not_to change(en_passant_finish, :current_player)
       end
