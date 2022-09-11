@@ -54,6 +54,7 @@ class Game
       move = ask_for_move until move
       calculate_halfmove_clock(move)
       board_navigator.move_piece(move.start, move.target)
+      board_navigator.clear_en_passant_pair
       promote(move.target) if promoteable?(move.target)
       castle(move) if castling?(move)
       send_en_passant_opportunity(move) if en_passant_opportunity?(move)
@@ -144,7 +145,6 @@ class Game
   end
 
   def send_en_passant_opportunity(move)
-    board_navigator.clear_en_passant_pair
     board_navigator.create_en_passant_pair(move)
   end
 

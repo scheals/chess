@@ -642,17 +642,11 @@ describe Game do
 
     before do
       allow(board_navigator).to receive(:create_en_passant_pair).with(move)
-      allow(board_navigator).to receive(:clear_en_passant_pair)
     end
 
     it 'sends BoardNavigator a create_en_passant_pair message' do
       en_passant_game.send_en_passant_opportunity(move)
       expect(board_navigator).to have_received(:create_en_passant_pair).with(move)
-    end
-
-    it 'sends BoardNavigator a clear_en_passant_pair message' do
-      en_passant_game.send_en_passant_opportunity(move)
-      expect(board_navigator).to have_received(:clear_en_passant_pair)
     end
   end
 
