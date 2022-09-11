@@ -84,5 +84,21 @@ describe Game do
         expect { threefold_finish.game_loop }.to change(threefold_finish, :current_player)
       end
     end
+
+    context 'when fifty move rule ends the game' do
+      subject(:fifty_move_finish) { described_class.new }
+
+      before do
+        timman_lutz_1995_partial = %w[g7g3 h4h1 b5c6 h1e1 c5d4 e1c1 d4c3 c1d1 g3e3 e6f5 c6c5 d1d8 c3e5 d8c8 c5d5 c8a8 e3f3 f5g4 f3f7 a8a5 d5e4 a5a4 e5d4 g4g5 f7g7 g5h4 e4e5 h4h3 g7g1 a4b4 d4e3 b4g4 g1a1 h3g2 e3f4 g4g8 a1a2 g2f3 a2a3 f3e2 e5e4 g8e8 f4e5 e8e7 a3a2 e2e1 e4d4 e1f1 e5f4 e7e2 a2a8 e2e7 d4d3 f1g2 a8f8 e7e6 f8f7 e6e8 f4e3 e8a8 e3c5 a8a4 d3e3 a4g4 c5d6 g4g6 f7f2 g2h3 d6e5 h3g4 e3e4 g4h5 e5f6 h5g4 f2f4 g4g3 e4e3 g3h3 f4f5 g6g3 e3f2 g3g2 f2f1 g2c2 f5g5 c2c4 f6e5 h3h4 g5g8 c4e4 h4h5 f1f2 e4a4 f2f3 h5h6 g3e5 a4b4 e5f4 h6h7 g8g5 b4a4 f3g4 a4b4 g4f5 b4b5]
+
+        fifty_move_finish.board_navigator.board.setup('8/6R1/4k3/1KB5/7r/6p1/8/8')
+        allow(fifty_move_finish).to receive(:gets).and_return('g7g3','h4h1','b5c6','h1e1','c5d4','e1c1','d4c3','c1d1','g3e3','e6f5','c6c5','d1d8','c3e5','d8c8','c5d5','c8a8','e3f3','f5g4','f3f7','a8a5','d5e4','a5a4','e5d4','g4g5','f7g7','g5h4','e4e5','h4h3','g7g1','a4b4','d4e3','b4g4','g1a1','h3g2','e3f4','g4g8','a1a2','g2f3','a2a3','f3e2','e5e4','g8e8','f4e5','e8e7','a3a2','e2e1','e4d4','e1f1','e5f4','e7e2','a2a8','e2e7','d4d3','f1g2','a8f8','e7e6','f8f7','e6e8','f4e3','e8a8','e3c5','a8a4','d3e3','a4g4','c5d6','g4g6','f7f2','g2h3','d6e5','h3g4','e3e4','g4h5','e5f6','h5g4','f2f4','g4g3','e4e3','g3h3','f4f5','g6g3','e3f2','g3g2','f2f1','g2c2','f5g5','c2c4','f6e5','h3h4','g5g8','c4e4','h4h5','f1f2','e4a4','f2f3','h5h6','g3e5','a4b4','e5f4','h6h7','g8g5','b4a4','f3g4','a4b4','g4f5','b4b5')
+        allow(fifty_move_finish).to receive(:puts)
+      end
+
+      it 'correctly reflects that by ending the loop' do
+        expect { fifty_move_finish.game_loop }.not_to change(fifty_move_finish, :current_player)
+      end
+    end
   end
 end
