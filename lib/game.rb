@@ -212,7 +212,7 @@ class Game
   end
 
   def fifty_move_rule?
-    return true if @full_move_clock == 50
+    return true if @half_move_clock == 50
 
     false
   end
