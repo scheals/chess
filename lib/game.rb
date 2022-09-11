@@ -59,7 +59,7 @@ class Game
       send_en_passant_opportunity(move) if en_passant_opportunity?(move)
       en_passant if en_passant?(move)
       increment_fullmove_clock if current_player.colour == 'black'
-      @board_state_history << to_fen.chars[0...-4]
+      @board_state_history << to_fen(full: false)
       break if game_over?
 
       switch_players
@@ -237,14 +237,14 @@ class Game
     end
   end
 
-  def to_fen
+  def to_fen(full: true)
     result = []
     result << board_navigator.board.dump_to_fen
     result << current_player.colour[0]
     result << board_navigator.record_castling_rights
     result << board_navigator.record_en_passant_coordinate
-    result << @half_move_clock
-    result << @full_move_clock
+    result << @half_move_clock if full
+    result << @full_move_clock if full
     result.join(' ')
   end
 

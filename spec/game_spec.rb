@@ -796,5 +796,18 @@ describe Game do
         expect(starting_position.to_fen).to eq(string)
       end
     end
+
+    context 'when converting a starting position partially' do
+      subject(:starting_position) { described_class.new }
+
+      before do
+        starting_position.board_navigator.board.setup('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
+      end
+
+      it 'returns the correct string' do
+        string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -'
+        expect(starting_position.to_fen(full: false)).to eq(string)
+      end
+    end
   end
 end
