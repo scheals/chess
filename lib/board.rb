@@ -161,10 +161,7 @@ class Board
   end
 
   def integer_to_column(integer)
-    column = 'a'
-    integer.times do
-      column = column.succ
-    end
-    column
+    starting_column = 'a'
+    (starting_column.ord + integer).chr
   end
 end
