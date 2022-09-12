@@ -64,7 +64,7 @@ class Board
   end
 
   def row(number)
-    @board.select { |key| key.end_with?(number.to_s) }
+    board.select { |key| key.end_with?(number.to_s) }
   end
 
   def coordinates
@@ -72,7 +72,7 @@ class Board
   end
 
   def find(square)
-    @board[square.to_s]
+    board[square.to_s]
   end
 
   def find_piece(square)
