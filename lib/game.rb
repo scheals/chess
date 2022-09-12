@@ -3,7 +3,6 @@
 require_relative './player'
 require_relative './move'
 require_relative './coordinate'
-require_relative './piece_move'
 
 # rubocop: disable Metrics/ClassLength
 # This class handles a game of Chess.
