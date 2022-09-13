@@ -3,7 +3,6 @@
 require_relative 'square'
 require_relative 'piece_factory'
 require_relative 'display'
-require 'colorize'
 
 # This class handles a chess board.
 class Board
@@ -21,7 +20,7 @@ class Board
     start_letter = 'a'
     8.times do |i|
       current_letter = (start_letter.ord + i).chr
-      column = create_column(i, current_letter)
+      column = create_column(current_letter)
       board.merge!(column)
     end
     board
@@ -118,16 +117,17 @@ class Board
     false
   end
 
-  def create_column(number, letter)
-    if number.even?
-      create_even_column(letter)
-    else
-      create_odd_column(letter)
+  def create_column(letter)
+    column = {}
+    8.times do |i|
+      coordinate = "#{letter}#{i + 1}"
+      column[coordinate] = create_square(coordinate)
     end
+    column
   end
 
-  def create_square(coordinate, colour)
-    @square.new(coordinate, colour:)
+  def create_square(coordinate)
+    @square.new(coordinate)
   end
 
   def create_piece(name, colour:, position:)
@@ -139,26 +139,6 @@ class Board
   end
 
   private
-
-  def create_odd_column(letter)
-    column = {}
-    8.times do |i|
-      coordinate = "#{letter}#{i + 1}"
-      colour = i.even? ? TILES[:white_tile] : TILES[:black_tile]
-      column[coordinate] = create_square(coordinate, colour)
-    end
-    column
-  end
-
-  def create_even_column(letter)
-    column = {}
-    8.times do |i|
-      coordinate = "#{letter}#{i + 1}"
-      colour = i.even? ? TILES[:black_tile] : TILES[:white_tile]
-      column[coordinate] = create_square(coordinate, colour)
-    end
-    column
-  end
 
   def integer_to_column(integer)
     starting_column = 'a'
