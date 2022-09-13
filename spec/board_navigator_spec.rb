@@ -408,12 +408,12 @@ describe BoardNavigator do
     context 'when en passant is possible for a pawn thanks to a load' do
       subject(:en_passant) { described_class.new(board) }
 
-      let(:player) { instance_double(Player, colour: 'black') }
+      let(:colour) { 'black' }
       let(:en_passant_coordinate) { 'e3' }
 
       before do
         board.setup('4k3/8/8/8/3pP3/8/8/4K3')
-        en_passant.load_en_passant_coordinate(en_passant_coordinate, player)
+        en_passant.load_en_passant_coordinate(en_passant_coordinate, colour)
       end
 
       it 'includes it as a possibility' do

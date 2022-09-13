@@ -3,6 +3,7 @@
 require_relative './player'
 require_relative './move'
 require_relative './coordinate'
+require_relative './save_state'
 
 # rubocop: disable Metrics/ClassLength
 # This class handles a game of Chess.
@@ -239,12 +240,31 @@ class Game
   def to_fen(full: true)
     result = []
     result << board_navigator.board.dump_to_fen
-    result << current_player.colour[0]
+    result << current_player.colour.chars.first
     result << board_navigator.record_castling_rights
     result << board_navigator.record_en_passant_coordinate
     result << @half_move_clock if full
     result << @full_move_clock if full
     result.join(' ')
+  end
+
+  def load(fen_string)
+    save_state = SaveState.new(fen_string)
+    game_state = save_state.game_state
+    @current_player = load_current_player(game_state[:current_player])
+    @half_move_clock = game_state[:half_move_clock]
+    @full_move_clock = game_state[:full_move_clock]
+    load_board(save_state.board_state, current_player.colour)
+  end
+
+  def load_board(state, colour)
+    board_navigator.board.setup(state[:board])
+    board_navigator.load_castling_rights(state[:castling_rights])
+    board_navigator.load_en_passant_coordinate(state[:en_passant_coordinate], colour)
+  end
+
+  def load_current_player(string)
+    @current_player = [player1, player2].select { |player| player.colour.chars.first == string }.first
   end
 
   def correct_length?(move)
