@@ -3,6 +3,7 @@
 require_relative '../lib/game'
 require_relative '../lib/board_navigator'
 require_relative '../lib/board'
+require_relative '../lib/save_state'
 
 describe Game do
   describe '#pick_piece' do
@@ -801,6 +802,50 @@ describe Game do
       it 'returns the correct string' do
         string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -'
         expect(starting_position.to_fen(full: false)).to eq(string)
+      end
+    end
+  end
+
+  describe '#load' do
+    subject(:loaded_game) { described_class.new }
+
+    before do
+      game_fen_string = 'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR b kq - 1 2'
+      loaded_game.load(game_fen_string)
+    end
+
+    context "when loading Game's variables" do
+      it 'correctly loads the current player' do
+        expect(loaded_game.current_player).to be loaded_game.player2
+      end
+
+      it 'correctly loads the half move clock' do
+        half_move_clock = loaded_game.instance_variable_get(:@half_move_clock)
+        expect(half_move_clock).to eq(1)
+      end
+
+      it 'correctly loads the full move clock' do
+        full_move_clock = loaded_game.instance_variable_get(:@full_move_clock)
+        expect(full_move_clock).to eq(2)
+      end
+    end
+
+    context "when loading BoardNavigator's variables" do
+      it 'correctly loads the board' do
+        setup = 'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR'
+        expect(loaded_game.board_navigator.board.dump_to_fen).to eq(setup)
+      end
+
+      it 'correctly loads the castling rights' do
+        castling_rights = Hash.new(false)
+        castling_rights[:black_queenside] = true
+        castling_rights[:black_kingside] = true
+        expect(loaded_game.board_navigator.castling_rights).to eq(castling_rights)
+      end
+
+      it 'correctly loads the en passant pair' do
+        pair = loaded_game.board_navigator.instance_variable_get(:@en_passant_pair)
+        expect(pair).to have_attributes(piece: nil, en_passant_coordinate: nil)
       end
     end
   end

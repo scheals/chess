@@ -14,7 +14,7 @@ class BoardNavigator
     @board = board
     @navigator_factory = navigator_factory
     @coordinate_system = coordinate_system
-    @en_passant_pair = nil
+    @en_passant_pair = EnPassantPair.new(nil, nil)
     @castling_rights = Hash.new(true)
   end
 
