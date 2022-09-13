@@ -7,13 +7,15 @@ require_relative 'coordinate'
 
 # This class handles movement logic for a chessboard.
 class BoardNavigator
-  attr_reader :board, :navigator_factory, :coordinate_system
+  attr_reader :board, :navigator_factory, :coordinate_system,
+              :castling_rights
 
   def initialize(board, navigator_factory = NavigatorFactory, coordinate_system = Coordinate)
     @board = board
     @navigator_factory = navigator_factory
     @coordinate_system = coordinate_system
     @en_passant_pair = nil
+    @castling_rights = Hash.new(true)
   end
 
   def moves_after_collision_for(coordinate)
@@ -119,6 +121,8 @@ class BoardNavigator
   end
 
   def queenside_castling_rights?(colour)
+    return false unless castling_rights["#{colour}_queenside".to_sym]
+
     colour_pieces = board.pieces { |piece| piece.colour == colour }
     king = colour_pieces.select { |piece| piece.is_a?(King) }.first
     queenside_rook = colour_pieces.select { |piece| piece.is_a?(Rook) && piece.position.column == 'a'}
@@ -131,6 +135,8 @@ class BoardNavigator
   end
 
   def kingside_castling_rights?(colour)
+    return false unless castling_rights["#{colour}_kingside".to_sym]
+
     colour_pieces = board.pieces { |piece| piece.colour == colour }
     king = colour_pieces.select { |piece| piece.is_a?(King) }.first
     kingside_rook = colour_pieces.select { |piece| piece.is_a?(Rook) && piece.position.column == 'h' }
@@ -161,6 +167,14 @@ class BoardNavigator
     return en_passant_coordinate.to_s if en_passant_coordinate
 
     '-'
+  end
+
+  def load_castling_rights(string)
+    @castling_rights = Hash.new(false)
+    @castling_rights[:white_queenside] = true if string.include?('Q')
+    @castling_rights[:white_kingside] = true if string.include?('K')
+    @castling_rights[:black_queenside] = true if string.include?('q')
+    @castling_rights[:black_kingside] = true if string.include?('k')
   end
 
   def create_passant_pair(piece, coordinate)

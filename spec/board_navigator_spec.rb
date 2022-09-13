@@ -597,6 +597,21 @@ describe BoardNavigator do
         expect(queenside_castling.queenside_castling_rights?(colour)).to be false
       end
     end
+
+    context 'when it does not have those rights because of loaded state' do
+      subject(:loaded_queenside) { described_class.new(board) }
+
+      let(:board) { instance_double(Board) }
+
+      before do
+        loaded_queenside.load_castling_rights('Kk')
+      end
+
+      it 'returns false' do
+        colour = 'black'
+        expect(loaded_queenside.queenside_castling_rights?(colour)).to be false
+      end
+    end
   end
 
   describe '#kingside_castling_rights?' do
@@ -642,6 +657,21 @@ describe BoardNavigator do
       it 'returns false' do
         colour = 'black'
         expect(kingside_castling.kingside_castling_rights?(colour)).to be false
+      end
+    end
+
+    context 'when it does not have those rights because of loaded state' do
+      subject(:loaded_kingside) { described_class.new(board) }
+
+      let(:board) { instance_double(Board) }
+
+      before do
+        loaded_kingside.load_castling_rights('kQq')
+      end
+
+      it 'returns false' do
+        colour = 'white'
+        expect(loaded_kingside.kingside_castling_rights?(colour)).to be false
       end
     end
   end

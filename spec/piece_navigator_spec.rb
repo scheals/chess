@@ -335,6 +335,23 @@ describe KingNavigator do
       end
     end
 
+    context 'when kingside castling is not possible based on loaded castling rights' do
+      subject(:loaded_impossible_kingside) { described_class.new(board_navigator, black_king) }
+
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) {instance_double(Board) }
+      let(:black_king) { instance_double(King, colour: 'black') }
+      let(:castling_rights) { { black_kingside: false } }
+
+      before do
+        allow(board_navigator).to receive(:castling_rights).and_return(castling_rights)
+      end
+
+      it 'returns false' do
+        expect(loaded_impossible_kingside.can_castle_kingside?).to be false
+      end
+    end
+
     context 'when kingside castling is not possible because path is not clear' do
       subject(:obstructed_kingside) { described_class.new(board_navigator, white_king) }
 
@@ -420,6 +437,23 @@ describe KingNavigator do
       end
     end
 
+    context 'when queenside castling is not possible based on loaded castling rights' do
+      subject(:loaded_impossible_queenside) { described_class.new(board_navigator, black_king) }
+
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) {instance_double(Board) }
+      let(:black_king) { instance_double(King, colour: 'black') }
+      let(:castling_rights) { { black_queenside: false } }
+
+      before do
+        allow(board_navigator).to receive(:castling_rights).and_return(castling_rights)
+      end
+
+      it 'returns false' do
+        expect(loaded_impossible_queenside.can_castle_queenside?).to be false
+      end
+    end
+
     # rubocop: disable RSpec/MultipleMemoizedHelpers
     context 'when queenside castling is not possible because path is under check' do
       subject(:checked_queenside) { described_class.new(board_navigator, white_king) }
@@ -479,6 +513,7 @@ describe KingNavigator do
         allow(white_rook).to receive(:real?).and_return(true)
         allow(board_navigator).to receive(:checks_king?).with('e1', 'f1').and_return(false)
         allow(board_navigator).to receive(:checks_king?).with('e1', 'g1').and_return(false)
+        allow(board_navigator).to receive(:castling_rights).and_return(Hash.new(true))
       end
 
       it 'includes that as a possible move' do
@@ -503,6 +538,7 @@ describe KingNavigator do
         allow(black_rook).to receive(:real?).and_return(true)
         allow(board_navigator).to receive(:checks_king?).with('e8', 'd8').and_return(false)
         allow(board_navigator).to receive(:checks_king?).with('e8', 'c8').and_return(false)
+        allow(board_navigator).to receive(:castling_rights).and_return(Hash.new(true))
       end
 
       it 'includes that as a possible move' do
@@ -532,6 +568,7 @@ describe KingNavigator do
         allow(board_navigator).to receive(:checks_king?).with('e8', 'c8').and_return(false)
         allow(board_navigator).to receive(:checks_king?).with('e8', 'f8').and_return(false)
         allow(board_navigator).to receive(:checks_king?).with('e8', 'g8').and_return(false)
+        allow(board_navigator).to receive(:castling_rights).and_return(Hash.new(true))
       end
 
       it 'includes them both as possible moves' do
