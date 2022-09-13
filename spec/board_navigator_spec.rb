@@ -4,6 +4,7 @@ require_relative '../lib/board_navigator'
 require_relative '../lib/board'
 require_relative '../lib/navigator_factory'
 require_relative '../lib/move'
+require_relative '../lib/player'
 
 RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
@@ -400,6 +401,24 @@ describe BoardNavigator do
       it 'includes it as a possibility' do
         correct_moves = %w[d3 d2 e3].map { |move| coordinate.parse(move) }
 
+        expect(en_passant.moves_for('d4')).to match_array(correct_moves)
+      end
+    end
+
+    context 'when en passant is possible for a pawn thanks to a load' do
+      subject(:en_passant) { described_class.new(board) }
+
+      let(:player) { instance_double(Player, colour: 'black') }
+      let(:en_passant_coordinate) { 'e3' }
+
+      before do
+        board.setup('4k3/8/8/8/3pP3/8/8/4K3')
+        en_passant.load_en_passant_coordinate(en_passant_coordinate, player)
+      end
+
+      it 'includes it as a possibility' do
+        correct_moves = %w[d3 d2 e3].map { |move| coordinate.parse(move) }
+        p en_passant.en_passant_coordinate
         expect(en_passant.moves_for('d4')).to match_array(correct_moves)
       end
     end

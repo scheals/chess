@@ -177,6 +177,14 @@ class BoardNavigator
     @castling_rights[:black_kingside] = true if string.include?('k')
   end
 
+  def load_en_passant_coordinate(string, player)
+    coordinate = coordinate_system.parse(string)
+    case player.colour
+    when 'white' then @en_passant_pair = create_passant_pair(piece_for(coordinate.down), coordinate)
+    when 'black' then @en_passant_pair = create_passant_pair(piece_for(coordinate.up), coordinate)
+    end
+  end
+
   def create_passant_pair(piece, coordinate)
     EnPassantPair.new(piece, coordinate)
   end
