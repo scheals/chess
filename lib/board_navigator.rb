@@ -2,6 +2,8 @@
 
 require_relative 'navigator_factory'
 require_relative 'en_passant_pair'
+require_relative 'coordinate'
+
 
 # This class handles movement logic for a chessboard.
 class BoardNavigator
@@ -18,7 +20,7 @@ class BoardNavigator
     return nil unless piece_for(coordinate)
 
     navigator = navigator_factory.for(self, piece_for(coordinate))
-    navigator.possible_moves.map { |move| Coordinate.parse(move) }
+    navigator.possible_moves.map { |move| coordinate_system.parse(move) }
   end
 
   def moves_for(coordinate)
