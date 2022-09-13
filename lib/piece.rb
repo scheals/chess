@@ -1,12 +1,24 @@
 # frozen_string_literal: true
 
-require_relative 'display'
 require_relative 'coordinate'
 
 # This class handles abstract chess pieces.
 class Piece
-  include Display
   attr_reader :position, :colour, :move_history, :coordinate
+
+  PIECES = { white_king: "\e[1m\u2654",
+             white_queen: "\e[1m\u2655",
+             white_rook: "\e[1m\u2656",
+             white_bishop: "\e[1m\u2657",
+             white_knight: "\e[1m\u2658",
+             white_pawn: "\e[1m\u2659",
+             black_king: "\e[30m\u265A",
+             black_queen: "\e[30m\u265B",
+             black_rook: "\e[30m\u265C",
+             black_bishop: "\e[30m\u265D",
+             black_knight: "\e[30m\u265E",
+             black_pawn: "\e[30m\u265F",
+             _piece: "\u2610" }.freeze
 
   def initialize(position, colour: nil, coordinate: Coordinate)
     @coordinate = coordinate
