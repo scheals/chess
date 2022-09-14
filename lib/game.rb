@@ -4,6 +4,7 @@ require_relative './player'
 require_relative './move'
 require_relative './coordinate'
 require_relative './save_state'
+require_relative './display'
 
 # rubocop: disable Metrics/ClassLength
 # This class handles a game of Chess.
@@ -12,11 +13,13 @@ class Game
 
   def initialize(player1 = Player.new('White', 'white'),
                  player2 = Player.new('Black', 'black'),
-                 board_navigator = BoardNavigator.new(Board.new))
+                 board_navigator = BoardNavigator.new(Board.new),
+                 display = Display)
     @board_navigator = board_navigator
     @player1 = player1
     @player2 = player2
     @current_player = player1
+    @display = display
     @full_move_clock = 1
     @half_move_clock = 0
     @board_state_history = []
@@ -36,8 +39,6 @@ class Game
   def ask_for_move
     unvalidated_move = nil
     loop do
-      puts "#{current_player.name} as #{current_player.colour} it is your turn!"
-      puts 'Enter a full move like \'a8c8\' or a partial move like \'a8\' to see possible moves of that piece.'
       unvalidated_move = create_move(gets.chomp.downcase)
       break if correct_length?(unvalidated_move) &&
                in_bounds?(unvalidated_move) &&
@@ -48,9 +49,9 @@ class Game
   end
 
   def game_loop
+    puts display.greeting
     loop do
-      puts 'This is how the board looks like:'
-      board_navigator.board.show
+      puts display.turn_beginning(current_player, board_navigator.board)
       move = ask_for_move until move
       calculate_halfmove_clock(move)
       board_navigator.move_piece(move.start, move.target)
@@ -65,9 +66,8 @@ class Game
 
       switch_players
     end
-    board_navigator.board.show
-    puts "Checkmate! Congratulations, #{current_player.name}!"
-    puts "Thanks for playing, #{player1.name} and #{player2.name}!"
+    puts display.show(board_navigator.board)
+    puts display.thanks(player1, player2)
   end
 
   def validate_target(move)
@@ -81,12 +81,12 @@ class Game
   def ask_for_target(move)
     possible_moves = board_navigator.moves_for(move.start)
     loop do
-      # chess_display.highlight_moves(possible_moves)
-      puts 'Those are your possible moves:'
-      possible_moves.each { |possible_move| print "#{possible_move} \t" }
-      puts "\nWhich one do you want to make? Type 'q' if you want to restart making your move."
+      puts display.possible_moves(board_navigator.board, possible_moves)
       completed_move = Move.new(move.start, gets.chomp.downcase)
-      break nil if completed_move.target.to_s == 'q'
+      if completed_move.target.to_s == 'q'
+        puts display.turn_beginning(current_player, board_navigator.board)
+        break nil
+      end
       break completed_move if legal_target?(completed_move)
     end
   end
@@ -111,10 +111,10 @@ class Game
                'knight' => 'knight',
                'bishop' => 'bishop',
                'queen' => 'queen' }
-    puts "#{current_player.name} promote your Pawn! FEN and full names accepted."
+    puts display.promotion(current_player)
     player_input = gets.chomp.downcase
     unless pieces[player_input]
-      puts 'Incorrect input!'
+      puts display.incorrect_input
       return nil
     end
 
@@ -162,26 +162,26 @@ class Game
   def in_bounds?(move)
     return true if move.in_bounds?(board_navigator.board)
 
-    puts 'Your move is out of bounds.'
+    puts display.move_out_of_bounds
     false
   end
 
   def current_player_owns?(coordinate)
     return true if pick_piece(coordinate)
 
-    puts "You do not own piece at #{coordinate}."
+    puts display.piece_not_owned(coordinate)
     false
   end
 
   def legal_target?(move)
     unless move.target
-      puts 'Your move lacks a target.'
+      puts display.move_no_target
       return false
     end
 
     return true if board_navigator.moves_for(move.start).include?(Coordinate.parse(move.target))
 
-    puts 'This move can not be made by this piece.'
+    puts display.move_impossible_for_piece
     false
   end
 
@@ -200,25 +200,43 @@ class Game
   end
 
   def win?
-    return true if board_navigator.win?(current_player.colour)
+    if board_navigator.win?(current_player.colour)
+      puts display.congratulate(current_player)
+      return true
+    end
 
     false
   end
 
   def tie?
-    return true if threefold_repetition? || fifty_move_rule? || board_navigator.stalemate?(current_player.colour)
+    return true if threefold_repetition? || fifty_move_rule? || stalemate?
+
+    false
+  end
+
+  def stalemate?
+    if board_navigator.stalemate?(current_player.colour)
+      puts display.stalemate(player1, player2)
+      return true
+    end
 
     false
   end
 
   def fifty_move_rule?
-    return true if @half_move_clock == 50
+    if @half_move_clock == 50
+      puts display.fifty_moves_tie(player1, player2)
+      return true
+    end
 
     false
   end
 
   def threefold_repetition?
-    return true if @board_state_history.tally.values.any? { |value| value == 3 }
+    if @board_state_history.tally.values.any? { |value| value == 3 }
+      puts display.threefold_tie(player1, player2)
+      return true
+    end
 
     false
   end
@@ -270,8 +288,12 @@ class Game
   def correct_length?(move)
     return true if move
 
-    puts 'Your move is either too long or too short in length.'
+    puts display.move_wrong_length
     false
   end
+
+  private
+
+  attr_reader :display
 end
 # rubocop: enable Metrics/ClassLength

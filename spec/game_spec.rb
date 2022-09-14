@@ -4,6 +4,7 @@ require_relative '../lib/game'
 require_relative '../lib/board_navigator'
 require_relative '../lib/board'
 require_relative '../lib/save_state'
+require_relative '../lib/display'
 
 describe Game do
   describe '#pick_piece' do
@@ -221,15 +222,19 @@ describe Game do
 
     context 'when target is not legal' do
       context 'when move is completed afterwards' do
-        subject(:game_target_complete) { described_class.new(player, player, board_navigator) }
+        subject(:game_target_complete) { described_class.new(player, player, board_navigator, display) }
 
         let(:player) { instance_double(Player) }
         let(:board_navigator) { instance_double(BoardNavigator) }
+        let(:display) { class_double(Display) }
         let(:move) { Move.parse('b7h9') }
 
         before do
           allow(game_target_complete).to receive(:gets).and_return('b8')
           allow(board_navigator).to receive(:moves_for).with(move.start).and_return([Coordinate.parse('b8')])
+          allow(board_navigator).to receive(:board).once
+          allow(display).to receive(:possible_moves)
+          allow(display).to receive(:move_impossible_for_piece)
         end
 
         it 'returns that completed move' do
@@ -238,15 +243,20 @@ describe Game do
       end
 
       context 'when \'q\' is input' do
-        subject(:game_target_quit) { described_class.new(player, player, board_navigator) }
+        subject(:game_target_quit) { described_class.new(player, player, board_navigator, display) }
 
         let(:player) { instance_double(Player) }
         let(:board_navigator) { instance_double(BoardNavigator) }
+        let(:display) { class_double(Display) }
         let(:move) { Move.parse('b7h9') }
 
         before do
           allow(game_target_quit).to receive(:gets).and_return('q')
           allow(board_navigator).to receive(:moves_for).with(move.start).and_return([Coordinate.parse('b8')])
+          allow(board_navigator).to receive(:board).twice
+          allow(display).to receive(:possible_moves)
+          allow(display).to receive(:turn_beginning)
+          allow(display).to receive(:move_impossible_for_piece)
         end
 
         it 'returns nil' do
@@ -306,7 +316,7 @@ describe Game do
     context 'when it is a stalemate' do
       subject(:stalemate) { described_class.new(player, player, board_navigator) }
 
-      let(:player) { instance_double(Player) }
+      let(:player) { instance_double(Player, name: 'test') }
       let(:board_navigator) { instance_double(BoardNavigator) }
       let(:current_player_colour) { 'white' }
 
