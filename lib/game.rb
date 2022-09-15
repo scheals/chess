@@ -54,20 +54,24 @@ class Game
       puts display.turn_beginning(current_player, board_navigator.board)
       move = ask_for_move until move
       calculate_halfmove_clock(move)
-      board_navigator.move_piece(move.start, move.target)
+      move_piece(move)
       promote(move.target) if promoteable?(move.target)
       castle(move) if castling?(move)
-      en_passant if en_passant?(move)
-      board_navigator.clear_en_passant_pair
-      send_en_passant_opportunity(move) if en_passant_opportunity?(move)
-      increment_fullmove_clock if current_player.colour == 'black'
-      @board_state_history << to_fen(full: false)
+      handle_en_passant(move)
+      increment_fullmove_clock if black_finished_move?
+      store_history
       break if game_over?
 
       switch_players
     end
     puts display.show(board_navigator.board)
     puts display.thanks(player1, player2)
+  end
+
+  def handle_en_passant(move)
+    en_passant if en_passant?(move)
+    board_navigator.clear_en_passant_pair
+    send_en_passant_opportunity(move) if en_passant_opportunity?(move)
   end
 
   def validate_target(move)
@@ -289,6 +293,20 @@ class Game
     return true if move
 
     puts display.move_wrong_length
+    false
+  end
+
+  def move_piece(move)
+    board_navigator.move_piece(move.start, move.target)
+  end
+
+  def store_history
+    @board_state_history << to_fen(full: false)
+  end
+
+  def black_finished_move?
+    return true if current_player.colour == 'black'
+
     false
   end
 
