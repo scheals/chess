@@ -135,7 +135,7 @@ module Display
   end
 
   def self.highlight(tile)
-    "\e[102m#{tile}\e[0m"
+    "\e[48;5;236m#{tile}\e[0m"
   end
 
   def self.white(tile)
