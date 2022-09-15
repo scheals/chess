@@ -9,7 +9,7 @@ require_relative './display'
 # rubocop: disable Metrics/ClassLength
 # This class handles a game of Chess.
 class Game
-  attr_reader :board_navigator, :current_player, :player1, :player2
+  attr_reader :board_navigator, :current_player, :player1, :player2, :display
 
   def initialize(player1 = Player.new('White', 'white'),
                  player2 = Player.new('Black', 'black'),
@@ -45,28 +45,6 @@ class Game
                                                  in_bounds?(unvalidated_move) &&
                                                  current_player_owns?(unvalidated_move.start)
     end
-  end
-
-  def game_loop
-    puts display.greeting
-    loop do
-      puts display.turn_beginning(current_player, board_navigator.board)
-      move = ask_for_move until move
-      return save_game if move.to_s == 'save'
-
-      calculate_halfmove_clock(move)
-      move_piece(move)
-      promote(move.target) if promoteable?(move.target)
-      castle(move) if castling?(move)
-      handle_en_passant(move)
-      increment_fullmove_clock if black_finished_move?
-      store_history
-      break if game_over?
-
-      switch_players
-    end
-    puts display.show(board_navigator.board)
-    puts display.thanks(player1, player2)
   end
 
   def handle_en_passant(move)
@@ -291,13 +269,17 @@ class Game
   end
 
   def load_board(state, colour)
-    board_navigator.board.setup(state[:board])
+    board_navigator.setup_board(state[:board])
     board_navigator.load_castling_rights(state[:castling_rights])
     board_navigator.load_en_passant_coordinate(state[:en_passant_coordinate], colour)
   end
 
   def load_current_player(string)
     @current_player = [player1, player2].select { |player| player.colour.chars.first == string }.first
+  end
+
+  def setup_board(fen_string)
+    board_navigator.board.setup(fen_string)
   end
 
   def correct_length?(move)
@@ -320,9 +302,5 @@ class Game
 
     false
   end
-
-  private
-
-  attr_reader :display
 end
 # rubocop: enable Metrics/ClassLength

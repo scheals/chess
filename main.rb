@@ -4,6 +4,8 @@ require_relative './lib/board_navigator'
 require_relative './lib/board'
 require_relative './lib/coordinate'
 require_relative './lib/display'
+require_relative './lib/save_state'
+require_relative './lib/game_driver'
 require_relative './lib/game'
 require_relative './lib/move'
 require_relative './lib/moves'
@@ -27,6 +29,4 @@ require_relative './lib/navigator/pawn_navigator'
 require_relative './lib/navigator/queen_navigator'
 require_relative './lib/navigator/rook_navigator'
 
-test_game = Game.new
-test_game.board_navigator.board.setup
-test_game.game_loop
+GameDriver.setup
