@@ -26,7 +26,7 @@ module Display
       #{show(board)}
       #{player.name} as #{player.colour} it is your turn!
       Enter a full move like \'a8c8\' or a partial move like \'a8\' to see possible moves of that piece.
-
+      You can save and stop playing by typing \'save\'.
     HEREDOC
   end
 
@@ -36,7 +36,6 @@ module Display
       Those are your possible moves:
       #{print_moves(moves)}
       Which one do you want to make? Type 'q' if you want to restart making your move.
-
     HEREDOC
   end
 
@@ -97,6 +96,17 @@ module Display
   def self.fifty_moves_tie(player1, player2)
     <<~HEREDOC
       It's a tie between #{player1.name} and #{player2.name} due to fifty move rule!
+    HEREDOC
+  end
+
+  def self.save_goodbye(fen_string, filename, player1, player2)
+    <<~HEREDOC
+      Thank you for playing, #{player1.name} and #{player2.name}!
+      Here is your game in FEN format:
+      #{fen_string}
+      You'll find a text file with it in the saves directory as well called:
+      #{filename}
+      See you soon!
     HEREDOC
   end
 

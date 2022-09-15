@@ -40,12 +40,11 @@ class Game
     unvalidated_move = nil
     loop do
       unvalidated_move = create_move(gets.chomp.downcase)
-      break if correct_length?(unvalidated_move) &&
-               in_bounds?(unvalidated_move) &&
-               current_player_owns?(unvalidated_move.start)
+      return 'save' if unvalidated_move.to_s == 'save'
+      break validate_target(unvalidated_move) if correct_length?(unvalidated_move) &&
+                                                 in_bounds?(unvalidated_move) &&
+                                                 current_player_owns?(unvalidated_move.start)
     end
-
-    validate_target(unvalidated_move)
   end
 
   def game_loop
@@ -53,6 +52,8 @@ class Game
     loop do
       puts display.turn_beginning(current_player, board_navigator.board)
       move = ask_for_move until move
+      return save_game if move.to_s == 'save'
+
       calculate_halfmove_clock(move)
       move_piece(move)
       promote(move.target) if promoteable?(move.target)
@@ -268,6 +269,16 @@ class Game
     result << @half_move_clock if full
     result << @full_move_clock if full
     result.join(' ')
+  end
+
+  def save_game
+    Dir.mkdir('savegames') unless Dir.exist?('savegames')
+
+    filename = "#{player1.name}-#{player2.name}-#{Time.now}"
+    File.open("savegames/#{filename}", 'w') do |file|
+      file.puts to_fen
+    end
+    puts display.save_goodbye(to_fen, filename, player1, player2)
   end
 
   def load(fen_string)
