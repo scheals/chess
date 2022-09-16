@@ -269,7 +269,7 @@ class Game
   end
 
   def load_board(state, colour)
-    board_navigator.setup_board(state[:board])
+    setup_board(state[:board])
     board_navigator.load_castling_rights(state[:castling_rights])
     board_navigator.load_en_passant_coordinate(state[:en_passant_coordinate], colour)
   end

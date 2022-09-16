@@ -28,10 +28,11 @@ module GameDriver
   end
 
   def self.load(game, save)
+    fen_string = nil
     File.open("savegames/#{save}", 'r') do |file|
       fen_string = file.gets.chomp
-      game.load(fen_string)
     end
+    game.load(fen_string)
   end
 
   def self.choose_save(savegames)
@@ -39,9 +40,8 @@ module GameDriver
     savegames.each_with_index { |save, index| puts "#{index + 1}.\s #{save}" }
     loop do
       choice = gets.chomp.to_i
-      break if valid_save?(savegames, choice)
+      break savegames[choice - 1] if valid_save?(savegames, choice)
     end
-    savegames[choice]
   end
 
   def self.valid_save?(savegames, choice)
