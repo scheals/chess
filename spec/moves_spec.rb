@@ -19,13 +19,13 @@ describe Moves::HorizontalMoves do
 
     before do
       leftbound_rook.extend(described_class)
-      allow(board).to receive(:find).with(white_rook.position.left.to_s).and_return(square)
+      allow(board).to receive(:find).with(white_rook.position.left).and_return(square)
       allow(square).to receive(:occupied?).and_return(false, false, true, true)
-      allow(board).to receive(:in_bounds?).with(white_rook.position.left.left.to_s).and_return(true)
-      allow(board).to receive(:find).with(white_rook.position.left.left.to_s).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.left.left).and_return(true)
+      allow(board).to receive(:find).with(white_rook.position.left.left).and_return(square)
       allow(white_rook).to receive(:enemy?).with(black_piece).and_return(true).once
-      allow(board).to receive(:find).with(white_rook.position.left.left.left.to_s).and_return(square)
-      allow(board).to receive(:in_bounds?).with(white_rook.position.left.left.left.to_s).and_return(true)
+      allow(board).to receive(:find).with(white_rook.position.left.left.left).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.left.left.left).and_return(true)
     end
 
     it 'returns proper moves' do
@@ -46,13 +46,13 @@ describe Moves::HorizontalMoves do
 
     before do
       rightbound_rook.extend(described_class)
-      allow(board).to receive(:find).with(white_rook.position.right.to_s).and_return(square)
+      allow(board).to receive(:find).with(white_rook.position.right).and_return(square)
       allow(square).to receive(:occupied?).and_return(false, false, true, true)
-      allow(board).to receive(:in_bounds?).with(white_rook.position.right.right.to_s).and_return(true)
-      allow(board).to receive(:find).with(white_rook.position.right.right.to_s).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.right.right).and_return(true)
+      allow(board).to receive(:find).with(white_rook.position.right.right).and_return(square)
       allow(white_rook).to receive(:enemy?).with(black_piece).and_return(true).once
-      allow(board).to receive(:find).with(white_rook.position.right.right.right.to_s).and_return(square)
-      allow(board).to receive(:in_bounds?).with(white_rook.position.right.right.right.to_s).and_return(true)
+      allow(board).to receive(:find).with(white_rook.position.right.right.right).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.right.right.right).and_return(true)
     end
 
     it 'returns proper moves' do
@@ -73,13 +73,13 @@ describe Moves::HorizontalMoves do
 
     before do
       upbound_rook.extend(described_class)
-      allow(board).to receive(:find).with(white_rook.position.up.to_s).and_return(square)
+      allow(board).to receive(:find).with(white_rook.position.up).and_return(square)
       allow(square).to receive(:occupied?).and_return(false, false, true, true)
-      allow(board).to receive(:in_bounds?).with(white_rook.position.up.up.to_s).and_return(true)
-      allow(board).to receive(:find).with(white_rook.position.up.up.to_s).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.up.up).and_return(true)
+      allow(board).to receive(:find).with(white_rook.position.up.up).and_return(square)
       allow(white_rook).to receive(:enemy?).with(white_piece).and_return(false)
-      allow(board).to receive(:find).with(white_rook.position.up.up.up.to_s).and_return(square)
-      allow(board).to receive(:in_bounds?).with(white_rook.position.up.up.up.to_s).and_return(true)
+      allow(board).to receive(:find).with(white_rook.position.up.up.up).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.up.up.up).and_return(true)
     end
 
     it 'returns proper moves' do
@@ -100,13 +100,13 @@ describe Moves::HorizontalMoves do
 
     before do
       downbound_rook.extend(described_class)
-      allow(board).to receive(:find).with(white_rook.position.down.to_s).and_return(square)
+      allow(board).to receive(:find).with(white_rook.position.down).and_return(square)
       allow(square).to receive(:occupied?).and_return(false, false, true, true)
-      allow(board).to receive(:in_bounds?).with(white_rook.position.down.down.to_s).and_return(true)
-      allow(board).to receive(:find).with(white_rook.position.down.down.to_s).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.down.down).and_return(true)
+      allow(board).to receive(:find).with(white_rook.position.down.down).and_return(square)
       allow(white_rook).to receive(:enemy?).with(white_piece).and_return(false)
-      allow(board).to receive(:find).with(white_rook.position.down.down.down.to_s).and_return(square)
-      allow(board).to receive(:in_bounds?).with(white_rook.position.down.down.down.to_s).and_return(true)
+      allow(board).to receive(:find).with(white_rook.position.down.down.down).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_rook.position.down.down.down).and_return(true)
     end
 
     it 'returns proper moves' do
@@ -129,13 +129,13 @@ describe Moves::DiagonalMoves do
 
     before do
       up_left_bishop.extend(described_class)
-      allow(board).to receive(:find).with(white_bishop.position.up.left.to_s).and_return(square)
+      allow(board).to receive(:find).with(white_bishop.position.up.left).and_return(square)
       allow(square).to receive(:occupied?).and_return(false, false, true, true)
-      allow(board).to receive(:in_bounds?).with(white_bishop.position.up.left.up.left.to_s).and_return(true)
-      allow(board).to receive(:find).with(white_bishop.position.up.left.up.left.to_s).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_bishop.position.up.left.up.left).and_return(true)
+      allow(board).to receive(:find).with(white_bishop.position.up.left.up.left).and_return(square)
       allow(white_bishop).to receive(:enemy?).with(black_piece).and_return(true).once
-      allow(board).to receive(:find).with(white_bishop.position.up.left.up.left.up.left.to_s).and_return(square)
-      allow(board).to receive(:in_bounds?).with(white_bishop.position.up.left.up.left.up.left.to_s).and_return(true)
+      allow(board).to receive(:find).with(white_bishop.position.up.left.up.left.up.left).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_bishop.position.up.left.up.left.up.left).and_return(true)
     end
 
     it 'returns proper moves' do
@@ -156,13 +156,13 @@ describe Moves::DiagonalMoves do
 
     before do
       up_right_bishop.extend(described_class)
-      allow(board).to receive(:find).with(white_bishop.position.up.right.to_s).and_return(square)
+      allow(board).to receive(:find).with(white_bishop.position.up.right).and_return(square)
       allow(square).to receive(:occupied?).and_return(false, false, true, true)
-      allow(board).to receive(:in_bounds?).with(white_bishop.position.up.right.up.right.to_s).and_return(true)
-      allow(board).to receive(:find).with(white_bishop.position.up.right.up.right.to_s).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_bishop.position.up.right.up.right).and_return(true)
+      allow(board).to receive(:find).with(white_bishop.position.up.right.up.right).and_return(square)
       allow(white_bishop).to receive(:enemy?).with(black_piece).and_return(true).once
-      allow(board).to receive(:find).with(white_bishop.position.up.right.up.right.up.right.to_s).and_return(square)
-      allow(board).to receive(:in_bounds?).with(white_bishop.position.up.right.up.right.up.right.to_s).and_return(true)
+      allow(board).to receive(:find).with(white_bishop.position.up.right.up.right.up.right).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_bishop.position.up.right.up.right.up.right).and_return(true)
     end
 
     it 'returns proper moves' do
@@ -183,13 +183,13 @@ describe Moves::DiagonalMoves do
 
     before do
       down_right_bishop.extend(described_class)
-      allow(board).to receive(:find).with(white_bishop.position.down.right.to_s).and_return(square)
+      allow(board).to receive(:find).with(white_bishop.position.down.right).and_return(square)
       allow(square).to receive(:occupied?).and_return(false, false, true, true)
-      allow(board).to receive(:in_bounds?).with(white_bishop.position.down.right.down.right.to_s).and_return(true)
-      allow(board).to receive(:find).with(white_bishop.position.down.right.down.right.to_s).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_bishop.position.down.right.down.right).and_return(true)
+      allow(board).to receive(:find).with(white_bishop.position.down.right.down.right).and_return(square)
       allow(white_bishop).to receive(:enemy?).with(white_piece).and_return(false)
-      allow(board).to receive(:find).with(white_bishop.position.down.right.down.right.down.right.to_s).and_return(square)
-      allow(board).to receive(:in_bounds?).with(white_bishop.position.down.right.down.right.down.right.to_s).and_return(true)
+      allow(board).to receive(:find).with(white_bishop.position.down.right.down.right.down.right).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_bishop.position.down.right.down.right.down.right).and_return(true)
     end
 
     it 'returns proper moves' do
@@ -210,13 +210,13 @@ describe Moves::DiagonalMoves do
 
     before do
       down_left_bishop.extend(described_class)
-      allow(board).to receive(:find).with(white_bishop.position.down.left.to_s).and_return(square)
+      allow(board).to receive(:find).with(white_bishop.position.down.left).and_return(square)
       allow(square).to receive(:occupied?).and_return(false, false, true, true)
-      allow(board).to receive(:in_bounds?).with(white_bishop.position.down.left.down.left.to_s).and_return(true)
-      allow(board).to receive(:find).with(white_bishop.position.down.left.down.left.to_s).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_bishop.position.down.left.down.left).and_return(true)
+      allow(board).to receive(:find).with(white_bishop.position.down.left.down.left).and_return(square)
       allow(white_bishop).to receive(:enemy?).with(white_piece).and_return(false)
-      allow(board).to receive(:find).with(white_bishop.position.down.left.down.left.down.left.to_s).and_return(square)
-      allow(board).to receive(:in_bounds?).with(white_bishop.position.down.left.down.left.down.left.to_s).and_return(true)
+      allow(board).to receive(:find).with(white_bishop.position.down.left.down.left.down.left).and_return(square)
+      allow(board).to receive(:in_bounds?).with(white_bishop.position.down.left.down.left.down.left).and_return(true)
     end
 
     it 'returns proper moves' do
@@ -271,7 +271,7 @@ describe Moves::LimitedDiagonal do
 
       before do
         up_left_piece.extend(described_class)
-        allow(board).to receive(:find).with(white_piece.position.up.left.to_s).and_return(square)
+        allow(board).to receive(:find).with(white_piece.position.up.left).and_return(square)
         allow(square).to receive(:occupied?).and_return(false, false)
         allow(white_piece).to receive(:enemy?).with(black_piece).and_return(true).once
       end
@@ -297,13 +297,13 @@ describe Moves::LimitedDiagonal do
 
       before do
         up_right_piece.extend(described_class)
-        allow(board).to receive(:find).with(white_piece.position.up.right.to_s).and_return(square)
+        allow(board).to receive(:find).with(white_piece.position.up.right).and_return(square)
         allow(square).to receive(:occupied?).and_return(false, false, true, true)
-        allow(board).to receive(:in_bounds?).with(white_piece.position.up.right.up.right.to_s).and_return(true)
-        allow(board).to receive(:find).with(white_piece.position.up.right.up.right.to_s).and_return(square)
+        allow(board).to receive(:in_bounds?).with(white_piece.position.up.right.up.right).and_return(true)
+        allow(board).to receive(:find).with(white_piece.position.up.right.up.right).and_return(square)
         allow(white_piece).to receive(:enemy?).with(black_piece).and_return(true).once
-        allow(board).to receive(:find).with(white_piece.position.up.right.up.right.up.right.to_s).and_return(square)
-        allow(board).to receive(:in_bounds?).with(white_piece.position.up.right.up.right.up.right.to_s).and_return(true)
+        allow(board).to receive(:find).with(white_piece.position.up.right.up.right.up.right).and_return(square)
+        allow(board).to receive(:in_bounds?).with(white_piece.position.up.right.up.right.up.right).and_return(true)
       end
 
       it 'returns proper moves' do
@@ -327,13 +327,13 @@ describe Moves::LimitedDiagonal do
 
       before do
         down_right_moving_piece.extend(described_class)
-        allow(board).to receive(:find).with(white_moving_piece.position.down.right.to_s).and_return(square)
+        allow(board).to receive(:find).with(white_moving_piece.position.down.right).and_return(square)
         allow(square).to receive(:occupied?).and_return(false, false, true, true)
-        allow(board).to receive(:in_bounds?).with(white_moving_piece.position.down.right.down.right.to_s).and_return(true)
-        allow(board).to receive(:find).with(white_moving_piece.position.down.right.down.right.to_s).and_return(square)
+        allow(board).to receive(:in_bounds?).with(white_moving_piece.position.down.right.down.right).and_return(true)
+        allow(board).to receive(:find).with(white_moving_piece.position.down.right.down.right).and_return(square)
         allow(white_moving_piece).to receive(:enemy?).with(white_piece).and_return(false)
-        allow(board).to receive(:find).with(white_moving_piece.position.down.right.down.right.down.right.to_s).and_return(square)
-        allow(board).to receive(:in_bounds?).with(white_moving_piece.position.down.right.down.right.down.right.to_s).and_return(true)
+        allow(board).to receive(:find).with(white_moving_piece.position.down.right.down.right.down.right).and_return(square)
+        allow(board).to receive(:in_bounds?).with(white_moving_piece.position.down.right.down.right.down.right).and_return(true)
       end
 
       it 'returns proper moves' do
@@ -357,13 +357,13 @@ describe Moves::LimitedDiagonal do
 
       before do
         down_left_moving_piece.extend(described_class)
-        allow(board).to receive(:find).with(white_moving_piece.position.down.left.to_s).and_return(square)
+        allow(board).to receive(:find).with(white_moving_piece.position.down.left).and_return(square)
         allow(square).to receive(:occupied?).and_return(false, false, true, true)
-        allow(board).to receive(:in_bounds?).with(white_moving_piece.position.down.left.down.left.to_s).and_return(true)
-        allow(board).to receive(:find).with(white_moving_piece.position.down.left.down.left.to_s).and_return(square)
+        allow(board).to receive(:in_bounds?).with(white_moving_piece.position.down.left.down.left).and_return(true)
+        allow(board).to receive(:find).with(white_moving_piece.position.down.left.down.left).and_return(square)
         allow(white_moving_piece).to receive(:enemy?).with(white_piece).and_return(false)
-        allow(board).to receive(:find).with(white_moving_piece.position.down.left.down.left.down.left.to_s).and_return(square)
-        allow(board).to receive(:in_bounds?).with(white_moving_piece.position.down.left.down.left.down.left.to_s).and_return(true)
+        allow(board).to receive(:find).with(white_moving_piece.position.down.left.down.left.down.left).and_return(square)
+        allow(board).to receive(:in_bounds?).with(white_moving_piece.position.down.left.down.left.down.left).and_return(true)
       end
 
       it 'returns proper moves' do
@@ -389,12 +389,12 @@ describe Moves::PawnTakes do
 
     before do
       white_pawn_piece.extend(described_class)
-      allow(board).to receive(:find).with('a5').and_return(square)
-      allow(board).to receive(:find_piece).with('a5').and_return(nil_piece)
+      allow(board).to receive(:find).with(coordinate.parse('a5')).and_return(square)
+      allow(board).to receive(:find_piece).with(coordinate.parse('a5')).and_return(nil_piece)
       allow(white_piece).to receive(:enemy?).with(nil_piece).and_return(false)
       allow(white_piece).to receive(:enemy?).with(black_piece).and_return(true)
-      allow(board).to receive(:find).with('c5').and_return(square)
-      allow(board).to receive(:find_piece).with('c5').and_return(black_piece)
+      allow(board).to receive(:find).with(coordinate.parse('c5')).and_return(square)
+      allow(board).to receive(:find_piece).with(coordinate.parse('c5')).and_return(black_piece)
     end
 
     it 'includes takes properly' do
@@ -415,11 +415,11 @@ describe Moves::PawnTakes do
 
     before do
       black_pawn_piece.extend(described_class)
-      allow(board).to receive(:find).with('f7').and_return(square)
-      allow(board).to receive(:find_piece).with('f7').and_return(white_piece)
+      allow(board).to receive(:find).with(coordinate.parse('f7')).and_return(square)
+      allow(board).to receive(:find_piece).with(coordinate.parse('f7')).and_return(white_piece)
       allow(black_piece).to receive(:enemy?).with(white_piece).and_return(true).twice
-      allow(board).to receive(:find).with('h7').and_return(square)
-      allow(board).to receive(:find_piece).with('h7').and_return(white_piece)
+      allow(board).to receive(:find).with(coordinate.parse('h7')).and_return(square)
+      allow(board).to receive(:find_piece).with(coordinate.parse('h7')).and_return(white_piece)
     end
 
     it 'includes takes properly' do
@@ -443,10 +443,10 @@ describe Moves::PawnForward do
       before do
         white_pawn_piece.extend(described_class)
         allow(white_piece).to receive(:moved?).and_return(false)
-        allow(board).to receive(:find).with('g7').and_return(square)
+        allow(board).to receive(:find).with(coordinate.parse('g7')).and_return(square)
         allow(square).to receive(:occupied?).and_return(false, true)
-        allow(board).to receive(:find).with('g8').and_return(square)
-        allow(board).to receive(:in_bounds?).with('g8').and_return(true)
+        allow(board).to receive(:find).with(coordinate.parse('g8')).and_return(square)
+        allow(board).to receive(:in_bounds?).with(coordinate.parse('g8')).and_return(true)
       end
 
       it 'includes moves properly' do
@@ -470,7 +470,7 @@ describe Moves::PawnForward do
       before do
         black_pawn_piece.extend(described_class)
         allow(black_piece).to receive(:moved?).and_return(true)
-        allow(board).to receive(:find).with('c2').and_return(square)
+        allow(board).to receive(:find).with(coordinate.parse('c2')).and_return(square)
         allow(square).to receive(:occupied?).and_return(true)
       end
 

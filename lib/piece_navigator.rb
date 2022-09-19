@@ -27,23 +27,23 @@ class PieceNavigator
   end
 
   def occupied_coordinates(coordinates = legal_for(piece))
-    coordinates.select { |coordinate| board.find(coordinate.to_s).occupied? }
+    coordinates.select { |coordinate| board.find(coordinate).occupied? }
   end
 
   def allied_coordinates(coordinates = occupied_coordinates)
-    coordinates.select { |coordinate| piece.ally?(board.find_piece(coordinate.to_s)) }
+    coordinates.select { |coordinate| piece.ally?(board.find_piece(coordinate)) }
   end
 
   def enemy_coordinates(coordinates = occupied_coordinates)
-    coordinates.select { |coordinate| piece.enemy?(board.find_piece(coordinate.to_s)) }
+    coordinates.select { |coordinate| piece.enemy?(board.find_piece(coordinate)) }
   end
 
   def handle_allies(direction, allies)
-    direction.take_while { |coordinate| !allies.include?(coordinate.to_s) }
+    direction.take_while { |coordinate| !allies.include?(coordinate) }
   end
 
   def handle_enemies(direction, enemies)
-    direction.slice_after { |coordinate| enemies.include?(coordinate.to_s) }.first
+    direction.slice_after { |coordinate| enemies.include?(coordinate) }.first
   end
 
   def empty_or_enemy?(square)

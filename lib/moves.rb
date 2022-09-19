@@ -13,11 +13,11 @@ module Moves
       moves = []
       until queue.empty?
         move = queue.shift
-        current_square = board.find(move.to_s)
+        current_square = board.find(move)
         break unless current_square
 
         moves << move if empty_or_enemy?(current_square)
-        queue.push(move.left) if passable?(move.left.to_s, current_square)
+        queue.push(move.left) if passable?(move.left, current_square)
       end
       moves
     end
@@ -27,11 +27,11 @@ module Moves
       moves = []
       until queue.empty?
         move = queue.shift
-        current_square = board.find(move.to_s)
+        current_square = board.find(move)
         break unless current_square
 
         moves << move if empty_or_enemy?(current_square)
-        queue.push(move.right) if passable?(move.right.to_s, current_square)
+        queue.push(move.right) if passable?(move.right, current_square)
       end
       moves
     end
@@ -41,11 +41,11 @@ module Moves
       moves = []
       until queue.empty?
         move = queue.shift
-        current_square = board.find(move.to_s)
+        current_square = board.find(move)
         break unless current_square
 
         moves << move if empty_or_enemy?(current_square)
-        queue.push(move.up) if passable?(move.up.to_s, current_square)
+        queue.push(move.up) if passable?(move.up, current_square)
       end
       moves
     end
@@ -55,11 +55,11 @@ module Moves
       moves = []
       until queue.empty?
         move = queue.shift
-        current_square = board.find(move.to_s)
+        current_square = board.find(move)
         break unless current_square
 
         moves << move if empty_or_enemy?(current_square)
-        queue.push(move.down) if passable?(move.down.to_s, current_square)
+        queue.push(move.down) if passable?(move.down, current_square)
       end
       moves
     end
@@ -76,11 +76,11 @@ module Moves
       moves = []
       until queue.empty?
         move = queue.shift
-        current_square = board.find(move.to_s)
+        current_square = board.find(move)
         break unless current_square
 
         moves << move if empty_or_enemy?(current_square)
-        queue.push(move.up.left) if passable?(move.up.left.to_s, current_square)
+        queue.push(move.up.left) if passable?(move.up.left, current_square)
       end
       moves
     end
@@ -90,11 +90,11 @@ module Moves
       moves = []
       until queue.empty?
         move = queue.shift
-        current_square = board.find(move.to_s)
+        current_square = board.find(move)
         break unless current_square
 
         moves << move if empty_or_enemy?(current_square)
-        queue.push(move.up.right) if passable?(move.up.right.to_s, current_square)
+        queue.push(move.up.right) if passable?(move.up.right, current_square)
       end
       moves
     end
@@ -104,11 +104,11 @@ module Moves
       moves = []
       until queue.empty?
         move = queue.shift
-        current_square = board.find(move.to_s)
+        current_square = board.find(move)
         break unless current_square
 
         moves << move if empty_or_enemy?(current_square)
-        queue.push(move.down.left) if passable?(move.down.left.to_s, current_square)
+        queue.push(move.down.left) if passable?(move.down.left, current_square)
       end
       moves
     end
@@ -118,11 +118,11 @@ module Moves
       moves = []
       until queue.empty?
         move = queue.shift
-        current_square = board.find(move.to_s)
+        current_square = board.find(move)
         break unless current_square
 
         moves << move if empty_or_enemy?(current_square)
-        queue.push(move.down.right) if passable?(move.down.right.to_s, current_square)
+        queue.push(move.down.right) if passable?(move.down.right, current_square)
       end
       moves
     end
@@ -131,12 +131,12 @@ module Moves
   # This module holds takes for Pawns.
   module PawnTakes
     def white_takes
-      coordinates = [piece.position.left.up, piece.position.right.up].select { |coordinate| board.find(coordinate.to_s) }
+      coordinates = [piece.position.left.up, piece.position.right.up].select { |coordinate| board.find(coordinate) }
       enemy_coordinates(coordinates)
     end
 
     def black_takes
-      coordinates = [piece.position.left.down, piece.position.right.down].select { |coordinate| board.find(coordinate.to_s) }
+      coordinates = [piece.position.left.down, piece.position.right.down].select { |coordinate| board.find(coordinate) }
       enemy_coordinates(coordinates)
     end
   end
@@ -148,7 +148,7 @@ module Moves
 
       forward = piece.position.up
       move = []
-      move << forward unless board.find(forward.to_s).occupied?
+      move << forward unless board.find(forward).occupied?
       move
     end
 
@@ -157,11 +157,11 @@ module Moves
       moves = []
       until queue.empty?
         move = queue.shift
-        current_square = board.find(move.to_s)
+        current_square = board.find(move)
         break unless current_square
 
         moves << move unless current_square.occupied?
-        queue.push(move.up) if passable?(move.up.to_s, current_square) && moves.size < 2
+        queue.push(move.up) if passable?(move.up, current_square) && moves.size < 2
       end
       moves
     end
@@ -171,7 +171,7 @@ module Moves
 
       forward = piece.position.down
       move = []
-      move << forward unless board.find(forward.to_s).occupied?
+      move << forward unless board.find(forward).occupied?
       move
     end
 
@@ -180,11 +180,11 @@ module Moves
       moves = []
       until queue.empty?
         move = queue.shift
-        current_square = board.find(move.to_s)
+        current_square = board.find(move)
         break unless current_square
 
         moves << move unless current_square.occupied?
-        queue.push(move.down) if passable?(move.down.to_s, current_square) && moves.size < 2
+        queue.push(move.down) if passable?(move.down, current_square) && moves.size < 2
       end
       moves
     end
@@ -206,12 +206,12 @@ module Moves
       counter = 0
       until queue.empty?
         move = queue.shift
-        current_square = board.find(move.to_s)
+        current_square = board.find(move)
         break unless current_square
 
         moves << move if empty_or_enemy?(current_square)
         counter += 1
-        queue.push(move.up.left) if counter < limit && passable?(move.up.left.to_s, current_square)
+        queue.push(move.up.left) if counter < limit && passable?(move.up.left, current_square)
       end
       moves
     end
@@ -222,12 +222,12 @@ module Moves
       counter = 0
       until queue.empty?
         move = queue.shift
-        current_square = board.find(move.to_s)
+        current_square = board.find(move)
         break unless current_square
 
         moves << move if empty_or_enemy?(current_square)
         counter += 1
-        queue.push(move.up.right) if counter < limit && passable?(move.up.right.to_s, current_square)
+        queue.push(move.up.right) if counter < limit && passable?(move.up.right, current_square)
       end
       moves
     end
@@ -238,12 +238,12 @@ module Moves
       counter = 0
       until queue.empty?
         move = queue.shift
-        current_square = board.find(move.to_s)
+        current_square = board.find(move)
         break unless current_square
 
         moves << move if empty_or_enemy?(current_square)
         counter += 1
-        queue.push(move.down.left) if counter < limit && passable?(move.down.left.to_s, current_square)
+        queue.push(move.down.left) if counter < limit && passable?(move.down.left, current_square)
       end
       moves
     end
@@ -254,12 +254,12 @@ module Moves
       counter = 0
       until queue.empty?
         move = queue.shift
-        current_square = board.find(move.to_s)
+        current_square = board.find(move)
         break unless current_square
 
         moves << move if empty_or_enemy?(current_square)
         counter += 1
-        queue.push(move.down.right) if counter < limit && passable?(move.down.right.to_s, current_square)
+        queue.push(move.down.right) if counter < limit && passable?(move.down.right, current_square)
       end
       moves
     end
