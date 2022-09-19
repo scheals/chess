@@ -14,7 +14,7 @@ module GameDriver
 
     starting_board = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
     game.setup_board(starting_board)
-    start(game)
+    game
   end
 
   def self.attempt_to_load(game)
@@ -24,7 +24,7 @@ module GameDriver
     return empty_save_directory(game) if savegames.empty?
 
     load(game, choose_save(savegames))
-    start(game)
+    game
   end
 
   def self.load(game, save)
@@ -57,12 +57,12 @@ module GameDriver
 
   def self.no_save_directory(game)
     puts 'Directory savegames not found! Starting a new game.'
-    start(game)
+    game
   end
 
   def self.empty_save_directory(game)
     puts 'No save games found! Starting a new game.'
-    start(game)
+    game
   end
 
   def self.start(game)
@@ -83,7 +83,7 @@ module GameDriver
 
       game.switch_players
     end
-    puts game.display.show(board_navigator.board)
-    puts game.display.thanks(player1, player2)
+    puts game.display.show(game.board_navigator.board)
+    puts game.display.thanks(game.player1, game.player2)
   end
 end
