@@ -12,10 +12,6 @@ class Knight < Piece
       (twice_horizontal?(to_coordinate) && once_vertical?(to_coordinate))
   end
 
-  def split_moves(moves)
-    moves.map { |coordinate| [coordinate] }
-  end
-
   def twice_vertical?(coordinate)
     position.up.up.row == coordinate.row || position.down.down.row == coordinate.row
   end

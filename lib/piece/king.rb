@@ -12,10 +12,6 @@ class King < Piece
       (once_vertical?(to_coordinate) && position.same_column?(to_coordinate))
   end
 
-  def split_moves(moves)
-    moves.map { |coordinate| [coordinate] }
-  end
-
   def once_vertical?(space)
     position.up.row == space.row || position.down.row == space.row
   end

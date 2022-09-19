@@ -18,32 +18,12 @@ class PieceNavigator
     piece.legal(board.coordinates)
   end
 
-  def handle_collision(directions)
-    allies = allied_coordinates
-    enemies = enemy_coordinates
-    directions.map do |direction|
-      handle_allies(direction, allies)
-    end.map { |direction| handle_enemies(direction, enemies) }
-  end
-
-  def occupied_coordinates(coordinates = legal_for(piece))
-    coordinates.select { |coordinate| board.find(coordinate).occupied? }
-  end
-
-  def allied_coordinates(coordinates = occupied_coordinates)
+  def allied_coordinates(coordinates)
     coordinates.select { |coordinate| piece.ally?(board.find_piece(coordinate)) }
   end
 
-  def enemy_coordinates(coordinates = occupied_coordinates)
+  def enemy_coordinates(coordinates)
     coordinates.select { |coordinate| piece.enemy?(board.find_piece(coordinate)) }
-  end
-
-  def handle_allies(direction, allies)
-    direction.take_while { |coordinate| !allies.include?(coordinate) }
-  end
-
-  def handle_enemies(direction, enemies)
-    direction.slice_after { |coordinate| enemies.include?(coordinate) }.first
   end
 
   def empty_or_enemy?(square)

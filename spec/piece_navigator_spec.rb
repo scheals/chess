@@ -12,24 +12,6 @@ require_relative '../lib/board_navigator'
 require_relative '../lib/move'
 
 describe PieceNavigator do
-  describe '#occupied_coordinates' do
-    subject(:navigate_collision) { described_class.new(board_navigator, queen) }
-
-    let(:board_navigator) { BoardNavigator.new(Board.new) }
-    let(:queen) { Queen.new('d4') }
-
-    before do
-      navigate_collision.board.setup
-      navigate_collision.board.put(queen, 'd4')
-    end
-
-    it 'returns an array of occupied squares' do
-      expect(navigate_collision.occupied_coordinates).to contain_exactly('d1', 'd2', 'd7', 'd8',
-                                                                         'a1', 'b2', 'g7', 'h8',
-                                                                         'g1', 'f2', 'a7')
-    end
-  end
-
   describe '#allied_coordinates' do
     subject(:navigate_allies) { described_class.new(board_navigator, white_rook) }
 
@@ -40,9 +22,8 @@ describe PieceNavigator do
       navigate_allies.board.setup
     end
 
-    it 'returns an array of squares that allied pieces are on in range of the piece' do
-      expect(navigate_allies.allied_coordinates).to contain_exactly('a2',
-                                                                    'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1')
+    it 'returns an array of squares that allied pieces are on from given coordinates' do
+      expect(navigate_allies.allied_coordinates(navigate_allies.board.coordinates)).to contain_exactly("a1", "a2", "b1", "b2", "c1", "c2", "d1", "d2", "e1", "e2", "f1", "f2", "g1", "g2", "h1", "h2")
     end
   end
 
@@ -57,8 +38,8 @@ describe PieceNavigator do
       navigate_enemies.board.put(black_rook, 'f4')
     end
 
-    it 'returns an array of squares that enemy pieces are on in range of the piece' do
-      expect(navigate_enemies.enemy_coordinates).to contain_exactly('f1', 'f2')
+    it 'returns an array of squares that enemy pieces are on from given coordinates' do
+      expect(navigate_enemies.enemy_coordinates(navigate_enemies.board.coordinates)).to contain_exactly("a1", "a2", "b1", "b2", "c1", "c2", "d1", "d2", "e1", "e2", "f1", "f2", "g1", "g2", "h1", "h2")
     end
   end
 

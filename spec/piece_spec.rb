@@ -276,81 +276,81 @@ describe King do
 end
 
 describe Queen do
-  describe '#legal' do
-    context "when checking Queen's legal moves" do
-      subject(:boundful_queen) { described_class.new('h8', colour: 'black') }
+  # describe '#legal' do
+  #   context "when checking Queen's legal moves" do
+  #     subject(:boundful_queen) { described_class.new('h8', colour: 'black') }
 
-      coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
-                       b1 b2 b3 b4 b5 b6 b7 b8
-                       c1 c2 c3 c4 c5 c6 c7 c8
-                       d1 d2 d3 d4 d5 d6 d7 d8
-                       e1 e2 e3 e4 e5 e6 e7 e8
-                       f1 f2 f3 f4 f5 f6 f7 f8
-                       g1 g2 g3 g4 g5 g6 g7 g8
-                       h1 h2 h3 h4 h5 h6 h7 h8]
+  #     coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
+  #                      b1 b2 b3 b4 b5 b6 b7 b8
+  #                      c1 c2 c3 c4 c5 c6 c7 c8
+  #                      d1 d2 d3 d4 d5 d6 d7 d8
+  #                      e1 e2 e3 e4 e5 e6 e7 e8
+  #                      f1 f2 f3 f4 f5 f6 f7 f8
+  #                      g1 g2 g3 g4 g5 g6 g7 g8
+  #                      h1 h2 h3 h4 h5 h6 h7 h8]
 
-      it 'provides an array of possible moves' do
-        expect(boundful_queen.legal(coordinates)).to contain_exactly('g7', 'f6', 'e5', 'd4', 'c3', 'b2', 'a1',
-                                                                     'h7', 'h6', 'h5', 'h4', 'h3', 'h2', 'h1',
-                                                                     'g8', 'f8', 'e8', 'd8', 'c8', 'b8', 'a8')
-      end
-    end
-  end
+  #     it 'provides an array of possible moves' do
+  #       expect(boundful_queen.legal(coordinates)).to contain_exactly('g7', 'f6', 'e5', 'd4', 'c3', 'b2', 'a1',
+  #                                                                    'h7', 'h6', 'h5', 'h4', 'h3', 'h2', 'h1',
+  #                                                                    'g8', 'f8', 'e8', 'd8', 'c8', 'b8', 'a8')
+  #     end
+  #   end
+  # end
 
-  describe '#move' do
-    let(:coordinate) { Coordinate }
+  # describe '#move' do
+  #   let(:coordinate) { Coordinate }
 
-    context 'when moved vertically' do
-      subject(:vertical_move) { described_class.new('a1') }
+  #   context 'when moved vertically' do
+  #     subject(:vertical_move) { described_class.new('a1') }
 
-      it 'changes its position' do
-        vertical_move.move('a4')
-        expect(vertical_move.position).to eq(coordinate.parse('a4'))
-      end
-    end
+  #     it 'changes its position' do
+  #       vertical_move.move('a4')
+  #       expect(vertical_move.position).to eq(coordinate.parse('a4'))
+  #     end
+  #   end
 
-    context 'when moved horizontally' do
-      subject(:horizontal_move) { described_class.new('b1') }
+  #   context 'when moved horizontally' do
+  #     subject(:horizontal_move) { described_class.new('b1') }
 
-      it 'changes its position' do
-        horizontal_move.move('h1')
-        expect(horizontal_move.position).to eq(coordinate.parse('h1'))
-      end
-    end
+  #     it 'changes its position' do
+  #       horizontal_move.move('h1')
+  #       expect(horizontal_move.position).to eq(coordinate.parse('h1'))
+  #     end
+  #   end
 
-    context 'when moved diagonally' do
-      subject(:diagonal_move) { described_class.new('c4') }
+  #   context 'when moved diagonally' do
+  #     subject(:diagonal_move) { described_class.new('c4') }
 
-      it 'changes its position' do
-        diagonal_move.move('d5')
-        expect(diagonal_move.position).to eq(coordinate.parse('d5'))
-      end
-    end
+  #     it 'changes its position' do
+  #       diagonal_move.move('d5')
+  #       expect(diagonal_move.position).to eq(coordinate.parse('d5'))
+  #     end
+  #   end
 
-    context 'when told to make an invalid move' do
-      subject(:invalid_move) { described_class.new('d4') }
+  #   context 'when told to make an invalid move' do
+  #     subject(:invalid_move) { described_class.new('d4') }
 
-      it "doesn't change its position" do
-        expect { invalid_move.move('c7') }.not_to change(invalid_move, :position)
-      end
+  #     it "doesn't change its position" do
+  #       expect { invalid_move.move('c7') }.not_to change(invalid_move, :position)
+  #     end
 
-      it 'returns nil' do
-        expect(invalid_move.move('c7')).to be_nil
-      end
-    end
+  #     it 'returns nil' do
+  #       expect(invalid_move.move('c7')).to be_nil
+  #     end
+  #   end
 
-    context 'when told to move on its own position' do
-      subject(:immovable_move) { described_class.new('K0') }
+  #   context 'when told to move on its own position' do
+  #     subject(:immovable_move) { described_class.new('K0') }
 
-      it "doesn't change its position" do
-        expect { immovable_move.move('K0') }.not_to change(immovable_move, :position)
-      end
+  #     it "doesn't change its position" do
+  #       expect { immovable_move.move('K0') }.not_to change(immovable_move, :position)
+  #     end
 
-      it 'returns nil' do
-        expect(immovable_move.move('K0')).to be_nil
-      end
-    end
-  end
+  #     it 'returns nil' do
+  #       expect(immovable_move.move('K0')).to be_nil
+  #     end
+  #   end
+  # end
 
   describe '#to_fen' do
     context 'when converting a white piece' do
@@ -374,80 +374,80 @@ end
 describe Rook do
   let(:coordinate) { Coordinate }
 
-  describe '#legal' do
-    context "when checking Rook's legal moves" do
-      subject(:boundful_rook) { described_class.new('a1', colour: 'white') }
+  # describe '#legal' do
+  #   context "when checking Rook's legal moves" do
+  #     subject(:boundful_rook) { described_class.new('a1', colour: 'white') }
 
-      coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
-                       b1 b2 b3 b4 b5 b6 b7 b8
-                       c1 c2 c3 c4 c5 c6 c7 c8
-                       d1 d2 d3 d4 d5 d6 d7 d8
-                       e1 e2 e3 e4 e5 e6 e7 e8
-                       f1 f2 f3 f4 f5 f6 f7 f8
-                       g1 g2 g3 g4 g5 g6 g7 g8
-                       h1 h2 h3 h4 h5 h6 h7 h8]
+  #     coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
+  #                      b1 b2 b3 b4 b5 b6 b7 b8
+  #                      c1 c2 c3 c4 c5 c6 c7 c8
+  #                      d1 d2 d3 d4 d5 d6 d7 d8
+  #                      e1 e2 e3 e4 e5 e6 e7 e8
+  #                      f1 f2 f3 f4 f5 f6 f7 f8
+  #                      g1 g2 g3 g4 g5 g6 g7 g8
+  #                      h1 h2 h3 h4 h5 h6 h7 h8]
 
-      it 'provides an array of possible moves' do
-        expect(boundful_rook.legal(coordinates)).to contain_exactly('a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1')
-      end
-    end
-  end
+  #     it 'provides an array of possible moves' do
+  #       expect(boundful_rook.legal(coordinates)).to contain_exactly('a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1')
+  #     end
+  #   end
+  # end
 
-  describe '#move' do
-    context 'when moved vertically' do
-      subject(:vertical_move) { described_class.new('a1') }
+  # describe '#move' do
+  #   context 'when moved vertically' do
+  #     subject(:vertical_move) { described_class.new('a1') }
 
-      it 'changes its position' do
-        vertical_move.move('a4')
-        expect(vertical_move.position).to eq(coordinate.parse('a4'))
-      end
-    end
+  #     it 'changes its position' do
+  #       vertical_move.move('a4')
+  #       expect(vertical_move.position).to eq(coordinate.parse('a4'))
+  #     end
+  #   end
 
-    context 'when moved horizontally' do
-      subject(:horizontal_move) { described_class.new('b1') }
+  #   context 'when moved horizontally' do
+  #     subject(:horizontal_move) { described_class.new('b1') }
 
-      it 'changes its position' do
-        horizontal_move.move('h1')
-        expect(horizontal_move.position).to eq(coordinate.parse('h1'))
-      end
-    end
+  #     it 'changes its position' do
+  #       horizontal_move.move('h1')
+  #       expect(horizontal_move.position).to eq(coordinate.parse('h1'))
+  #     end
+  #   end
 
-    context 'when moved diagonally' do
-      subject(:diagonal_move) { described_class.new('c4') }
+  #   context 'when moved diagonally' do
+  #     subject(:diagonal_move) { described_class.new('c4') }
 
-      it "doesn't change its position" do
-        expect { diagonal_move.move('d5') }.not_to change(diagonal_move, :position)
-      end
+  #     it "doesn't change its position" do
+  #       expect { diagonal_move.move('d5') }.not_to change(diagonal_move, :position)
+  #     end
 
-      it 'returns nil' do
-        expect(diagonal_move.move('b3')).to be_nil
-      end
-    end
+  #     it 'returns nil' do
+  #       expect(diagonal_move.move('b3')).to be_nil
+  #     end
+  #   end
 
-    context 'when told to make an invalid move' do
-      subject(:invalid_move) { described_class.new('d4') }
+  #   context 'when told to make an invalid move' do
+  #     subject(:invalid_move) { described_class.new('d4') }
 
-      it "doesn't change its position" do
-        expect { invalid_move.move('c7') }.not_to change(invalid_move, :position)
-      end
+  #     it "doesn't change its position" do
+  #       expect { invalid_move.move('c7') }.not_to change(invalid_move, :position)
+  #     end
 
-      it 'returns nil' do
-        expect(invalid_move.move('c7')).to be_nil
-      end
-    end
+  #     it 'returns nil' do
+  #       expect(invalid_move.move('c7')).to be_nil
+  #     end
+  #   end
 
-    context 'when told to move on its own position' do
-      subject(:immovable_move) { described_class.new('K0') }
+  #   context 'when told to move on its own position' do
+  #     subject(:immovable_move) { described_class.new('K0') }
 
-      it "doesn't change its position" do
-        expect { immovable_move.move('K0') }.not_to change(immovable_move, :position)
-      end
+  #     it "doesn't change its position" do
+  #       expect { immovable_move.move('K0') }.not_to change(immovable_move, :position)
+  #     end
 
-      it 'returns nil' do
-        expect(immovable_move.move('K0')).to be_nil
-      end
-    end
-  end
+  #     it 'returns nil' do
+  #       expect(immovable_move.move('K0')).to be_nil
+  #     end
+  #   end
+  # end
 
   describe '#to_fen' do
     context 'when converting a white piece' do
@@ -480,7 +480,7 @@ describe Rook do
       subject(:moved_rook) { described_class.new('b6', colour: 'white') }
 
       it 'returns false' do
-        moved_rook.move('b9')
+        moved_rook.instance_variable_set(:@move_history, ['test'])
         expect(moved_rook.can_castle?).to be false
       end
     end
@@ -490,83 +490,83 @@ end
 describe Bishop do
   let(:coordinate) { Coordinate }
 
-  describe '#legal' do
-    context "when checking Bishop's legal moves" do
-      subject(:boundful_bishop) { described_class.new('e1', colour: 'white') }
+#   describe '#legal' do
+#     context "when checking Bishop's legal moves" do
+#       subject(:boundful_bishop) { described_class.new('e1', colour: 'white') }
 
-      coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
-                       b1 b2 b3 b4 b5 b6 b7 b8
-                       c1 c2 c3 c4 c5 c6 c7 c8
-                       d1 d2 d3 d4 d5 d6 d7 d8
-                       e1 e2 e3 e4 e5 e6 e7 e8
-                       f1 f2 f3 f4 f5 f6 f7 f8
-                       g1 g2 g3 g4 g5 g6 g7 g8
-                       h1 h2 h3 h4 h5 h6 h7 h8]
+#       coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
+#                        b1 b2 b3 b4 b5 b6 b7 b8
+#                        c1 c2 c3 c4 c5 c6 c7 c8
+#                        d1 d2 d3 d4 d5 d6 d7 d8
+#                        e1 e2 e3 e4 e5 e6 e7 e8
+#                        f1 f2 f3 f4 f5 f6 f7 f8
+#                        g1 g2 g3 g4 g5 g6 g7 g8
+#                        h1 h2 h3 h4 h5 h6 h7 h8]
 
-      it 'provides an array of possible moves' do
-        expect(boundful_bishop.legal(coordinates)).to contain_exactly('d2', 'c3', 'b4', 'a5', 'f2', 'g3', 'h4')
-      end
-    end
-  end
+#       it 'provides an array of possible moves' do
+#         expect(boundful_bishop.legal(coordinates)).to contain_exactly('d2', 'c3', 'b4', 'a5', 'f2', 'g3', 'h4')
+#       end
+#     end
+#   end
 
-  describe '#move' do
-    context 'when moved diagonally' do
-      subject(:diagonal_move) { described_class.new('c4') }
+#   describe '#move' do
+#     context 'when moved diagonally' do
+#       subject(:diagonal_move) { described_class.new('c4') }
 
-      it 'changes its position' do
-        diagonal_move.move('d5')
-        expect(diagonal_move.position).to eq(coordinate.parse('d5'))
-      end
-    end
+#       it 'changes its position' do
+#         diagonal_move.move('d5')
+#         expect(diagonal_move.position).to eq(coordinate.parse('d5'))
+#       end
+#     end
 
-    context 'when moved vertically' do
-      subject(:vertical_move) { described_class.new('a1') }
+#     context 'when moved vertically' do
+#       subject(:vertical_move) { described_class.new('a1') }
 
-      it "doesn't change its position" do
-        expect { vertical_move.move('a4') }.not_to change(vertical_move, :position)
-      end
+#       it "doesn't change its position" do
+#         expect { vertical_move.move('a4') }.not_to change(vertical_move, :position)
+#       end
 
-      it 'returns nil' do
-        expect(vertical_move.move('a6')).to be_nil
-      end
-    end
+#       it 'returns nil' do
+#         expect(vertical_move.move('a6')).to be_nil
+#       end
+#     end
 
-    context 'when moved horizontally' do
-      subject(:horizontal_move) { described_class.new('b1') }
+#     context 'when moved horizontally' do
+#       subject(:horizontal_move) { described_class.new('b1') }
 
-      it "doesn't change its position" do
-        expect { horizontal_move.move('h1') }.not_to change(horizontal_move, :position)
-      end
+#       it "doesn't change its position" do
+#         expect { horizontal_move.move('h1') }.not_to change(horizontal_move, :position)
+#       end
 
-      it 'returns nil' do
-        expect(horizontal_move.move('c1')).to be_nil
-      end
-    end
+#       it 'returns nil' do
+#         expect(horizontal_move.move('c1')).to be_nil
+#       end
+#     end
 
-    context 'when told to make an invalid move' do
-      subject(:invalid_move) { described_class.new('d4') }
+#     context 'when told to make an invalid move' do
+#       subject(:invalid_move) { described_class.new('d4') }
 
-      it "doesn't change its position" do
-        expect { invalid_move.move('c7') }.not_to change(invalid_move, :position)
-      end
+#       it "doesn't change its position" do
+#         expect { invalid_move.move('c7') }.not_to change(invalid_move, :position)
+#       end
 
-      it 'returns nil' do
-        expect(invalid_move.move('c7')).to be_nil
-      end
-    end
+#       it 'returns nil' do
+#         expect(invalid_move.move('c7')).to be_nil
+#       end
+#     end
 
-    context 'when told to move on its own position' do
-      subject(:immovable_move) { described_class.new('K0') }
+#     context 'when told to move on its own position' do
+#       subject(:immovable_move) { described_class.new('K0') }
 
-      it "doesn't change its position" do
-        expect { immovable_move.move('K0') }.not_to change(immovable_move, :position)
-      end
+#       it "doesn't change its position" do
+#         expect { immovable_move.move('K0') }.not_to change(immovable_move, :position)
+#       end
 
-      it 'returns nil' do
-        expect(immovable_move.move('K0')).to be_nil
-      end
-    end
-  end
+#       it 'returns nil' do
+#         expect(immovable_move.move('K0')).to be_nil
+#       end
+#     end
+#   end
 
   describe '#to_fen' do
     context 'when converting a white piece' do
@@ -701,176 +701,175 @@ describe Knight do
 end
 
 describe Pawn do
-  describe '#legal' do
-    context "when checking unmoved white Pawn's legal moves" do
-      subject(:boundful_pawn) { described_class.new('e4', colour: 'white') }
+  # describe '#legal' do
+  #   context "when checking unmoved white Pawn's legal moves" do
+  #     subject(:boundful_pawn) { described_class.new('e4', colour: 'white') }
 
-      coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
-                       b1 b2 b3 b4 b5 b6 b7 b8
-                       c1 c2 c3 c4 c5 c6 c7 c8
-                       d1 d2 d3 d4 d5 d6 d7 d8
-                       e1 e2 e3 e4 e5 e6 e7 e8
-                       f1 f2 f3 f4 f5 f6 f7 f8
-                       g1 g2 g3 g4 g5 g6 g7 g8
-                       h1 h2 h3 h4 h5 h6 h7 h8]
+  #     coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
+  #                      b1 b2 b3 b4 b5 b6 b7 b8
+  #                      c1 c2 c3 c4 c5 c6 c7 c8
+  #                      d1 d2 d3 d4 d5 d6 d7 d8
+  #                      e1 e2 e3 e4 e5 e6 e7 e8
+  #                      f1 f2 f3 f4 f5 f6 f7 f8
+  #                      g1 g2 g3 g4 g5 g6 g7 g8
+  #                      h1 h2 h3 h4 h5 h6 h7 h8]
 
-      it 'provides an array of possible moves' do
-        expect(boundful_pawn.legal(coordinates)).to contain_exactly('d5', 'e5', 'e6', 'f5')
-      end
-    end
+  #     it 'provides an array of possible moves' do
+  #       expect(boundful_pawn.legal(coordinates)).to contain_exactly('d5', 'e5', 'e6', 'f5')
+  #     end
+  #   end
 
-    context "when checking unmoved black Pawn's legal moves" do
-      subject(:boundful_pawn) { described_class.new('d4', colour: 'black') }
+  #   context "when checking unmoved black Pawn's legal moves" do
+  #     subject(:boundful_pawn) { described_class.new('d4', colour: 'black') }
 
-      coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
-                       b1 b2 b3 b4 b5 b6 b7 b8
-                       c1 c2 c3 c4 c5 c6 c7 c8
-                       d1 d2 d3 d4 d5 d6 d7 d8
-                       e1 e2 e3 e4 e5 e6 e7 e8
-                       f1 f2 f3 f4 f5 f6 f7 f8
-                       g1 g2 g3 g4 g5 g6 g7 g8
-                       h1 h2 h3 h4 h5 h6 h7 h8]
+  #     coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
+  #                      b1 b2 b3 b4 b5 b6 b7 b8
+  #                      c1 c2 c3 c4 c5 c6 c7 c8
+  #                      d1 d2 d3 d4 d5 d6 d7 d8
+  #                      e1 e2 e3 e4 e5 e6 e7 e8
+  #                      f1 f2 f3 f4 f5 f6 f7 f8
+  #                      g1 g2 g3 g4 g5 g6 g7 g8
+  #                      h1 h2 h3 h4 h5 h6 h7 h8]
 
-      it 'provides an array of possible moves' do
-        expect(boundful_pawn.legal(coordinates)).to contain_exactly('d2', 'd3', 'c3', 'e3')
-      end
-    end
+  #     it 'provides an array of possible moves' do
+  #       expect(boundful_pawn.legal(coordinates)).to contain_exactly('d2', 'd3', 'c3', 'e3')
+  #     end
+  #   end
 
-    context "when checking moved black Pawn's legal moves" do
-      subject(:boundful_pawn) { described_class.new('b6', colour: 'black') }
+  #   context "when checking moved black Pawn's legal moves" do
+  #     subject(:boundful_pawn) { described_class.new('b6', colour: 'black') }
 
-      coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
-                       b1 b2 b3 b4 b5 b6 b7 b8
-                       c1 c2 c3 c4 c5 c6 c7 c8
-                       d1 d2 d3 d4 d5 d6 d7 d8
-                       e1 e2 e3 e4 e5 e6 e7 e8
-                       f1 f2 f3 f4 f5 f6 f7 f8
-                       g1 g2 g3 g4 g5 g6 g7 g8
-                       h1 h2 h3 h4 h5 h6 h7 h8]
+  #     coordinates = %w[a1 a2 a3 a4 a5 a6 a7 a8
+  #                      b1 b2 b3 b4 b5 b6 b7 b8
+  #                      c1 c2 c3 c4 c5 c6 c7 c8
+  #                      d1 d2 d3 d4 d5 d6 d7 d8
+  #                      e1 e2 e3 e4 e5 e6 e7 e8
+  #                      f1 f2 f3 f4 f5 f6 f7 f8
+  #                      g1 g2 g3 g4 g5 g6 g7 g8
+  #                      h1 h2 h3 h4 h5 h6 h7 h8]
 
-      before do
-        boundful_pawn.move('b5')
-      end
+  #     before do
+  #       boundful_pawn.move('b5')
+  #     end
 
-      it 'provides an array of possible moves' do
-        expect(boundful_pawn.legal(coordinates)).to contain_exactly('a4', 'b4', 'c4')
-      end
-    end
-  end
+  #     it 'provides an array of possible moves' do
+  #       expect(boundful_pawn.legal(coordinates)).to contain_exactly('a4', 'b4', 'c4')
+  #     end
+  #   end
+  # end
 
-  describe '#move' do
+  # describe '#move' do
+  #   let(:coordinate) { Coordinate }
+
+  #   context 'when Pawn is white' do
+  #     subject(:white_pawn) { described_class.new('c3', colour: 'white') }
+
+  #     it 'can only go up one space at a time' do
+  #       white_pawn.move('c4')
+  #       expect(white_pawn.position).to eq(coordinate.parse('c4'))
+  #     end
+
+  #     it 'does not make an illegal move' do
+  #       expect { white_pawn.move('d5') }.not_to change(white_pawn, :position)
+  #     end
+
+  #     context 'when it has not moved yet' do
+  #       subject(:white_double) { described_class.new('b2', colour: 'white') }
+
+  #       it 'can move two spaces up at once' do
+  #         expect { white_double.move('b4') }.to change(white_double, :position).from(coordinate.parse('b2')).to(coordinate.parse('b4'))
+  #       end
+  #     end
+
+  #     context 'when there is a piece to be taken diagonally' do
+  #       subject(:white_take) { described_class.new('f4', colour: 'white') }
+
+  #       let(:occupied_space) { instance_double(Square, position: 'e5') }
+
+  #       before do
+  #         allow(occupied_space).to receive(:occupied?).and_return(true)
+  #       end
+
+  #       it 'can move one space up diagonally' do
+  #         space = occupied_space.position
+  #         white_take.move(space)
+  #         expect(white_take.position).to eq(coordinate.parse('e5'))
+  #       end
+  #     end
+  #   end
+
+  #   context 'when Pawn is black' do
+  #     subject(:black_pawn) { described_class.new('e5', colour: 'black') }
+
+  #     it 'can only go down one space at a time' do
+  #       black_pawn.move('e4')
+  #       expect(black_pawn.position).to eq(coordinate.parse('e4'))
+  #     end
+
+  #     it 'does not make an illegal move' do
+  #       expect { black_pawn.move('f3') }.not_to change(black_pawn, :position)
+  #     end
+
+  #     context 'when it has not moved yet' do
+  #       subject(:black_double) { described_class.new('e7', colour: 'black') }
+
+  #       it 'can move two spaces down at once' do
+  #         expect { black_double.move('e5') }.to change(black_double, :position).from(coordinate.parse('e7')).to(coordinate.parse('e5'))
+  #       end
+  #     end
+
+  #     context 'when there is a piece to be taken diagonally' do
+  #       subject(:black_take) { described_class.new('c5', colour: 'black') }
+
+  #       let(:occupied_space) { instance_double(Square, position: 'd4') }
+
+  #       before do
+  #         allow(occupied_space).to receive(:occupied?).and_return(true)
+  #       end
+
+  #       it 'can move one space down diagonally' do
+  #         space = occupied_space.position
+  #         black_take.move(space)
+  #         expect(black_take.position).to eq(coordinate.parse('d4'))
+  #       end
+  #     end
+  #   end
+
+  describe '#promoteable?' do
     let(:coordinate) { Coordinate }
 
     context 'when Pawn is white' do
-      subject(:white_pawn) { described_class.new('c3', colour: 'white') }
+      context 'when pawn is on the 8th row' do
+        subject(:promoteable_white_pawn) { described_class.new(coordinate.parse('a8'), colour: 'white') }
 
-      it 'can only go up one space at a time' do
-        white_pawn.move('c4')
-        expect(white_pawn.position).to eq(coordinate.parse('c4'))
-      end
-
-      it 'does not make an illegal move' do
-        expect { white_pawn.move('d5') }.not_to change(white_pawn, :position)
-      end
-
-      context 'when it has not moved yet' do
-        subject(:white_double) { described_class.new('b2', colour: 'white') }
-
-        it 'can move two spaces up at once' do
-          expect { white_double.move('b4') }.to change(white_double, :position).from(coordinate.parse('b2')).to(coordinate.parse('b4'))
+        it 'returns true' do
+          expect(promoteable_white_pawn.promoteable?).to be true
         end
       end
 
-      context 'when there is a piece to be taken diagonally' do
-        subject(:white_take) { described_class.new('f4', colour: 'white') }
+      context 'when pawn is not on the 8th row' do
+        subject(:nonpromoteable_white_pawn) { described_class.new(coordinate.parse('h5'), colour: 'white') }
 
-        let(:occupied_space) { instance_double(Square, position: 'e5') }
-
-        before do
-          allow(occupied_space).to receive(:occupied?).and_return(true)
-        end
-
-        it 'can move one space up diagonally' do
-          space = occupied_space.position
-          white_take.move(space)
-          expect(white_take.position).to eq(coordinate.parse('e5'))
+        it 'returns false' do
+          expect(nonpromoteable_white_pawn.promoteable?).to be false
         end
       end
     end
 
     context 'when Pawn is black' do
-      subject(:black_pawn) { described_class.new('e5', colour: 'black') }
+      context 'when pawn is on the 1st row' do
+        subject(:promoteable_black_pawn) { described_class.new(coordinate.parse('c1'), colour: 'black') }
 
-      it 'can only go down one space at a time' do
-        black_pawn.move('e4')
-        expect(black_pawn.position).to eq(coordinate.parse('e4'))
-      end
-
-      it 'does not make an illegal move' do
-        expect { black_pawn.move('f3') }.not_to change(black_pawn, :position)
-      end
-
-      context 'when it has not moved yet' do
-        subject(:black_double) { described_class.new('e7', colour: 'black') }
-
-        it 'can move two spaces down at once' do
-          expect { black_double.move('e5') }.to change(black_double, :position).from(coordinate.parse('e7')).to(coordinate.parse('e5'))
+        it 'returns true when on 1st row' do
+          expect(promoteable_black_pawn.promoteable?).to be true
         end
       end
 
-      context 'when there is a piece to be taken diagonally' do
-        subject(:black_take) { described_class.new('c5', colour: 'black') }
+      context 'when pawn is not on the 1st row' do
+        subject(:nonpromoteable_black_pawn) { described_class.new(coordinate.parse('g6'), colour: 'black') }
 
-        let(:occupied_space) { instance_double(Square, position: 'd4') }
-
-        before do
-          allow(occupied_space).to receive(:occupied?).and_return(true)
-        end
-
-        it 'can move one space down diagonally' do
-          space = occupied_space.position
-          black_take.move(space)
-          expect(black_take.position).to eq(coordinate.parse('d4'))
-        end
-      end
-    end
-
-    describe '#promoteable?' do
-      let(:coordinate) { Coordinate }
-
-      context 'when Pawn is white' do
-        context 'when pawn is on the 8th row' do
-          subject(:promoteable_white_pawn) { described_class.new(coordinate.parse('a8'), colour: 'white') }
-
-          it 'returns true' do
-            expect(promoteable_white_pawn.promoteable?).to be true
-          end
-        end
-
-        context 'when pawn is not on the 8th row' do
-          subject(:nonpromoteable_white_pawn) { described_class.new(coordinate.parse('h5'), colour: 'white') }
-
-          it 'returns false' do
-            expect(nonpromoteable_white_pawn.promoteable?).to be false
-          end
-        end
-      end
-
-      context 'when Pawn is black' do
-        context 'when pawn is on the 1st row' do
-          subject(:promoteable_black_pawn) { described_class.new(coordinate.parse('c1'), colour: 'black') }
-
-          it 'returns true when on 1st row' do
-            expect(promoteable_black_pawn.promoteable?).to be true
-          end
-        end
-
-        context 'when pawn is not on the 1st row' do
-          subject(:nonpromoteable_black_pawn) { described_class.new(coordinate.parse('g6'), colour: 'black') }
-
-          it 'returns false otherwise' do
-            expect(nonpromoteable_black_pawn.promoteable?).to be false
-          end
+        it 'returns false otherwise' do
+          expect(nonpromoteable_black_pawn.promoteable?).to be false
         end
       end
     end

@@ -84,14 +84,4 @@ class Piece
   def promoteable?
     false
   end
-
-  private
-
-  def column
-    position[0]
-  end
-
-  def row
-    position[1]
-  end
 end
