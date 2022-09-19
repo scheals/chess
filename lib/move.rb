@@ -41,7 +41,7 @@ class Move
 
   def ==(other)
     return false if other.nil?
-    
+
     start == other.start && target == other.target
   end
 

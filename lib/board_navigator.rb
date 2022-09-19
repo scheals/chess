@@ -4,7 +4,6 @@ require_relative 'navigator_factory'
 require_relative 'en_passant_pair'
 require_relative 'coordinate'
 
-
 # This class handles movement logic for a chessboard.
 class BoardNavigator
   attr_reader :board, :navigator_factory, :coordinate_system,
@@ -125,11 +124,10 @@ class BoardNavigator
 
     colour_pieces = board.pieces { |piece| piece.colour == colour }
     king = colour_pieces.select { |piece| piece.is_a?(King) }.first
-    queenside_rook = colour_pieces.select { |piece| piece.is_a?(Rook) && piece.position.column == 'a'}
+    queenside_rook = colour_pieces.select { |piece| piece.is_a?(Rook) && piece.position.column == 'a' }
 
     return true if king.can_castle? &&
                    queenside_rook.any?(&:can_castle?)
-
 
     false
   end
