@@ -29,5 +29,5 @@ require_relative './lib/navigator/pawn_navigator'
 require_relative './lib/navigator/queen_navigator'
 require_relative './lib/navigator/rook_navigator'
 
-new_game = Game.new.setup
+new_game = GameDriver.setup
 GameDriver.start(new_game)

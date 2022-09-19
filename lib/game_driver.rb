@@ -12,9 +12,7 @@ module GameDriver
     loading_choice = gets.chomp
     return attempt_to_load(game) if loading_choice.downcase == 'y'
 
-    starting_board = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
-    game.setup_board(starting_board)
-    game
+    setup_fresh(game)
   end
 
   def self.attempt_to_load(game)
@@ -57,11 +55,17 @@ module GameDriver
 
   def self.no_save_directory(game)
     puts 'Directory savegames not found! Starting a new game.'
-    game
+    setup_fresh(game)
   end
 
   def self.empty_save_directory(game)
     puts 'No save games found! Starting a new game.'
+    setup_fresh(game)
+  end
+
+  def self.setup_fresh(game)
+    starting_board = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
+    game.setup_board(starting_board)
     game
   end
 
