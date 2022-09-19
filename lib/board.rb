@@ -37,10 +37,6 @@ class Board
     end
   end
 
-  def fen_numbers(row)
-    row.gsub(/\d/) { |match| '1'.rjust(match.to_i, '1') }.chars
-  end
-
   def dump_to_fen
     fen = ''
     8.times do |i|
@@ -52,14 +48,6 @@ class Board
 
   def copy
     Marshal.load(Marshal.dump(self))
-  end
-
-  def show
-    8.times do |i|
-      print(8 - i)
-      puts row(8 - i).values.join
-    end
-    puts "\s\sa\sb\sc\sd\se\sf\sg\sh"
   end
 
   def row(number)
@@ -117,6 +105,17 @@ class Board
     false
   end
 
+  def create_piece(name, colour:, position:)
+    @factory.for(name, colour:, position:)
+  end
+
+  private
+
+  def integer_to_column(integer)
+    starting_column = 'a'
+    (starting_column.ord + integer).chr
+  end
+
   def create_column(letter)
     column = {}
     8.times do |i|
@@ -126,22 +125,15 @@ class Board
     column
   end
 
+  def fen_numbers(row)
+    row.gsub(/\d/) { |match| '1'.rjust(match.to_i, '1') }.chars
+  end
+
   def create_square(coordinate)
     @square.new(coordinate)
   end
 
-  def create_piece(name, colour:, position:)
-    @factory.for(name, colour:, position:)
-  end
-
   def create_fen_piece(name, position)
     @factory.fen_for(name, position)
-  end
-
-  private
-
-  def integer_to_column(integer)
-    starting_column = 'a'
-    (starting_column.ord + integer).chr
   end
 end
