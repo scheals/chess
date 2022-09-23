@@ -5,6 +5,7 @@ require_relative 'piece_factory'
 require_relative 'display'
 require_relative 'en_passant_pair'
 require_relative 'coordinate'
+require_relative 'board_navigator'
 
 # This class handles a chess board.
 class Board
@@ -219,6 +220,14 @@ class Board
     promoted_piece = create_piece(chosen_piece, position: coordinate, colour: piece_to_promote.colour)
     put(promoted_piece, piece_to_promote.position)
     promoted_piece
+  end
+
+  def win?(current_players_colour)
+    BoardNavigator.new(self).win?(current_players_colour)
+  end
+
+  def stalemate?(current_player_colour)
+    BoardNavigator.new(self).stalemate?(current_player_colour)
   end
 
   private

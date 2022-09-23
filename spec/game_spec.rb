@@ -283,7 +283,7 @@ describe Game do
       subject(:game_continue) { described_class.new }
 
       before do
-        game_continue.board_navigator.board.setup_from_fen
+        game_continue.board.setup_from_fen
       end
 
       it 'returns false' do
@@ -295,7 +295,7 @@ describe Game do
       subject(:game_won) { described_class.new }
 
       before do
-        game_won.board_navigator.board.setup_from_fen('R3k3/7R/8/8/8/8/PPPPPPPP/1NBQKBN1')
+        game_won.board.setup_from_fen('R3k3/7R/8/8/8/8/PPPPPPPP/1NBQKBN1')
       end
 
       it 'returns true' do
@@ -307,7 +307,7 @@ describe Game do
       subject(:game_tied) { described_class.new }
 
       before do
-        game_tied.board_navigator.board.setup_from_fen('5bnr/4p1pq/4Qpkr/7p/7P/4P3/PPPP1PP1/RNB1KBNR')
+        game_tied.board.setup_from_fen('5bnr/4p1pq/4Qpkr/7p/7P/4P3/PPPP1PP1/RNB1KBNR')
       end
 
       it 'returns true' do
@@ -327,12 +327,12 @@ describe Game do
 
       before do
         allow(player).to receive(:colour).and_return(current_player_colour).twice
-        allow(board_navigator).to receive(:stalemate?).with(stalemate.current_player.colour).and_return(true)
+        allow(board).to receive(:stalemate?).with(stalemate.current_player.colour).and_return(true)
       end
 
-      it 'sends BoardNavigator a stalemate? message' do
+      it 'sends Board a stalemate? message' do
         stalemate.tie?
-        expect(board_navigator).to have_received(:stalemate?).with(current_player_colour)
+        expect(board).to have_received(:stalemate?).with(current_player_colour)
       end
 
       it 'returns true' do

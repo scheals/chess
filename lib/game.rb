@@ -184,7 +184,7 @@ class Game
   end
 
   def win?
-    if board_navigator.win?(current_player.colour)
+    if board.win?(current_player.colour)
       puts display.congratulate(current_player)
       return true
     end
@@ -199,7 +199,7 @@ class Game
   end
 
   def stalemate?
-    if board_navigator.stalemate?(current_player.colour)
+    if board.stalemate?(current_player.colour)
       puts display.stalemate(player1, player2)
       return true
     end
