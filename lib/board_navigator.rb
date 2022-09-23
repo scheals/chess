@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'navigator_factory'
-require_relative 'en_passant_pair'
 require_relative 'coordinate'
 
 # This class handles movement logic for a chessboard.
@@ -13,7 +12,6 @@ class BoardNavigator
     @board = board
     @navigator_factory = navigator_factory
     @coordinate_system = coordinate_system
-    @en_passant_pair = EnPassantPair.new(nil, nil)
     @castling_rights = Hash.new(true)
   end
 
@@ -96,29 +94,6 @@ class BoardNavigator
     promoted_piece
   end
 
-  def create_en_passant_pair(move)
-    piece = piece_for(move.target)
-
-    case piece.colour
-    when 'white'
-      @en_passant_pair = create_passant_pair(piece, move.target.down)
-    when 'black'
-      @en_passant_pair = create_passant_pair(piece, move.target.up)
-    end
-  end
-
-  def clear_en_passant_pair
-    @en_passant_pair = create_passant_pair(nil, nil)
-  end
-
-  def en_passant_coordinate
-    @en_passant_pair&.en_passant_coordinate
-  end
-
-  def en_passant
-    board.vacate(@en_passant_pair.piece.position)
-  end
-
   def queenside_castling_rights?(colour)
     return false unless castling_rights["#{colour}_queenside".to_sym]
 
@@ -161,31 +136,11 @@ class BoardNavigator
     castling_rights.join
   end
 
-  def record_en_passant_coordinate
-    return en_passant_coordinate.to_s if en_passant_coordinate
-
-    '-'
-  end
-
   def load_castling_rights(string)
     @castling_rights = Hash.new(false)
     @castling_rights[:white_queenside] = true if string.include?('Q')
     @castling_rights[:white_kingside] = true if string.include?('K')
     @castling_rights[:black_queenside] = true if string.include?('q')
     @castling_rights[:black_kingside] = true if string.include?('k')
-  end
-
-  def load_en_passant_coordinate(string, colour)
-    coordinate = coordinate_system.parse(string)
-    return if coordinate.to_s == '-'
-
-    case colour
-    when 'white' then @en_passant_pair = create_passant_pair(piece_for(coordinate.down), coordinate)
-    when 'black' then @en_passant_pair = create_passant_pair(piece_for(coordinate.up), coordinate)
-    end
-  end
-
-  def create_passant_pair(piece, coordinate)
-    EnPassantPair.new(piece, coordinate)
   end
 end

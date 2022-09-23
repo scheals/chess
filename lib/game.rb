@@ -48,12 +48,6 @@ class Game
     end
   end
 
-  def handle_en_passant(move)
-    en_passant if en_passant?(move)
-    board_navigator.clear_en_passant_pair
-    send_en_passant_opportunity(move) if en_passant_opportunity?(move)
-  end
-
   def validate_target(move)
     if legal_target?(move)
       move
@@ -121,6 +115,12 @@ class Game
     end
   end
 
+  def handle_en_passant(move)
+    en_passant if en_passant?(move)
+    board.clear_en_passant_pair
+    send_en_passant_opportunity(move) if en_passant_opportunity?(move)
+  end
+
   def en_passant_opportunity?(move)
     return true if board.piece_for(move.target).is_a?(Pawn) &&
                    (move.start.row.to_i - move.target.row.to_i).abs == 2
@@ -129,18 +129,18 @@ class Game
   end
 
   def send_en_passant_opportunity(move)
-    board_navigator.create_en_passant_pair(move)
+    board.create_en_passant_pair(move)
   end
 
   def en_passant?(move)
-    return true if move.target == board_navigator.en_passant_coordinate &&
+    return true if move.target == board.en_passant_coordinate &&
                    board.piece_for(move.target).is_a?(Pawn)
 
     false
   end
 
   def en_passant
-    board_navigator.en_passant
+    board.en_passant
   end
 
   def in_bounds?(move)
@@ -244,7 +244,7 @@ class Game
     result << board_navigator.board.dump_to_fen
     result << current_player.colour.chars.first
     result << board_navigator.record_castling_rights
-    result << board_navigator.record_en_passant_coordinate
+    result << board.record_en_passant_coordinate
     result << @half_move_clock if full
     result << @full_move_clock if full
     result.join(' ')
@@ -272,7 +272,7 @@ class Game
   def load_board(state, colour)
     setup_board(state[:board])
     board_navigator.load_castling_rights(state[:castling_rights])
-    board_navigator.load_en_passant_coordinate(state[:en_passant_coordinate], colour)
+    board.load_en_passant_coordinate(state[:en_passant_coordinate], colour)
   end
 
   def load_current_player(string)

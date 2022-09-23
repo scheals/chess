@@ -2,6 +2,7 @@
 
 require_relative '../lib/board'
 require_relative '../lib/square'
+require_relative '../lib/move'
 
 # rubocop: disable Layout/LineLength
 describe Board do
@@ -419,6 +420,63 @@ describe Board do
     it 'sends Square a vacate message' do
       vacate_board.vacate('a1')
       expect(square).to have_received(:vacate)
+    end
+  end
+
+  describe '#create_en_passant_pair' do
+    subject(:navigate_en_passant) { described_class.new }
+
+    let(:move) { Move.parse('d7d5') }
+
+    before do
+      navigate_en_passant.setup_from_fen('rnbqkbnr/ppp1pppp/8/3p4/8/8/PPPPPPPP/RNBQKBNR')
+    end
+
+    it 'changes @en_passant_coordinate to the proper coordinate' do
+      expect { navigate_en_passant.create_en_passant_pair(move) }.to change(navigate_en_passant, :en_passant_coordinate).from(nil).to(move.target.up)
+    end
+  end
+
+  describe '#clear_en_passant_pair' do
+    subject(:clear_en_passant) { described_class.new }
+
+    let(:move) { Move.parse('g7g5') }
+
+    before do
+      clear_en_passant.setup_from_fen('rnbqkbnr/pppppp1p/8/6p1/8/8/PPPPPPPP/RNBQKBNR')
+      clear_en_passant.create_en_passant_pair(move)
+    end
+
+    it 'changes @en_passant_coordinate to nil' do
+      expect { clear_en_passant.clear_en_passant_pair }.to change(clear_en_passant, :en_passant_coordinate).to(nil)
+    end
+  end
+
+  describe '#record_en_passant_coordinate' do
+    context 'when there is a coordinate to be recorded' do
+      subject(:en_passant) { described_class.new }
+
+      before do
+        en_passant.instance_variable_set(:@en_passant_pair, EnPassantPair.new(nil, Coordinate.parse('a3')))
+      end
+
+      it 'returns a proper string of it' do
+        string = 'a3'
+        expect(en_passant.record_en_passant_coordinate).to eq(string)
+      end
+    end
+
+    context 'when there is no coordiante to be recorded' do
+      subject(:no_en_passant) { described_class.new }
+
+      before do
+        no_en_passant.instance_variable_set(:@en_passant_pair, EnPassantPair.new(nil, nil))
+      end
+
+      it 'returns a proper string of it' do
+        string = '-'
+        expect(no_en_passant.record_en_passant_coordinate).to eq(string)
+      end
     end
   end
 end

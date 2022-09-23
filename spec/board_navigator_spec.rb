@@ -395,7 +395,7 @@ describe BoardNavigator do
       before do
         board.setup_from_fen('4k3/8/8/8/3p4/8/4P3/4K3')
         en_passant.move_piece('e2', 'e4')
-        en_passant.create_en_passant_pair(Move.parse('e2e4'))
+        board.create_en_passant_pair(Move.parse('e2e4'))
       end
 
       it 'includes it as a possibility' do
@@ -413,12 +413,11 @@ describe BoardNavigator do
 
       before do
         board.setup_from_fen('4k3/8/8/8/3pP3/8/8/4K3')
-        en_passant.load_en_passant_coordinate(en_passant_coordinate, colour)
+        board.load_en_passant_coordinate(en_passant_coordinate, colour)
       end
 
       it 'includes it as a possibility' do
         correct_moves = %w[d3 d2 e3].map { |move| coordinate.parse(move) }
-        p en_passant.en_passant_coordinate
         expect(en_passant.moves_for('d4')).to match_array(correct_moves)
       end
     end
@@ -539,35 +538,6 @@ describe BoardNavigator do
 
     it 'changes the board' do
       expect { promotion_navigation.promote(coordinate, chosen_piece) }.to change { promotion_navigation.piece_for(coordinate) }
-    end
-  end
-
-  describe '#create_en_passant_pair' do
-    subject(:navigate_en_passant) { described_class.new(Board.new) }
-
-    let(:move) { Move.parse('d7d5') }
-
-    before do
-      navigate_en_passant.board.setup_from_fen('rnbqkbnr/ppp1pppp/8/3p4/8/8/PPPPPPPP/RNBQKBNR')
-    end
-
-    it 'changes @en_passant_coordinate to the proper coordinate' do
-      expect { navigate_en_passant.create_en_passant_pair(move) }.to change(navigate_en_passant, :en_passant_coordinate).from(nil).to(move.target.up)
-    end
-  end
-
-  describe '#clear_en_passant_pair' do
-    subject(:clear_en_passant) { described_class.new(Board.new) }
-
-    let(:move) { Move.parse('g7g5') }
-
-    before do
-      clear_en_passant.board.setup_from_fen('rnbqkbnr/pppppp1p/8/6p1/8/8/PPPPPPPP/RNBQKBNR')
-      clear_en_passant.create_en_passant_pair(move)
-    end
-
-    it 'changes @en_passant_coordinate to nil' do
-      expect { clear_en_passant.clear_en_passant_pair }.to change(clear_en_passant, :en_passant_coordinate).to(nil)
     end
   end
 
@@ -732,34 +702,6 @@ describe BoardNavigator do
       it 'returns a proper string' do
         string = '-'
         expect(no_castling_rights.record_castling_rights).to eq(string)
-      end
-    end
-  end
-
-  describe '#record_en_passant_coordinate' do
-    context 'when there is a coordinate to be recorded' do
-      subject(:en_passant) { described_class.new(Board.new) }
-
-      before do
-        en_passant.instance_variable_set(:@en_passant_pair, EnPassantPair.new(nil, Coordinate.parse('a3')))
-      end
-
-      it 'returns a proper string of it' do
-        string = 'a3'
-        expect(en_passant.record_en_passant_coordinate).to eq(string)
-      end
-    end
-
-    context 'when there is no coordiante to be recorded' do
-      subject(:no_en_passant) { described_class.new(Board.new) }
-
-      before do
-        no_en_passant.instance_variable_set(:@en_passant_pair, EnPassantPair.new(nil, nil))
-      end
-
-      it 'returns a proper string of it' do
-        string = '-'
-        expect(no_en_passant.record_en_passant_coordinate).to eq(string)
       end
     end
   end

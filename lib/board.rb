@@ -3,6 +3,8 @@
 require_relative 'square'
 require_relative 'piece_factory'
 require_relative 'display'
+require_relative 'en_passant_pair'
+require_relative 'coordinate'
 
 # This class handles a chess board.
 class Board
@@ -13,6 +15,7 @@ class Board
     @square = square
     @factory = factory
     @board = create_board
+    @en_passant_pair = EnPassantPair.new(nil, nil)
   end
 
   def create_board
@@ -105,6 +108,49 @@ class Board
 
   def create_piece(name, colour:, position:)
     @factory.for(name, colour:, position:)
+  end
+
+  def record_en_passant_coordinate
+    return en_passant_coordinate.to_s if en_passant_coordinate
+
+    '-'
+  end
+
+  def load_en_passant_coordinate(string, colour)
+    coordinate = Coordinate.parse(string)
+    return if coordinate.to_s == '-'
+
+    case colour
+    when 'white' then @en_passant_pair = create_passant_pair(piece_for(coordinate.down), coordinate)
+    when 'black' then @en_passant_pair = create_passant_pair(piece_for(coordinate.up), coordinate)
+    end
+  end
+
+  def create_passant_pair(piece, coordinate)
+    EnPassantPair.new(piece, coordinate)
+  end
+
+  def create_en_passant_pair(move)
+    piece = piece_for(move.target)
+
+    case piece.colour
+    when 'white'
+      @en_passant_pair = create_passant_pair(piece, move.target.down)
+    when 'black'
+      @en_passant_pair = create_passant_pair(piece, move.target.up)
+    end
+  end
+
+  def clear_en_passant_pair
+    @en_passant_pair = create_passant_pair(nil, nil)
+  end
+
+  def en_passant_coordinate
+    @en_passant_pair&.en_passant_coordinate
+  end
+
+  def en_passant
+    vacate(@en_passant_pair.piece.position)
   end
 
   private

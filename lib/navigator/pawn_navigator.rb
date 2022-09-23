@@ -47,7 +47,7 @@ class PawnNavigator < PieceNavigator
   end
 
   def white_en_passant
-    en_passant_coordinate = @board_navigator.en_passant_coordinate
+    en_passant_coordinate = board.en_passant_coordinate
     move = []
     return move << en_passant_coordinate if (en_passant_coordinate == piece.position.up.left || en_passant_coordinate == piece.position.up.right) &&
                                             !en_passant_checks_king?(piece.position, en_passant_coordinate)
@@ -56,7 +56,7 @@ class PawnNavigator < PieceNavigator
   end
 
   def black_en_passant
-    en_passant_coordinate = @board_navigator.en_passant_coordinate
+    en_passant_coordinate = board.en_passant_coordinate
     move = []
     return move << en_passant_coordinate if (en_passant_coordinate == piece.position.down.left || en_passant_coordinate == piece.position.down.right) &&
                                             !en_passant_checks_king?(piece.position, en_passant_coordinate)
@@ -65,10 +65,10 @@ class PawnNavigator < PieceNavigator
   end
 
   def white_passant_capture(board_after_move)
-    board_after_move.board.find(@board_navigator.en_passant_coordinate.down).vacate
+    board_after_move.board.find(board.en_passant_coordinate.down).vacate
   end
 
   def black_passant_capture(board_after_move)
-    board_after_move.board.find(@board_navigator.en_passant_coordinate.up).vacate
+    board_after_move.board.find(board.en_passant_coordinate.up).vacate
   end
 end

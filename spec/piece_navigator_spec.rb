@@ -641,11 +641,11 @@ describe PawnNavigator do
 
       before do
         board_navigator.board.setup_from_fen('3qk3/8/3p4/2pP4/4P3/8/8/3QK3')
-        board_navigator.create_en_passant_pair(Move.parse('c7c5'))
+        board_navigator.board.create_en_passant_pair(Move.parse('c7c5'))
       end
 
       it 'includes that as a possible move' do
-        en_passant_move = [board_navigator.en_passant_coordinate]
+        en_passant_move = [board_navigator.board.en_passant_coordinate]
         expect(white_passant.en_passant).to eq(en_passant_move)
       end
     end
@@ -658,11 +658,11 @@ describe PawnNavigator do
 
       before do
         board_navigator.board.setup_from_fen('3qk3/8/3p4/2pP4/4P3/8/8/3QK3')
-        board_navigator.create_en_passant_pair(Move.parse('d3d5'))
+        board_navigator.board.create_en_passant_pair(Move.parse('d3d5'))
       end
 
       it 'includes that as a possible move' do
-        en_passant_move = [board_navigator.en_passant_coordinate]
+        en_passant_move = [board_navigator.board.en_passant_coordinate]
         expect(black_passant.en_passant).to eq(en_passant_move)
       end
     end
@@ -677,12 +677,12 @@ describe PawnNavigator do
 
       before do
         board_navigator.board.setup_from_fen('rnbpkpnr/pppp1ppp/8/8/3Pp3/8/PPP1QPPP/RNBPKBNR')
-        board_navigator.create_en_passant_pair(Move.parse('d2d4'))
+        board_navigator.board.create_en_passant_pair(Move.parse('d2d4'))
       end
 
       it 'returns true' do
         start = black_pawn.position
-        target = board_navigator.en_passant_coordinate
+        target = board_navigator.board.en_passant_coordinate
         expect(passant_check.en_passant_checks_king?(start, target)).to be true
       end
     end
@@ -695,12 +695,12 @@ describe PawnNavigator do
 
       before do
         board_navigator.board.setup_from_fen('rnbqkbnr/pp1ppppp/8/2pP4/8/8/PPP1PPPP/RNBQKBNR')
-        board_navigator.create_en_passant_pair(Move.parse('c7c5'))
+        board_navigator.board.create_en_passant_pair(Move.parse('c7c5'))
       end
 
       it 'returns false' do
         start = white_pawn.position
-        target = board_navigator.en_passant_coordinate
+        target = board_navigator.board.en_passant_coordinate
         expect(no_passant_check.en_passant_checks_king?(start, target)).to be false
       end
     end

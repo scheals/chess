@@ -668,12 +668,12 @@ describe Game do
     let(:move) { Move.parse('d7d5') }
 
     before do
-      allow(board_navigator).to receive(:create_en_passant_pair).with(move)
+      allow(board).to receive(:create_en_passant_pair).with(move)
     end
 
-    it 'sends BoardNavigator a create_en_passant_pair message' do
+    it 'sends Board a create_en_passant_pair message' do
       en_passant_game.send_en_passant_opportunity(move)
-      expect(board_navigator).to have_received(:create_en_passant_pair).with(move)
+      expect(board).to have_received(:create_en_passant_pair).with(move)
     end
   end
 
@@ -689,12 +689,12 @@ describe Game do
         passant_game.board_navigator.board.setup_from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
         passant_game.board_navigator.move_piece(passant_opportunity.start, passant_opportunity.target)
         passant_game.send_en_passant_opportunity(passant_opportunity)
-        passant_game.board_navigator.move_piece(white_pawn.position, passant_game.board_navigator.en_passant_coordinate)
+        passant_game.board_navigator.move_piece(white_pawn.position, passant_game.board.en_passant_coordinate)
       end
 
       it 'returns true' do
         passant_move = Move.new(white_pawn.position,
-                                passant_game.board_navigator.en_passant_coordinate)
+                                passant_game.board.en_passant_coordinate)
         expect(passant_game.en_passant?(passant_move)).to be true
       end
     end
@@ -871,9 +871,11 @@ describe Game do
         castling_rights[:black_kingside] = true
         expect(loaded_game.board_navigator.castling_rights).to eq(castling_rights)
       end
+    end
 
+    context "when loading Board's variables" do
       it 'correctly loads the en passant pair' do
-        pair = loaded_game.board_navigator.instance_variable_get(:@en_passant_pair)
+        pair = loaded_game.board.instance_variable_get(:@en_passant_pair)
         expect(pair).to have_attributes(piece: nil, en_passant_coordinate: nil)
       end
     end
