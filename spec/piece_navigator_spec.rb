@@ -19,7 +19,7 @@ describe PieceNavigator do
     let(:white_rook) { Rook.new('a1', colour: 'white') }
 
     before do
-      navigate_allies.board.setup
+      navigate_allies.board.setup_from_fen
     end
 
     it 'returns an array of squares that allied pieces are on from given coordinates' do
@@ -34,7 +34,7 @@ describe PieceNavigator do
     let(:black_rook) { Rook.new('f4', colour: 'black') }
 
     before do
-      navigate_enemies.board.setup
+      navigate_enemies.board.setup_from_fen
       navigate_enemies.board.put(black_rook, 'f4')
     end
 
@@ -120,7 +120,7 @@ describe RookNavigator do
       let(:coordinate_system) { Coordinate }
 
       before do
-        board.setup
+        board.setup_from_fen
       end
 
       it "returns a collection of Rook's possible coordinates" do
@@ -137,7 +137,7 @@ describe RookNavigator do
       let(:coordinate_system) { Coordinate }
 
       before do
-        board.setup('4B3/8/8/8/n1n1rnB1/8/4B3/8')
+        board.setup_from_fen('4B3/8/8/8/n1n1rnB1/8/4B3/8')
       end
 
       it 'correctly interprets collision' do
@@ -160,7 +160,7 @@ describe BishopNavigator do
       let(:black_bishop) { board.find_piece('c8') }
 
       before do
-        board.setup
+        board.setup_from_fen
       end
 
       it "returns a collection of Bishop's possible coordinates" do
@@ -177,7 +177,7 @@ describe BishopNavigator do
       let(:coordinate_system) { Coordinate }
 
       before do
-        board.setup('8/1n6/6R1/3n4/4B3/5R2/8/1r4n1')
+        board.setup_from_fen('8/1n6/6R1/3n4/4B3/5R2/8/1r4n1')
       end
 
       it 'correctly interprets collision' do
@@ -200,7 +200,7 @@ describe KnightNavigator do
       let(:white_knight) { board.find_piece('g1') }
 
       before do
-        board.setup
+        board.setup_from_fen
       end
 
       it "returns a collection of Knight's possible coordinates" do
@@ -221,7 +221,7 @@ describe QueenNavigator do
       let(:black_queen) { board.find_piece('d8') }
 
       before do
-        board.setup
+        board.setup_from_fen
       end
 
       it "returns a collection of Queen's possible coordinates" do
@@ -238,7 +238,7 @@ describe QueenNavigator do
       let(:coordinate_system) { Coordinate }
 
       before do
-        board.setup('4r3/2N5/r1q1r1N1/6N1/N7/5N2/2r3N1/2N5')
+        board.setup_from_fen('4r3/2N5/r1q1r1N1/6N1/N7/5N2/2r3N1/2N5')
       end
 
       it 'correctly interprets collision' do
@@ -261,7 +261,7 @@ describe KingNavigator do
       let(:white_king) { board.find_piece('e1') }
 
       before do
-        board.setup
+        board.setup_from_fen
       end
 
       it "returns a collection of King's possible coordinates" do
@@ -568,7 +568,7 @@ describe PawnNavigator do
       let(:coordinate_system) { Coordinate }
 
       before do
-        board.setup
+        board.setup_from_fen
       end
 
       context 'when Pawn is white' do
@@ -619,7 +619,7 @@ describe PawnNavigator do
       let(:coordinate) { Coordinate }
 
       before do
-        board.setup
+        board.setup_from_fen
         board.move_piece('d7', 'd5')
         board.move_piece('e2', 'e4')
         board.move_piece('c2', 'c4')
@@ -640,7 +640,7 @@ describe PawnNavigator do
       let(:white_pawn) { board_navigator.piece_for('d5') }
 
       before do
-        board_navigator.board.setup('3qk3/8/3p4/2pP4/4P3/8/8/3QK3')
+        board_navigator.board.setup_from_fen('3qk3/8/3p4/2pP4/4P3/8/8/3QK3')
         board_navigator.create_en_passant_pair(Move.parse('c7c5'))
       end
 
@@ -657,7 +657,7 @@ describe PawnNavigator do
       let(:black_pawn) { board_navigator.piece_for('c5') }
 
       before do
-        board_navigator.board.setup('3qk3/8/3p4/2pP4/4P3/8/8/3QK3')
+        board_navigator.board.setup_from_fen('3qk3/8/3p4/2pP4/4P3/8/8/3QK3')
         board_navigator.create_en_passant_pair(Move.parse('d3d5'))
       end
 
@@ -676,7 +676,7 @@ describe PawnNavigator do
       let(:black_pawn) { board_navigator.piece_for('e4') }
 
       before do
-        board_navigator.board.setup('rnbpkpnr/pppp1ppp/8/8/3Pp3/8/PPP1QPPP/RNBPKBNR')
+        board_navigator.board.setup_from_fen('rnbpkpnr/pppp1ppp/8/8/3Pp3/8/PPP1QPPP/RNBPKBNR')
         board_navigator.create_en_passant_pair(Move.parse('d2d4'))
       end
 
@@ -694,7 +694,7 @@ describe PawnNavigator do
       let(:white_pawn) { board_navigator.piece_for('d5') }
 
       before do
-        board_navigator.board.setup('rnbqkbnr/pp1ppppp/8/2pP4/8/8/PPP1PPPP/RNBQKBNR')
+        board_navigator.board.setup_from_fen('rnbqkbnr/pp1ppppp/8/2pP4/8/8/PPP1PPPP/RNBQKBNR')
         board_navigator.create_en_passant_pair(Move.parse('c7c5'))
       end
 

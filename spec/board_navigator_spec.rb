@@ -116,7 +116,7 @@ describe BoardNavigator do
       let(:board) { Board.new }
 
       before do
-        board.setup('r6K/8/8/r7/8/8/8/8')
+        board.setup_from_fen('r6K/8/8/r7/8/8/8/8')
       end
 
       it 'returns true' do
@@ -131,7 +131,7 @@ describe BoardNavigator do
       let(:board) { Board.new }
 
       before do
-        board.setup('k7/1R6/8/8/8/8/8/7r')
+        board.setup_from_fen('k7/1R6/8/8/8/8/8/7r')
       end
 
       it 'returns false' do
@@ -315,7 +315,7 @@ describe BoardNavigator do
       subject(:usual_navigation) { described_class.new(board) }
 
       before do
-        board.setup('1k2r3/2N5/r1q1r1N1/6N1/N7/5N2/2r3N1/2N4K')
+        board.setup_from_fen('1k2r3/2N5/r1q1r1N1/6N1/N7/5N2/2r3N1/2N4K')
       end
 
       it 'just returns correct moves' do
@@ -328,7 +328,7 @@ describe BoardNavigator do
       subject(:checking_move) { described_class.new(board) }
 
       before do
-        board.setup('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR')
+        board.setup_from_fen('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR')
       end
 
       it 'does not include those moves' do
@@ -341,7 +341,7 @@ describe BoardNavigator do
       subject(:queenside_navigation) { described_class.new(board) }
 
       before do
-        board.setup('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR')
+        board.setup_from_fen('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR')
       end
 
       it 'includes it as a possibility' do
@@ -354,7 +354,7 @@ describe BoardNavigator do
       subject(:kingside_navigation) { described_class.new(board) }
 
       before do
-        board.setup('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR')
+        board.setup_from_fen('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR')
       end
 
       it 'includes it as a possibility' do
@@ -367,7 +367,7 @@ describe BoardNavigator do
       subject(:illegal_queenside) { described_class.new(board) }
 
       before do
-        board.setup('rnb1k2r/ppp1pp1p/5n1b/3p2p1/q1P5/2NPB3/PP2PPPP/R3KBNR')
+        board.setup_from_fen('rnb1k2r/ppp1pp1p/5n1b/3p2p1/q1P5/2NPB3/PP2PPPP/R3KBNR')
       end
 
       it 'does not include it as a possibility' do
@@ -380,7 +380,7 @@ describe BoardNavigator do
       subject(:illegal_kingside) { described_class.new(board) }
 
       before do
-        board.setup('rnb1k2r/ppp1pp1p/5nQb/3p2p1/q1P5/2NPB3/PP2PPPP/R3KBNR')
+        board.setup_from_fen('rnb1k2r/ppp1pp1p/5nQb/3p2p1/q1P5/2NPB3/PP2PPPP/R3KBNR')
       end
 
       it 'does not include it as a possibility' do
@@ -393,7 +393,7 @@ describe BoardNavigator do
       subject(:en_passant) { described_class.new(board) }
 
       before do
-        board.setup('4k3/8/8/8/3p4/8/4P3/4K3')
+        board.setup_from_fen('4k3/8/8/8/3p4/8/4P3/4K3')
         en_passant.move_piece('e2', 'e4')
         en_passant.create_en_passant_pair(Move.parse('e2e4'))
       end
@@ -412,7 +412,7 @@ describe BoardNavigator do
       let(:en_passant_coordinate) { 'e3' }
 
       before do
-        board.setup('4k3/8/8/8/3pP3/8/8/4K3')
+        board.setup_from_fen('4k3/8/8/8/3pP3/8/8/4K3')
         en_passant.load_en_passant_coordinate(en_passant_coordinate, colour)
       end
 
@@ -429,7 +429,7 @@ describe BoardNavigator do
       subject(:promoteable_board) { described_class.new(Board.new) }
 
       before do
-        promoteable_board.board.setup('P3k3/4p3/8/8/8/8/4P3/4K3')
+        promoteable_board.board.setup_from_fen('P3k3/4p3/8/8/8/8/4P3/4K3')
       end
 
       it 'returns true' do
@@ -442,7 +442,7 @@ describe BoardNavigator do
       subject(:nonpromoteable_board) { described_class.new(Board.new) }
 
       before do
-        nonpromoteable_board.board.setup('R3k3/4p3/8/8/8/8/4P3/4K3')
+        nonpromoteable_board.board.setup_from_fen('R3k3/4p3/8/8/8/8/4P3/4K3')
       end
 
       it 'returns false' do
@@ -457,7 +457,7 @@ describe BoardNavigator do
       subject(:board_continue) { described_class.new(Board.new) }
 
       before do
-        board_continue.board.setup
+        board_continue.board.setup_from_fen
       end
 
       it 'returns false' do
@@ -469,7 +469,7 @@ describe BoardNavigator do
       subject(:board_won) { described_class.new(Board.new) }
 
       before do
-        board_won.board.setup('R3k3/7R/8/8/8/8/PPPPPPPP/1NBQKBN1')
+        board_won.board.setup_from_fen('R3k3/7R/8/8/8/8/PPPPPPPP/1NBQKBN1')
       end
 
       it 'returns true' do
@@ -483,7 +483,7 @@ describe BoardNavigator do
       subject(:board_continue) { described_class.new(Board.new) }
 
       before do
-        board_continue.board.setup
+        board_continue.board.setup_from_fen
       end
 
       it 'returns false' do
@@ -495,7 +495,7 @@ describe BoardNavigator do
       subject(:navigate_stalemate) { described_class.new(Board.new) }
 
       before do
-        navigate_stalemate.board.setup('5bnr/4p1pq/4Qpkr/7p/7P/4P3/PPPP1PP1/RNB1KBNR')
+        navigate_stalemate.board.setup_from_fen('5bnr/4p1pq/4Qpkr/7p/7P/4P3/PPPP1PP1/RNB1KBNR')
       end
 
       it 'returns true' do
@@ -530,7 +530,7 @@ describe BoardNavigator do
     let(:promoted_piece) { Queen.new('g8', colour: 'white') }
 
     before do
-      promotion_navigation.board.setup('4k1P1/4p3/8/8/8/8/4P3/4K3')
+      promotion_navigation.board.setup_from_fen('4k1P1/4p3/8/8/8/8/4P3/4K3')
     end
 
     it 'promotes a piece to chosen piece' do
@@ -548,7 +548,7 @@ describe BoardNavigator do
     let(:move) { Move.parse('d7d5') }
 
     before do
-      navigate_en_passant.board.setup('rnbqkbnr/ppp1pppp/8/3p4/8/8/PPPPPPPP/RNBQKBNR')
+      navigate_en_passant.board.setup_from_fen('rnbqkbnr/ppp1pppp/8/3p4/8/8/PPPPPPPP/RNBQKBNR')
     end
 
     it 'changes @en_passant_coordinate to the proper coordinate' do
@@ -562,7 +562,7 @@ describe BoardNavigator do
     let(:move) { Move.parse('g7g5') }
 
     before do
-      clear_en_passant.board.setup('rnbqkbnr/pppppp1p/8/6p1/8/8/PPPPPPPP/RNBQKBNR')
+      clear_en_passant.board.setup_from_fen('rnbqkbnr/pppppp1p/8/6p1/8/8/PPPPPPPP/RNBQKBNR')
       clear_en_passant.create_en_passant_pair(move)
     end
 
@@ -700,7 +700,7 @@ describe BoardNavigator do
       subject(:full_castling_rights) { described_class.new(Board.new) }
 
       before do
-        full_castling_rights.board.setup
+        full_castling_rights.board.setup_from_fen
       end
 
       it 'returns a proper string' do
@@ -713,7 +713,7 @@ describe BoardNavigator do
       subject(:black_castling_rights) { described_class.new(Board.new) }
 
       before do
-        black_castling_rights.board.setup('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1')
+        black_castling_rights.board.setup_from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1')
       end
 
       it 'returns a proper string' do
@@ -726,7 +726,7 @@ describe BoardNavigator do
       subject(:no_castling_rights) { described_class.new(Board.new) }
 
       before do
-        no_castling_rights.board.setup('1nbqkbn1/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1')
+        no_castling_rights.board.setup_from_fen('1nbqkbn1/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1')
       end
 
       it 'returns a proper string' do

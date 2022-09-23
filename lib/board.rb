@@ -24,7 +24,7 @@ class Board
     board
   end
 
-  def setup(notation = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
+  def setup_from_fen(notation = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
     notation.split('/').each_with_index do |row, row_number|
       fen_numbers(row).each_with_index do |char, column|
         next if char.to_i.positive?

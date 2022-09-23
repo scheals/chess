@@ -87,7 +87,7 @@ describe Game do
       let(:proper_move) { 'a2a4' }
 
       before do
-        out_of_bounds_input.board_navigator.board.setup
+        out_of_bounds_input.board_navigator.board.setup_from_fen
         allow(out_of_bounds_input).to receive(:gets).and_return(improper_move, proper_move)
       end
 
@@ -212,7 +212,7 @@ describe Game do
       let(:move) { Move.parse('b7h7') }
 
       before do
-        game_valid_move.board_navigator.board.setup('k7/1r6/8/8/8/8/8/K7')
+        game_valid_move.board_navigator.board.setup_from_fen('k7/1r6/8/8/8/8/8/K7')
       end
 
       it 'returns the move' do
@@ -279,7 +279,7 @@ describe Game do
       subject(:game_continue) { described_class.new }
 
       before do
-        game_continue.board_navigator.board.setup
+        game_continue.board_navigator.board.setup_from_fen
       end
 
       it 'returns false' do
@@ -291,7 +291,7 @@ describe Game do
       subject(:game_won) { described_class.new }
 
       before do
-        game_won.board_navigator.board.setup('R3k3/7R/8/8/8/8/PPPPPPPP/1NBQKBN1')
+        game_won.board_navigator.board.setup_from_fen('R3k3/7R/8/8/8/8/PPPPPPPP/1NBQKBN1')
       end
 
       it 'returns true' do
@@ -303,7 +303,7 @@ describe Game do
       subject(:game_tied) { described_class.new }
 
       before do
-        game_tied.board_navigator.board.setup('5bnr/4p1pq/4Qpkr/7p/7P/4P3/PPPP1PP1/RNB1KBNR')
+        game_tied.board_navigator.board.setup_from_fen('5bnr/4p1pq/4Qpkr/7p/7P/4P3/PPPP1PP1/RNB1KBNR')
       end
 
       it 'returns true' do
@@ -670,7 +670,7 @@ describe Game do
       let(:white_pawn) { passant_game.board_navigator.piece_for('d5') }
 
       before do
-        passant_game.board_navigator.board.setup('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
+        passant_game.board_navigator.board.setup_from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
         passant_game.board_navigator.move_piece(passant_opportunity.start, passant_opportunity.target)
         passant_game.send_en_passant_opportunity(passant_opportunity)
         passant_game.board_navigator.move_piece(white_pawn.position, passant_game.board_navigator.en_passant_coordinate)
@@ -691,7 +691,7 @@ describe Game do
       let(:white_pawn) { no_passant_game.board_navigator.piece_for('d5') }
 
       before do
-        no_passant_game.board_navigator.board.setup('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
+        no_passant_game.board_navigator.board.setup_from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
         no_passant_game.board_navigator.move_piece(black_pawn.position, no_passant_opportunity.target)
         no_passant_game.board_navigator.move_piece(white_pawn.position, black_pawn.position)
       end
@@ -793,7 +793,7 @@ describe Game do
       subject(:starting_position) { described_class.new }
 
       before do
-        starting_position.board_navigator.board.setup('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
+        starting_position.board_navigator.board.setup_from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
       end
 
       it 'returns the correct string' do
@@ -806,7 +806,7 @@ describe Game do
       subject(:starting_position) { described_class.new }
 
       before do
-        starting_position.board_navigator.board.setup('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
+        starting_position.board_navigator.board.setup_from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
       end
 
       it 'returns the correct string' do

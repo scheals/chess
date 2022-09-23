@@ -143,7 +143,7 @@ describe Board do
     subject(:usual_board) { described_class.new }
 
     before do
-      usual_board.setup('k7/1R6/8/8/8/8/8/7r')
+      usual_board.setup_from_fen('k7/1R6/8/8/8/8/8/7r')
     end
 
     it 'returns proper FEN representation' do
@@ -156,7 +156,7 @@ describe Board do
     subject(:polly_board) { described_class.new }
 
     before do
-      polly_board.setup
+      polly_board.setup_from_fen
       polly_board.find_piece('a1').insecure_move('a3')
       polly_board.find('a1').vacate
     end
@@ -219,13 +219,13 @@ describe Board do
     end
   end
 
-  describe '#setup' do
+  describe '#setup_from_fen' do
     subject(:starting_board) { described_class.new }
 
     let(:board) { starting_board.instance_variable_get(:@board) }
 
     before do
-      starting_board.setup
+      starting_board.setup_from_fen
     end
 
     it 'puts black Rook into a8' do
@@ -335,12 +335,12 @@ describe Board do
       end
 
       it "doesn't create NilPieces on regular setup" do
-        nil_board.setup
+        nil_board.setup_from_fen
         expect(factory).not_to have_received(:fen_for).with(integer_as_string, anything)
       end
 
       it "doesn't create NilPieces on underway setup" do
-        nil_board.setup('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R')
+        nil_board.setup_from_fen('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R')
         expect(factory).not_to have_received(:fen_for).with(integer_as_string, anything)
       end
     end
@@ -352,7 +352,7 @@ describe Board do
 
       before do
         notation = '3pP3/8/8/8/8/8/8/8'
-        sparse_board.setup(notation)
+        sparse_board.setup_from_fen(notation)
       end
 
       it 'puts a black Pawn into d8' do

@@ -279,7 +279,7 @@ class Game
   end
 
   def setup_board(fen_string)
-    board_navigator.board.setup(fen_string)
+    board_navigator.board.setup_from_fen(fen_string)
   end
 
   def correct_length?(move)
