@@ -6,7 +6,7 @@ require_relative 'coordinate'
 class Piece
   attr_reader :position, :colour, :move_history, :coordinate
 
-  PIECES = { white_king: "\e[1m\u2654",
+  PIECE_REPRESENTATION = { white_king: "\e[1m\u2654",
              white_queen: "\e[1m\u2655",
              white_rook: "\e[1m\u2656",
              white_bishop: "\e[1m\u2657",
@@ -48,7 +48,7 @@ class Piece
   end
 
   def to_s
-    PIECES["#{colour}_#{self.class}".downcase.to_sym]
+    PIECE_REPRESENTATION["#{colour}_#{self.class}".downcase.to_sym]
   end
 
   def real?
