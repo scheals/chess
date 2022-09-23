@@ -57,12 +57,12 @@ class Game
   end
 
   def ask_for_target(move)
-    possible_moves = board_navigator.moves_for(move.start)
+    possible_moves = board.moves_for(move.start)
     loop do
-      puts display.possible_moves(board_navigator.board, possible_moves)
+      puts display.possible_moves(board, possible_moves)
       completed_move = Move.new(move.start, gets.chomp.downcase)
       if completed_move.target.to_s == 'q'
-        puts display.turn_beginning(current_player, board_navigator.board)
+        puts display.turn_beginning(current_player, board)
         break nil
       end
       break completed_move if legal_target?(completed_move)
@@ -144,7 +144,7 @@ class Game
   end
 
   def in_bounds?(move)
-    return true if move.in_bounds?(board_navigator.board)
+    return true if move.in_bounds?(board)
 
     puts display.move_out_of_bounds
     false
@@ -163,7 +163,7 @@ class Game
       return false
     end
 
-    return true if board_navigator.moves_for(move.start).include?(Coordinate.parse(move.target))
+    return true if board.moves_for(move.start).include?(Coordinate.parse(move.target))
 
     puts display.move_impossible_for_piece
     false
@@ -241,7 +241,7 @@ class Game
 
   def to_fen(full: true)
     result = []
-    result << board_navigator.board.dump_to_fen
+    result << board.dump_to_fen
     result << current_player.colour.chars.first
     result << board.record_castling_rights
     result << board.record_en_passant_coordinate
@@ -280,7 +280,7 @@ class Game
   end
 
   def setup_board(fen_string)
-    board_navigator.board.setup_from_fen(fen_string)
+    board.setup_from_fen(fen_string)
   end
 
   def correct_length?(move)

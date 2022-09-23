@@ -69,6 +69,10 @@ class Board
     find(square.to_s).piece
   end
 
+  def moves_for(square)
+    BoardNavigator.new(self).moves_for(square)
+  end
+
   def pieces
     if block_given?
       pieces = []

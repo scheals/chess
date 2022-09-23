@@ -183,7 +183,7 @@ describe Game do
       let(:move) { Move.parse('a6d6') }
 
       before do
-        allow(board_navigator).to receive(:moves_for).with(move.start).and_return([Coordinate.parse('d6')])
+        allow(board).to receive(:moves_for).with(move.start).and_return([Coordinate.parse('d6')])
       end
 
       it 'returns true' do
@@ -200,7 +200,7 @@ describe Game do
       let(:move) { Move.parse('b7h2') }
 
       before do
-        allow(board_navigator).to receive(:moves_for).with(move.start).and_return(%w[d6 d3])
+        allow(board).to receive(:moves_for).with(move.start).and_return(%w[d6 d3])
       end
 
       it 'returns false' do
@@ -236,7 +236,7 @@ describe Game do
 
         before do
           allow(game_target_complete).to receive(:gets).and_return('b8')
-          allow(board_navigator).to receive(:moves_for).with(move.start).and_return([Coordinate.parse('b8')])
+          allow(board).to receive(:moves_for).with(move.start).and_return([Coordinate.parse('b8')])
           allow(display).to receive(:possible_moves)
           allow(display).to receive(:move_impossible_for_piece)
         end
@@ -257,7 +257,7 @@ describe Game do
 
         before do
           allow(game_target_quit).to receive(:gets).and_return('q')
-          allow(board_navigator).to receive(:moves_for).with(move.start).and_return([Coordinate.parse('b8')])
+          allow(board).to receive(:moves_for).with(move.start).and_return([Coordinate.parse('b8')])
           allow(display).to receive(:possible_moves)
           allow(display).to receive(:turn_beginning)
           allow(display).to receive(:move_impossible_for_piece)
