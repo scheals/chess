@@ -423,34 +423,6 @@ describe BoardNavigator do
     end
   end
 
-  describe '#promoteable?' do
-    context 'when piece at the coordinate is promoteable' do
-      subject(:promoteable_board) { described_class.new(Board.new) }
-
-      before do
-        promoteable_board.board.setup_from_fen('P3k3/4p3/8/8/8/8/4P3/4K3')
-      end
-
-      it 'returns true' do
-        coordinate = 'a8'
-        expect(promoteable_board.promoteable?(coordinate)).to be true
-      end
-    end
-
-    context 'when piece at the coordinate is not promoteable' do
-      subject(:nonpromoteable_board) { described_class.new(Board.new) }
-
-      before do
-        nonpromoteable_board.board.setup_from_fen('R3k3/4p3/8/8/8/8/4P3/4K3')
-      end
-
-      it 'returns false' do
-        coordinate = 'a8'
-        expect(nonpromoteable_board.promoteable?(coordinate)).to be false
-      end
-    end
-  end
-
   describe '#win?' do
     context 'when game is still on' do
       subject(:board_continue) { described_class.new(Board.new) }
@@ -491,26 +463,6 @@ describe BoardNavigator do
     it 'sends board a move_piece message' do
       moving_navigator.move_piece(start, target)
       expect(board).to have_received(:move_piece).with(start, target)
-    end
-  end
-
-  describe '#promote' do
-    subject(:promotion_navigation) { described_class.new(Board.new) }
-
-    let(:coordinate) { 'g8' }
-    let(:chosen_piece) { 'queen' }
-    let(:promoted_piece) { Queen.new('g8', colour: 'white') }
-
-    before do
-      promotion_navigation.board.setup_from_fen('4k1P1/4p3/8/8/8/8/4P3/4K3')
-    end
-
-    it 'promotes a piece to chosen piece' do
-      expect(promotion_navigation.promote(coordinate, chosen_piece)).to eq(promoted_piece)
-    end
-
-    it 'changes the board' do
-      expect { promotion_navigation.promote(coordinate, chosen_piece) }.to change { promotion_navigation.piece_for(coordinate) }
     end
   end
 

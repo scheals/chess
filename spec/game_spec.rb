@@ -407,7 +407,7 @@ describe Game do
       let(:coordinate) { 'a8' }
 
       before do
-        allow(board_navigator).to receive(:promoteable?).with(coordinate).and_return(true)
+        allow(board).to receive(:promoteable?).with(coordinate).and_return(true)
       end
 
       it 'returns true' do
@@ -424,7 +424,7 @@ describe Game do
       let(:coordinate) { 'a8' }
 
       before do
-        allow(board_navigator).to receive(:promoteable?).with(coordinate).and_return(false)
+        allow(board).to receive(:promoteable?).with(coordinate).and_return(false)
       end
 
       it 'returns false' do
@@ -444,12 +444,12 @@ describe Game do
 
     before do
       allow(promoted_game).to receive(:gets).and_return('q')
-      allow(board_navigator).to receive(:promote).with(coordinate, 'queen').and_return(queen)
+      allow(board).to receive(:promote).with(coordinate, 'queen').and_return(queen)
     end
 
-    it 'sends BoardNavigator a promote message' do
+    it 'sends Board a promote message' do
       promoted_game.promote(coordinate)
-      expect(board_navigator).to have_received(:promote).with(coordinate, 'queen')
+      expect(board).to have_received(:promote).with(coordinate, 'queen')
     end
 
     it 'returns piece that was promoted to' do

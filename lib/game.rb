@@ -71,11 +71,11 @@ class Game
 
   def promote(coordinate)
     chosen_piece = ask_for_promotion until chosen_piece
-    board_navigator.promote(coordinate, chosen_piece)
+    board.promote(coordinate, chosen_piece)
   end
 
   def promoteable?(coordinate)
-    return true if board_navigator.promoteable?(coordinate)
+    return true if board.promoteable?(coordinate)
 
     false
   end

@@ -56,12 +56,6 @@ class BoardNavigator
     piece_navigator.enemy_coordinates(board.coordinates).map { |coordinate| moves_after_collision_for(coordinate) }
   end
 
-  def promoteable?(coordinate)
-    return true if board.piece_for(coordinate).promoteable?
-
-    false
-  end
-
   def win?(current_players_colour)
     enemy_king = board.find_kings.find { |king| king.colour != current_players_colour }
     return true if moves_for(enemy_king.position.to_s).empty? && under_check?(enemy_king)
@@ -79,13 +73,6 @@ class BoardNavigator
 
   def move_piece(start, target)
     board.move_piece(start, target)
-  end
-
-  def promote(coordinate, chosen_piece)
-    piece_to_promote = piece_for(coordinate)
-    promoted_piece = board.create_piece(chosen_piece, position: coordinate, colour: piece_to_promote.colour)
-    board.put(promoted_piece, piece_to_promote.position)
-    promoted_piece
   end
 
   def queenside_castling_rights?(colour)

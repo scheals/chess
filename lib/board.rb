@@ -153,6 +153,19 @@ class Board
     vacate(@en_passant_pair.piece.position)
   end
 
+  def promoteable?(coordinate)
+    return true if piece_for(coordinate).promoteable?
+
+    false
+  end
+
+  def promote(coordinate, chosen_piece)
+    piece_to_promote = piece_for(coordinate)
+    promoted_piece = create_piece(chosen_piece, position: coordinate, colour: piece_to_promote.colour)
+    put(promoted_piece, piece_to_promote.position)
+    promoted_piece
+  end
+
   private
 
   def integer_to_column(integer)
