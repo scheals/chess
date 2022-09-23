@@ -16,18 +16,14 @@ class BoardNavigator
   end
 
   def moves_after_collision_for(coordinate)
-    return nil unless piece_for(coordinate)
+    return nil unless board.piece_for(coordinate)
 
-    navigator = navigator_factory.for(self, piece_for(coordinate))
+    navigator = navigator_factory.for(self, board.piece_for(coordinate))
     navigator.possible_moves.map { |move| coordinate_system.parse(move) }
   end
 
   def moves_for(coordinate)
     moves_after_collision_for(coordinate).reject { |move| move_checks_own_king?(coordinate, move.to_s) }
-  end
-
-  def piece_for(coordinate)
-    board.piece_for(coordinate)
   end
 
   def king_for(coordinate)

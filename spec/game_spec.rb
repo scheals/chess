@@ -682,8 +682,8 @@ describe Game do
       subject(:passant_game) { described_class.new }
 
       let(:passant_opportunity) { Move.parse('c7c5') }
-      let(:black_pawn) { passant_game.board_navigator.piece_for('c7') }
-      let(:white_pawn) { passant_game.board_navigator.piece_for('d5') }
+      let(:black_pawn) { passant_game.board_navigator.board.piece_for('c7') }
+      let(:white_pawn) { passant_game.board_navigator.board.piece_for('d5') }
 
       before do
         passant_game.board_navigator.board.setup_from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
@@ -702,9 +702,9 @@ describe Game do
     context 'when the move is not en passant' do
       subject(:no_passant_game) { described_class.new }
 
-      let(:black_pawn) { no_passant_game.board_navigator.piece_for('c7') }
+      let(:black_pawn) { no_passant_game.board_navigator.board.piece_for('c7') }
       let(:no_passant_opportunity) { Move.parse('c7c6') }
-      let(:white_pawn) { no_passant_game.board_navigator.piece_for('d5') }
+      let(:white_pawn) { no_passant_game.board_navigator.board.piece_for('d5') }
 
       before do
         no_passant_game.board_navigator.board.setup_from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
