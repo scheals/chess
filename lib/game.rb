@@ -243,7 +243,7 @@ class Game
     result = []
     result << board_navigator.board.dump_to_fen
     result << current_player.colour.chars.first
-    result << board_navigator.record_castling_rights
+    result << board.record_castling_rights
     result << board.record_en_passant_coordinate
     result << @half_move_clock if full
     result << @full_move_clock if full
@@ -271,7 +271,7 @@ class Game
 
   def load_board(state, colour)
     setup_board(state[:board])
-    board_navigator.load_castling_rights(state[:castling_rights])
+    board.load_castling_rights(state[:castling_rights])
     board.load_en_passant_coordinate(state[:en_passant_coordinate], colour)
   end
 

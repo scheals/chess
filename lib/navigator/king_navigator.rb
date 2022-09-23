@@ -19,7 +19,7 @@ class KingNavigator < PieceNavigator
   end
 
   def can_castle_kingside?
-    return false unless @board_navigator.castling_rights["#{piece.colour}_kingside".to_sym]
+    return false unless board.castling_rights["#{piece.colour}_kingside".to_sym]
 
     rooks = board.pieces { |piece| piece.instance_of?(Rook) && piece.colour == @piece.colour }
     rooks.any? { |rook| rook.position.column == 'h' && rook.can_castle? } &&
@@ -27,7 +27,7 @@ class KingNavigator < PieceNavigator
   end
 
   def can_castle_queenside?
-    return false unless @board_navigator.castling_rights["#{piece.colour}_queenside".to_sym]
+    return false unless board.castling_rights["#{piece.colour}_queenside".to_sym]
 
     rooks = board.pieces { |piece| piece.instance_of?(Rook) && piece.colour == @piece.colour }
     rooks.any? { |rook| rook.position.column == 'a' && rook.can_castle? } &&

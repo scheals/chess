@@ -530,6 +530,169 @@ describe Board do
       expect(looking_for_a_king.king_for(coordinate)).to eq(white_king)
     end
   end
+
+  describe '#queenside_castling_rights?' do
+    context 'when it has those rights' do
+      subject(:queenside_castling) { described_class.new }
+
+      let(:king) { instance_double(King, can_castle?: true, real?: true, colour: 'white') }
+      let(:left_rook) { instance_double(Rook, can_castle?: true, real?: true, colour: 'white', position: Coordinate.parse('a1')) }
+      let(:right_rook) { instance_double(Rook, can_castle?: true, real?: true, colour: 'white', position: Coordinate.parse('h1')) }
+
+      before do
+        allow(king).to receive(:is_a?).with(King).and_return(true)
+        allow(king).to receive(:is_a?).with(Rook).and_return(false)
+        allow(left_rook).to receive(:is_a?).with(King).and_return(false)
+        allow(right_rook).to receive(:is_a?).with(King).and_return(false)
+        allow(left_rook).to receive(:is_a?).with(Rook).and_return(true)
+        allow(right_rook).to receive(:is_a?).with(Rook).and_return(true)
+        queenside_castling.put(king, 'e1')
+        queenside_castling.put(left_rook, 'a1')
+        queenside_castling.put(right_rook, 'h1')
+      end
+
+      it 'returns true' do
+        colour = 'white'
+        expect(queenside_castling.queenside_castling_rights?(colour)).to be true
+      end
+    end
+
+    context 'when it does not have those rights because of missing queenside rook' do
+      subject(:queenside_castling) { described_class.new }
+
+      let(:king) { instance_double(King, can_castle?: true, real?: true, colour: 'black') }
+      let(:right_rook) { instance_double(Rook, can_castle?: true, real?: true, colour: 'black', position: Coordinate.parse('h1')) }
+
+      before do
+        allow(king).to receive(:is_a?).with(King).and_return(true)
+        allow(king).to receive(:is_a?).with(Rook).and_return(false)
+        allow(right_rook).to receive(:is_a?).with(King).and_return(false)
+        allow(right_rook).to receive(:is_a?).with(Rook).and_return(true)
+        queenside_castling.put(king, 'e8')
+        queenside_castling.put(right_rook, 'h1')
+      end
+
+      it 'returns false' do
+        colour = 'black'
+        expect(queenside_castling.queenside_castling_rights?(colour)).to be false
+      end
+    end
+
+    context 'when it does not have those rights because of loaded state' do
+      subject(:loaded_queenside) { described_class.new }
+
+      before do
+        loaded_queenside.load_castling_rights('Kk')
+      end
+
+      it 'returns false' do
+        colour = 'black'
+        expect(loaded_queenside.queenside_castling_rights?(colour)).to be false
+      end
+    end
+  end
+
+  describe '#kingside_castling_rights?' do
+    context 'when it has those rights' do
+      subject(:kingside_castling) { described_class.new }
+
+      let(:king) { instance_double(King, can_castle?: true, real?: true, colour: 'white') }
+      let(:left_rook) { instance_double(Rook, can_castle?: true, real?: true, colour: 'white', position: Coordinate.parse('a1')) }
+      let(:right_rook) { instance_double(Rook, can_castle?: true, real?: true, colour: 'white', position: Coordinate.parse('h1')) }
+
+      before do
+        allow(king).to receive(:is_a?).with(King).and_return(true)
+        allow(king).to receive(:is_a?).with(Rook).and_return(false)
+        allow(left_rook).to receive(:is_a?).with(King).and_return(false)
+        allow(right_rook).to receive(:is_a?).with(King).and_return(false)
+        allow(left_rook).to receive(:is_a?).with(Rook).and_return(true)
+        allow(right_rook).to receive(:is_a?).with(Rook).and_return(true)
+        kingside_castling.put(king, 'e1')
+        kingside_castling.put(left_rook, 'a1')
+        kingside_castling.put(right_rook, 'h1')
+      end
+
+      it 'returns true' do
+        colour = 'white'
+        expect(kingside_castling.kingside_castling_rights?(colour)).to be true
+      end
+    end
+
+    context 'when it does not have those rights because of missing kingside rook' do
+      subject(:kingside_castling) { described_class.new }
+
+      let(:king) { instance_double(King, can_castle?: true, real?: true, colour: 'black') }
+      let(:left_rook) { instance_double(Rook, can_castle?: true, real?: true, colour: 'black', position: Coordinate.parse('a1')) }
+
+      before do
+        allow(king).to receive(:is_a?).with(King).and_return(true)
+        allow(king).to receive(:is_a?).with(Rook).and_return(false)
+        allow(left_rook).to receive(:is_a?).with(King).and_return(false)
+        allow(left_rook).to receive(:is_a?).with(Rook).and_return(true)
+        kingside_castling.put(king, 'e1')
+        kingside_castling.put(left_rook, 'a1')
+      end
+
+      it 'returns false' do
+        colour = 'black'
+        expect(kingside_castling.kingside_castling_rights?(colour)).to be false
+      end
+    end
+
+    context 'when it does not have those rights because of loaded state' do
+      subject(:loaded_kingside) { described_class.new }
+
+      before do
+        loaded_kingside.load_castling_rights('kQq')
+      end
+
+      it 'returns false' do
+        colour = 'white'
+        expect(loaded_kingside.kingside_castling_rights?(colour)).to be false
+      end
+    end
+  end
+
+  describe '#record_castling_rights' do
+    context 'when everyone has full castling rights' do
+      subject(:full_castling_rights) { described_class.new }
+
+      before do
+        full_castling_rights.setup_from_fen
+      end
+
+      it 'returns a proper string' do
+        string = 'KQkq'
+        expect(full_castling_rights.record_castling_rights).to eq(string)
+      end
+    end
+
+    context 'when only black has castling rights' do
+      subject(:black_castling_rights) { described_class.new }
+
+      before do
+        black_castling_rights.setup_from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1')
+      end
+
+      it 'returns a proper string' do
+        string = 'kq'
+        expect(black_castling_rights.record_castling_rights).to eq(string)
+      end
+    end
+
+    context 'when no one has castling rights' do
+      subject(:no_castling_rights) { described_class.new }
+
+      before do
+        no_castling_rights.setup_from_fen('1nbqkbn1/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1')
+      end
+
+      it 'returns a proper string' do
+        string = '-'
+        expect(no_castling_rights.record_castling_rights).to eq(string)
+      end
+    end
+  end
 end
 
 describe Square do

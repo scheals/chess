@@ -859,21 +859,20 @@ describe Game do
       end
     end
 
-    context "when loading BoardNavigator's variables" do
+    context "when loading Board's variables" do
+
       it 'correctly loads the board' do
         setup = 'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR'
-        expect(loaded_game.board_navigator.board.dump_to_fen).to eq(setup)
+        expect(loaded_game.board.dump_to_fen).to eq(setup)
       end
 
       it 'correctly loads the castling rights' do
         castling_rights = Hash.new(false)
         castling_rights[:black_queenside] = true
         castling_rights[:black_kingside] = true
-        expect(loaded_game.board_navigator.castling_rights).to eq(castling_rights)
+        expect(loaded_game.board.castling_rights).to eq(castling_rights)
       end
-    end
 
-    context "when loading Board's variables" do
       it 'correctly loads the en passant pair' do
         pair = loaded_game.board.instance_variable_get(:@en_passant_pair)
         expect(pair).to have_attributes(piece: nil, en_passant_coordinate: nil)

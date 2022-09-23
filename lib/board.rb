@@ -9,13 +9,14 @@ require_relative 'coordinate'
 # This class handles a chess board.
 class Board
   include Display
-  attr_reader :board
+  attr_reader :board, :castling_rights
 
   def initialize(square = Square, factory = PieceFactory)
     @square = square
     @factory = factory
     @board = create_board
     @en_passant_pair = EnPassantPair.new(nil, nil)
+    @castling_rights = Hash.new(true)
   end
 
   def create_board
@@ -155,6 +156,56 @@ class Board
 
   def en_passant
     vacate(@en_passant_pair.piece.position)
+  end
+
+  def queenside_castling_rights?(colour)
+    return false unless castling_rights["#{colour}_queenside".to_sym]
+
+    colour_pieces = pieces { |piece| piece.colour == colour }
+    king = colour_pieces.select { |piece| piece.is_a?(King) }.first
+    queenside_rook = colour_pieces.select { |piece| piece.is_a?(Rook) && piece.position.column == 'a' }
+
+    return true if king.can_castle? &&
+                   queenside_rook.any?(&:can_castle?)
+
+    false
+  end
+
+  def kingside_castling_rights?(colour)
+    return false unless castling_rights["#{colour}_kingside".to_sym]
+
+    colour_pieces = pieces { |piece| piece.colour == colour }
+    king = colour_pieces.select { |piece| piece.is_a?(King) }.first
+    kingside_rook = colour_pieces.select { |piece| piece.is_a?(Rook) && piece.position.column == 'h' }
+
+    return true if king.can_castle? &&
+                   kingside_rook.any?(&:can_castle?)
+
+    false
+  end
+
+  def record_castling_rights
+    castling_rights = []
+    colours = %w[white black]
+
+    colours.each do |colour|
+      letters = %w[K Q]
+      letters.map!(&:downcase) if colour == 'black'
+      castling_rights << letters.first if kingside_castling_rights?(colour)
+      castling_rights << letters.last if queenside_castling_rights?(colour)
+    end
+
+    return '-' if castling_rights.empty?
+
+    castling_rights.join
+  end
+
+  def load_castling_rights(string)
+    @castling_rights = Hash.new(false)
+    @castling_rights[:white_queenside] = true if string.include?('Q')
+    @castling_rights[:white_kingside] = true if string.include?('K')
+    @castling_rights[:black_queenside] = true if string.include?('q')
+    @castling_rights[:black_kingside] = true if string.include?('k')
   end
 
   def promoteable?(coordinate)

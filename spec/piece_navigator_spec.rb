@@ -320,7 +320,7 @@ describe KingNavigator do
       let(:castling_rights) { { black_kingside: false } }
 
       before do
-        allow(board_navigator).to receive(:castling_rights).and_return(castling_rights)
+        allow(board).to receive(:castling_rights).and_return(castling_rights)
       end
 
       it 'returns false' do
@@ -422,7 +422,7 @@ describe KingNavigator do
       let(:castling_rights) { { black_queenside: false } }
 
       before do
-        allow(board_navigator).to receive(:castling_rights).and_return(castling_rights)
+        allow(board).to receive(:castling_rights).and_return(castling_rights)
       end
 
       it 'returns false' do
@@ -489,7 +489,6 @@ describe KingNavigator do
         allow(white_rook).to receive(:real?).and_return(true)
         allow(board_navigator).to receive(:move_checks_own_king?).with('e1', 'f1').and_return(false)
         allow(board_navigator).to receive(:move_checks_own_king?).with('e1', 'g1').and_return(false)
-        allow(board_navigator).to receive(:castling_rights).and_return(Hash.new(true))
       end
 
       it 'includes that as a possible move' do
@@ -514,7 +513,7 @@ describe KingNavigator do
         allow(black_rook).to receive(:real?).and_return(true)
         allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'd8').and_return(false)
         allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'c8').and_return(false)
-        allow(board_navigator).to receive(:castling_rights).and_return(Hash.new(true))
+        allow(board).to receive(:castling_rights).and_return(Hash.new(true))
       end
 
       it 'includes that as a possible move' do
@@ -544,7 +543,6 @@ describe KingNavigator do
         allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'c8').and_return(false)
         allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'f8').and_return(false)
         allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'g8').and_return(false)
-        allow(board_navigator).to receive(:castling_rights).and_return(Hash.new(true))
       end
 
       it 'includes them both as possible moves' do
