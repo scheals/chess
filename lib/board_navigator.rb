@@ -60,8 +60,4 @@ class BoardNavigator
 
     false
   end
-
-  def move_piece(start, target)
-    board.move_piece(start, target)
-  end
 end

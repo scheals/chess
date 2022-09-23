@@ -37,7 +37,7 @@ class PawnNavigator < PieceNavigator
 
   def en_passant_checks_king?(start, target)
     board_after_move = BoardNavigator.new(board.copy, @board_navigator.navigator_factory)
-    board_after_move.move_piece(start, target)
+    board_after_move.board.move_piece(start, target)
     if piece.colour == 'white'
       white_passant_capture(board_after_move)
     else

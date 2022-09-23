@@ -370,7 +370,7 @@ describe BoardNavigator do
 
       before do
         board.setup_from_fen('4k3/8/8/8/3p4/8/4P3/4K3')
-        en_passant.move_piece('e2', 'e4')
+        en_passant.board.move_piece('e2', 'e4')
         board.create_en_passant_pair(Move.parse('e2e4'))
       end
 
@@ -422,23 +422,6 @@ describe BoardNavigator do
       it 'returns true' do
         expect(board_won.win?('white')).to be true
       end
-    end
-  end
-
-  describe '#move_piece' do
-    subject(:moving_navigator) { described_class.new(board) }
-
-    let(:board) { instance_double(Board) }
-    let(:start) { 'a2' }
-    let(:target) { 'a3' }
-
-    before do
-      allow(board).to receive(:move_piece).with(start, target)
-    end
-
-    it 'sends board a move_piece message' do
-      moving_navigator.move_piece(start, target)
-      expect(board).to have_received(:move_piece).with(start, target)
     end
   end
 end

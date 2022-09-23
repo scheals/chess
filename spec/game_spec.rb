@@ -542,12 +542,12 @@ describe Game do
       let(:rook_move) { Move.parse('a8d8') }
 
       before do
-        allow(board_navigator).to receive(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s.to_s)
+        allow(board).to receive(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s.to_s)
       end
 
-      it 'sends BoardNavigator a move_piece a proper message' do
+      it 'sends Board a move_piece a proper message' do
         castle_move_game.castle(queenside_move)
-        expect(board_navigator).to have_received(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
+        expect(board).to have_received(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
       end
     end
 
@@ -561,12 +561,12 @@ describe Game do
       let(:rook_move) { Move.parse('h8f8') }
 
       before do
-        allow(board_navigator).to receive(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
+        allow(board).to receive(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
       end
 
-      it 'sends BoardNavigator a move_piece a proper message' do
+      it 'sends Board a move_piece a proper message' do
         castle_move_game.castle(kingside_move)
-        expect(board_navigator).to have_received(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
+        expect(board).to have_received(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
       end
     end
 
@@ -580,12 +580,12 @@ describe Game do
       let(:rook_move) { Move.parse('a1d1') }
 
       before do
-        allow(board_navigator).to receive(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
+        allow(board).to receive(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
       end
 
-      it 'sends BoardNavigator a move_piece a proper message' do
+      it 'sends Board a move_piece a proper message' do
         castle_move_game.castle(queenside_move)
-        expect(board_navigator).to have_received(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
+        expect(board).to have_received(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
       end
     end
 
@@ -599,12 +599,12 @@ describe Game do
       let(:rook_move) { Move.parse('h1f1') }
 
       before do
-        allow(board_navigator).to receive(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
+        allow(board).to receive(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
       end
 
-      it 'sends BoardNavigator a move_piece a proper message' do
+      it 'sends Board a move_piece a proper message' do
         castle_move_game.castle(kingside_move)
-        expect(board_navigator).to have_received(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
+        expect(board).to have_received(:move_piece).with(rook_move.start.to_s, rook_move.target.to_s)
       end
     end
   end
@@ -682,14 +682,14 @@ describe Game do
       subject(:passant_game) { described_class.new }
 
       let(:passant_opportunity) { Move.parse('c7c5') }
-      let(:black_pawn) { passant_game.board_navigator.board.piece_for('c7') }
-      let(:white_pawn) { passant_game.board_navigator.board.piece_for('d5') }
+      let(:black_pawn) { passant_game.board.piece_for('c7') }
+      let(:white_pawn) { passant_game.board.piece_for('d5') }
 
       before do
-        passant_game.board_navigator.board.setup_from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
-        passant_game.board_navigator.move_piece(passant_opportunity.start, passant_opportunity.target)
+        passant_game.board.setup_from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
+        passant_game.board.move_piece(passant_opportunity.start, passant_opportunity.target)
         passant_game.send_en_passant_opportunity(passant_opportunity)
-        passant_game.board_navigator.move_piece(white_pawn.position, passant_game.board.en_passant_coordinate)
+        passant_game.board.move_piece(white_pawn.position, passant_game.board.en_passant_coordinate)
       end
 
       it 'returns true' do
@@ -708,8 +708,8 @@ describe Game do
 
       before do
         no_passant_game.board_navigator.board.setup_from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
-        no_passant_game.board_navigator.move_piece(black_pawn.position, no_passant_opportunity.target)
-        no_passant_game.board_navigator.move_piece(white_pawn.position, black_pawn.position)
+        no_passant_game.board.move_piece(black_pawn.position, no_passant_opportunity.target)
+        no_passant_game.board.move_piece(white_pawn.position, black_pawn.position)
       end
 
       it 'returns false' do
