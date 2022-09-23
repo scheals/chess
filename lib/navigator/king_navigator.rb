@@ -9,6 +9,11 @@ class KingNavigator < PieceNavigator
 
   include Moves::CollisionlessMoves
 
+  def initialize(board_navigator, piece)
+    super
+    @board_navigator = board_navigator
+  end
+
   def possible_moves
     collisionless_moves + castling_moves
   end

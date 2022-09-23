@@ -10,6 +10,11 @@ class PawnNavigator < PieceNavigator
   include Moves::PawnForward
   include Moves::PawnTakes
 
+  def initialize(board_navigator, piece)
+    super
+    @board_navigator = board_navigator
+  end
+
   def possible_moves
     handle_pawn + en_passant
   end
