@@ -69,12 +69,6 @@ class BoardNavigator
     false
   end
 
-  def tie?(current_players_colour)
-    return true if stalemate?(current_players_colour)
-
-    false
-  end
-
   def stalemate?(current_players_colour)
     enemy_pieces = board.pieces.reject { |piece| piece.colour == current_players_colour }
     return true if enemy_pieces.map { |piece| moves_for(piece.position.to_s) }.all?(&:empty?) &&

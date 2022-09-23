@@ -477,33 +477,6 @@ describe BoardNavigator do
     end
   end
 
-  describe '#tie?' do
-    context 'when game is still on' do
-      subject(:board_continue) { described_class.new(Board.new) }
-
-      before do
-        board_continue.board.setup_from_fen
-      end
-
-      it 'returns false' do
-        expect(board_continue.tie?('white')).to be false
-      end
-    end
-
-    context 'when game ends in a stalemate' do
-      subject(:navigate_stalemate) { described_class.new(Board.new) }
-
-      before do
-        navigate_stalemate.board.setup_from_fen('5bnr/4p1pq/4Qpkr/7p/7P/4P3/PPPP1PP1/RNB1KBNR')
-      end
-
-      it 'returns true' do
-        current_players_colour = 'white'
-        expect(navigate_stalemate.tie?(current_players_colour)).to be true
-      end
-    end
-  end
-
   describe '#move_piece' do
     subject(:moving_navigator) { described_class.new(board) }
 
