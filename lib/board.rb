@@ -17,10 +17,8 @@ class Board
 
   def create_board
     board = {}
-    start_letter = 'a'
-    8.times do |i|
-      current_letter = (start_letter.ord + i).chr
-      column = create_column(current_letter)
+    ('a'..'h').each do |column_letter|
+      column = create_column(column_letter)
       board.merge!(column)
     end
     board
@@ -116,10 +114,10 @@ class Board
     (starting_column.ord + integer).chr
   end
 
-  def create_column(letter)
+  def create_column(column_letter)
     column = {}
-    8.times do |i|
-      coordinate = "#{letter}#{i + 1}"
+    1.upto(8) do |row_number|
+      coordinate = "#{column_letter}#{row_number}"
       column[coordinate] = create_square(coordinate)
     end
     column
