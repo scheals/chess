@@ -18,11 +18,11 @@ class PieceNavigator
   end
 
   def allied_coordinates(coordinates)
-    coordinates.select { |coordinate| piece.ally?(board.find_piece(coordinate)) }
+    coordinates.select { |coordinate| piece.ally?(board.piece_for(coordinate)) }
   end
 
   def enemy_coordinates(coordinates)
-    coordinates.select { |coordinate| piece.enemy?(board.find_piece(coordinate)) }
+    coordinates.select { |coordinate| piece.enemy?(board.piece_for(coordinate)) }
   end
 
   def empty_or_enemy?(square)

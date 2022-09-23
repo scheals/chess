@@ -116,7 +116,7 @@ describe RookNavigator do
 
       let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
-      let(:white_rook) { board.find_piece('h1') }
+      let(:white_rook) { board.piece_for('h1') }
       let(:coordinate_system) { Coordinate }
 
       before do
@@ -157,7 +157,7 @@ describe BishopNavigator do
       let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate_system) { Coordinate }
-      let(:black_bishop) { board.find_piece('c8') }
+      let(:black_bishop) { board.piece_for('c8') }
 
       before do
         board.setup_from_fen
@@ -173,7 +173,7 @@ describe BishopNavigator do
 
       let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
-      let(:white_bishop) { board.find_piece('e4') }
+      let(:white_bishop) { board.piece_for('e4') }
       let(:coordinate_system) { Coordinate }
 
       before do
@@ -197,7 +197,7 @@ describe KnightNavigator do
       let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate_system) { Coordinate }
-      let(:white_knight) { board.find_piece('g1') }
+      let(:white_knight) { board.piece_for('g1') }
 
       before do
         board.setup_from_fen
@@ -218,7 +218,7 @@ describe QueenNavigator do
       let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate_system) { Coordinate }
-      let(:black_queen) { board.find_piece('d8') }
+      let(:black_queen) { board.piece_for('d8') }
 
       before do
         board.setup_from_fen
@@ -234,7 +234,7 @@ describe QueenNavigator do
 
       let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
-      let(:black_queen) { board.find_piece('c6') }
+      let(:black_queen) { board.piece_for('c6') }
       let(:coordinate_system) { Coordinate }
 
       before do
@@ -258,7 +258,7 @@ describe KingNavigator do
       let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate_system) { Coordinate }
-      let(:white_king) { board.find_piece('e1') }
+      let(:white_king) { board.piece_for('e1') }
 
       before do
         board.setup_from_fen
@@ -574,7 +574,7 @@ describe PawnNavigator do
       context 'when Pawn is white' do
         subject(:navigate_possibilities) { described_class.new(board_navigator, white_pawn) }
 
-        let(:white_pawn) { board.find_piece('b2') }
+        let(:white_pawn) { board.piece_for('b2') }
 
         it "returns a collection of white Pawn's possible coordinates" do
           correct_coordinates = %w[b3 b4]
@@ -586,7 +586,7 @@ describe PawnNavigator do
       context 'when Pawn is black' do
         subject(:navigate_possibilities) { described_class.new(board_navigator, black_pawn) }
 
-        let(:black_pawn) { board.find_piece('d7') }
+        let(:black_pawn) { board.piece_for('d7') }
 
         it "returns a collection of black Pawn's possible coordinates" do
           correct_coordinates = %w[d5 d6]
@@ -598,7 +598,7 @@ describe PawnNavigator do
       context 'when Pawn was already moved' do
         subject(:pawn_no_double) { described_class.new(board_navigator, white_pawn) }
 
-        let!(:white_pawn) { board.find_piece('d2') }
+        let!(:white_pawn) { board.piece_for('d2') }
 
         it 'does not allow double move' do
           result = [coordinate_system.parse('d4')]
@@ -613,7 +613,7 @@ describe PawnNavigator do
 
       let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
-      let(:black_pawn) { board.find_piece('d5') }
+      let(:black_pawn) { board.piece_for('d5') }
       # See 'when Pawn was already moved' above? No idea why that works with let! but this doesn't.
       # So I had to grab the piece after it's been moved.
       let(:coordinate) { Coordinate }

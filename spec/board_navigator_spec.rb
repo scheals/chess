@@ -27,14 +27,14 @@ describe BoardNavigator do
       let(:pieceful_coordinate) { 'f4' }
 
       before do
-        allow(board).to receive(:find_piece).with(pieceful_coordinate).and_return(bishop).twice
+        allow(board).to receive(:piece_for).with(pieceful_coordinate).and_return(bishop).twice
         allow(navigator_factory).to receive(:for).with(navigator, bishop).and_return(bishop_navigator)
         allow(bishop_navigator).to receive(:possible_moves).and_return(%w[b8 c1 c7 d2 d6 e3 e5 g3 g5 h2 h6])
       end
 
-      it 'sends Board a find_piece message twice' do
+      it 'sends Board a piece_for message twice' do
         navigator.moves_after_collision_for(pieceful_coordinate)
-        expect(board).to have_received(:find_piece).with(pieceful_coordinate).twice
+        expect(board).to have_received(:piece_for).with(pieceful_coordinate).twice
       end
 
       it 'sends NavigatorFactory a for message' do
@@ -61,13 +61,13 @@ describe BoardNavigator do
       let(:board) { instance_double(Board) }
 
       before do
-        allow(board).to receive(:find_piece).with(empty_coordinate).and_return(nil)
+        allow(board).to receive(:piece_for).with(empty_coordinate).and_return(nil)
         allow(navigator_factory).to receive(:for)
       end
 
-      it 'sends Board a find_piece message' do
+      it 'sends Board a piece_for message' do
         navigator.moves_after_collision_for(empty_coordinate)
-        expect(board).to have_received(:find_piece).with(empty_coordinate)
+        expect(board).to have_received(:piece_for).with(empty_coordinate)
       end
 
       it "doesn't send NavigatorFactory a message" do
@@ -120,7 +120,7 @@ describe BoardNavigator do
       end
 
       it 'returns true' do
-        king = board.find_piece('h8')
+        king = board.piece_for('h8')
         expect(navigate_check.under_check?(king)).to be true
       end
     end
@@ -135,7 +135,7 @@ describe BoardNavigator do
       end
 
       it 'returns false' do
-        king = board.find_piece('a8')
+        king = board.piece_for('a8')
         expect(navigate_checkless.under_check?(king)).to be false
       end
     end
@@ -153,7 +153,7 @@ describe BoardNavigator do
 
     before do
       allow(board).to receive(:find_kings).and_return([white_king, black_king])
-      allow(board).to receive(:find_piece).with('a3').and_return(white_piece)
+      allow(board).to receive(:piece_for).with('a3').and_return(white_piece)
       allow(white_piece).to receive(:ally?).with(white_king).and_return true
       allow(white_piece).to receive(:ally?).with(black_king).and_return false
     end
@@ -183,7 +183,7 @@ describe BoardNavigator do
         allow(board).to receive(:copy).and_return(board_copy)
         allow(board_copy).to receive(:move_piece).with(white_piece.position, move)
         allow(board_copy).to receive(:find_kings).and_return([white_king, black_king])
-        allow(board_copy).to receive(:find_piece).with(move).and_return(white_piece)
+        allow(board_copy).to receive(:piece_for).with(move).and_return(white_piece)
         allow(white_piece).to receive(:ally?).with(white_king).and_return(true)
         allow(white_piece).to receive(:ally?).with(black_king).and_return(false)
         allow(navigator_factory).to receive(:for).with(having_attributes(board: board_copy), white_king).and_return(white_king_navigator)
@@ -225,15 +225,15 @@ describe BoardNavigator do
         allow(board).to receive(:copy).and_return(board_copy)
         allow(board_copy).to receive(:move_piece).with(white_rook.position, move)
         allow(board_copy).to receive(:find_kings).and_return([white_king, black_king])
-        allow(board_copy).to receive(:find_piece).with(move).and_return(white_rook).thrice
+        allow(board_copy).to receive(:piece_for).with(move).and_return(white_rook).thrice
         allow(white_rook).to receive(:ally?).and_return(true, false)
         allow(navigator_factory).to receive(:for).with(having_attributes(board: board_copy), white_king).and_return(white_king_navigator)
         allow(board_copy).to receive(:coordinates).and_return(%w[a3 a4 a7 b4])
         allow(white_king_navigator).to receive(:enemy_coordinates).with(%w[a3 a4 a7 b4]).and_return(['a7'])
-        allow(board_copy).to receive(:find_piece).with('a7').and_return(black_rook)
-        allow(board_copy).to receive(:find_piece).with('a3').and_return(white_king)
+        allow(board_copy).to receive(:piece_for).with('a7').and_return(black_rook)
+        allow(board_copy).to receive(:piece_for).with('a3').and_return(white_king)
         allow(white_king).to receive(:enemy?).with(white_king).and_return(false)
-        allow(board_copy).to receive(:find_piece).with('a4').and_return(white_rook)
+        allow(board_copy).to receive(:piece_for).with('a4').and_return(white_rook)
         allow(white_king).to receive(:enemy?).with(white_rook).and_return(false)
         allow(white_king).to receive(:enemy?).with(black_rook).and_return(true)
         allow(navigator_factory).to receive(:for).with(having_attributes(board: board_copy), black_rook).and_return(black_rook_navigator)
@@ -273,13 +273,13 @@ describe BoardNavigator do
         allow(board).to receive(:copy).and_return(board_copy)
         allow(board_copy).to receive(:move_piece).with(black_rook.position, move)
         allow(board_copy).to receive(:find_kings).and_return([white_king, black_king])
-        allow(board_copy).to receive(:find_piece).with(move).and_return(black_rook).exactly(4).times
+        allow(board_copy).to receive(:piece_for).with(move).and_return(black_rook).exactly(4).times
         allow(black_rook).to receive(:ally?).and_return(false, true)
         allow(navigator_factory).to receive(:for).with(having_attributes(board: board_copy), black_king).and_return(black_king_navigator)
         allow(board_copy).to receive(:coordinates).and_return(%w[a1 a7 h8])
         allow(black_king_navigator).to receive(:enemy_coordinates).with(%w[a1 a7 h8]).and_return(['a1'])
-        allow(board_copy).to receive(:find_piece).with('h7').and_return(black_rook)
-        allow(board_copy).to receive(:find_piece).with('a1').and_return(white_rook)
+        allow(board_copy).to receive(:piece_for).with('h7').and_return(black_rook)
+        allow(board_copy).to receive(:piece_for).with('a1').and_return(white_rook)
         allow(white_king).to receive(:enemy?).with(white_rook).and_return(true)
         allow(white_king).to receive(:enemy?).with(black_rook).and_return(false)
         allow(navigator_factory).to receive(:for).with(having_attributes(board: board_copy), white_rook).and_return(white_rook_navigator)

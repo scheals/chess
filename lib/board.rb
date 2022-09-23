@@ -60,7 +60,7 @@ class Board
     board[square.to_s]
   end
 
-  def find_piece(square)
+  def piece_for(square)
     find(square.to_s).piece
   end
 

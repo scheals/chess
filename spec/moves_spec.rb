@@ -241,9 +241,9 @@ describe Moves::CollisionlessMoves do
       regular_knight.extend(described_class)
       allow(board).to receive(:coordinates).and_return(%w[b6 c7])
       allow(white_knight).to receive(:legal).with(%w[b6 c7]).and_return(%w[b6 c7])
-      allow(board).to receive(:find_piece).with('b6').and_return(white_piece)
+      allow(board).to receive(:piece_for).with('b6').and_return(white_piece)
       allow(white_knight).to receive(:ally?).with(white_piece).and_return(true)
-      allow(board).to receive(:find_piece).with('c7').and_return(nil_piece)
+      allow(board).to receive(:piece_for).with('c7').and_return(nil_piece)
       allow(white_knight).to receive(:ally?).with(nil_piece).and_return(false)
     end
 
@@ -269,11 +269,11 @@ describe Moves::PawnTakes do
     before do
       white_pawn_piece.extend(described_class)
       allow(board).to receive(:find).with(coordinate.parse('a5')).and_return(square)
-      allow(board).to receive(:find_piece).with(coordinate.parse('a5')).and_return(nil_piece)
+      allow(board).to receive(:piece_for).with(coordinate.parse('a5')).and_return(nil_piece)
       allow(white_piece).to receive(:enemy?).with(nil_piece).and_return(false)
       allow(white_piece).to receive(:enemy?).with(black_piece).and_return(true)
       allow(board).to receive(:find).with(coordinate.parse('c5')).and_return(square)
-      allow(board).to receive(:find_piece).with(coordinate.parse('c5')).and_return(black_piece)
+      allow(board).to receive(:piece_for).with(coordinate.parse('c5')).and_return(black_piece)
     end
 
     it 'includes takes properly' do
@@ -295,10 +295,10 @@ describe Moves::PawnTakes do
     before do
       black_pawn_piece.extend(described_class)
       allow(board).to receive(:find).with(coordinate.parse('f7')).and_return(square)
-      allow(board).to receive(:find_piece).with(coordinate.parse('f7')).and_return(white_piece)
+      allow(board).to receive(:piece_for).with(coordinate.parse('f7')).and_return(white_piece)
       allow(black_piece).to receive(:enemy?).with(white_piece).and_return(true).twice
       allow(board).to receive(:find).with(coordinate.parse('h7')).and_return(square)
-      allow(board).to receive(:find_piece).with(coordinate.parse('h7')).and_return(white_piece)
+      allow(board).to receive(:piece_for).with(coordinate.parse('h7')).and_return(white_piece)
     end
 
     it 'includes takes properly' do

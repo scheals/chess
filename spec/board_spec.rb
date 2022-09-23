@@ -157,7 +157,7 @@ describe Board do
 
     before do
       polly_board.setup_from_fen
-      polly_board.find_piece('a1').insecure_move('a3')
+      polly_board.piece_for('a1').insecure_move('a3')
       polly_board.find('a1').vacate
     end
 
@@ -176,14 +176,14 @@ describe Board do
     end
 
     it 'gets a deep copy of move_history for pieces' do
-      polly_piece = polly_board.find_piece('a1')
+      polly_piece = polly_board.piece_for('a1')
       molly_board = polly_board.copy
-      molly_piece = molly_board.find_piece('a1')
+      molly_piece = molly_board.piece_for('a1')
       expect(molly_piece.move_history).not_to be(polly_piece.move_history)
     end
   end
 
-  describe '#find_piece' do
+  describe '#piece_for' do
     subject(:pieceful_board) { described_class.new }
 
     let(:board_hash) { pieceful_board.board }
@@ -195,7 +195,7 @@ describe Board do
     end
 
     it 'sends Square a piece message' do
-      pieceful_board.find_piece('a1')
+      pieceful_board.piece_for('a1')
       expect(square).to have_received(:piece)
     end
   end
@@ -356,11 +356,11 @@ describe Board do
       end
 
       it 'puts a black Pawn into d8' do
-        expect(sparse_board.find_piece('d8')).to be_a(Pawn).and have_attributes(position: coordinate.parse('d8'), colour: 'black')
+        expect(sparse_board.piece_for('d8')).to be_a(Pawn).and have_attributes(position: coordinate.parse('d8'), colour: 'black')
       end
 
       it 'puts a white Pawn into e8' do
-        expect(sparse_board.find_piece('e8')).to be_a(Pawn).and have_attributes(position: coordinate.parse('e8'), colour: 'white')
+        expect(sparse_board.piece_for('e8')).to be_a(Pawn).and have_attributes(position: coordinate.parse('e8'), colour: 'white')
       end
     end
   end

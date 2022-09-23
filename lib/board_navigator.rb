@@ -29,11 +29,11 @@ class BoardNavigator
   end
 
   def piece_for(coordinate)
-    board.find_piece(coordinate)
+    board.piece_for(coordinate)
   end
 
   def king_for(coordinate)
-    board.find_kings.select { |king| board.find_piece(coordinate).ally?(king) }.first
+    board.find_kings.select { |king| board.piece_for(coordinate).ally?(king) }.first
   end
 
   def under_check?(king)
@@ -59,7 +59,7 @@ class BoardNavigator
   end
 
   def promoteable?(coordinate)
-    return true if board.find_piece(coordinate).promoteable?
+    return true if board.piece_for(coordinate).promoteable?
 
     false
   end
