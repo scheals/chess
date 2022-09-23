@@ -492,8 +492,8 @@ describe KingNavigator do
         allow(white_king).to receive(:real?).and_return(true)
         allow(white_rook).to receive(:can_castle?).and_return(true)
         allow(white_rook).to receive(:real?).and_return(true)
-        allow(board_navigator).to receive(:checks_king?).with('e1', 'f1').and_return(false)
-        allow(board_navigator).to receive(:checks_king?).with('e1', 'g1').and_return(false)
+        allow(board_navigator).to receive(:move_checks_own_king?).with('e1', 'f1').and_return(false)
+        allow(board_navigator).to receive(:move_checks_own_king?).with('e1', 'g1').and_return(false)
         allow(board_navigator).to receive(:castling_rights).and_return(Hash.new(true))
       end
 
@@ -517,8 +517,8 @@ describe KingNavigator do
         allow(black_king).to receive(:real?).and_return(true)
         allow(black_rook).to receive(:can_castle?).and_return(true)
         allow(black_rook).to receive(:real?).and_return(true)
-        allow(board_navigator).to receive(:checks_king?).with('e8', 'd8').and_return(false)
-        allow(board_navigator).to receive(:checks_king?).with('e8', 'c8').and_return(false)
+        allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'd8').and_return(false)
+        allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'c8').and_return(false)
         allow(board_navigator).to receive(:castling_rights).and_return(Hash.new(true))
       end
 
@@ -545,10 +545,10 @@ describe KingNavigator do
           allow(piece).to receive(:can_castle?).and_return(true)
           allow(piece).to receive(:real?).and_return(true)
         end
-        allow(board_navigator).to receive(:checks_king?).with('e8', 'd8').and_return(false)
-        allow(board_navigator).to receive(:checks_king?).with('e8', 'c8').and_return(false)
-        allow(board_navigator).to receive(:checks_king?).with('e8', 'f8').and_return(false)
-        allow(board_navigator).to receive(:checks_king?).with('e8', 'g8').and_return(false)
+        allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'd8').and_return(false)
+        allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'c8').and_return(false)
+        allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'f8').and_return(false)
+        allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'g8').and_return(false)
         allow(board_navigator).to receive(:castling_rights).and_return(Hash.new(true))
       end
 

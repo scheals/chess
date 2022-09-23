@@ -52,16 +52,16 @@ class KingNavigator < PieceNavigator
 
   def kingside_not_under_check?
     kings_position = piece.position
-    return false if @board_navigator.checks_king?(kings_position.to_s, kings_position.right.to_s) ||
-                    @board_navigator.checks_king?(kings_position.to_s, kings_position.right.right.to_s)
+    return false if @board_navigator.move_checks_own_king?(kings_position.to_s, kings_position.right.to_s) ||
+                    @board_navigator.move_checks_own_king?(kings_position.to_s, kings_position.right.right.to_s)
 
     true
   end
 
   def queenside_not_under_check?
     kings_position = piece.position
-    return false if @board_navigator.checks_king?(kings_position.to_s, kings_position.left.to_s) ||
-                    @board_navigator.checks_king?(kings_position.to_s, kings_position.left.left.to_s)
+    return false if @board_navigator.move_checks_own_king?(kings_position.to_s, kings_position.left.to_s) ||
+                    @board_navigator.move_checks_own_king?(kings_position.to_s, kings_position.left.left.to_s)
 
     true
   end

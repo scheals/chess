@@ -25,7 +25,7 @@ class BoardNavigator
   end
 
   def moves_for(coordinate)
-    moves_after_collision_for(coordinate).reject { |move| checks_king?(coordinate, move.to_s) }
+    moves_after_collision_for(coordinate).reject { |move| move_checks_own_king?(coordinate, move.to_s) }
   end
 
   def piece_for(coordinate)
@@ -48,7 +48,7 @@ class BoardNavigator
     false
   end
 
-  def checks_king?(start, target)
+  def move_checks_own_king?(start, target)
     board_after_move = BoardNavigator.new(board.copy, navigator_factory)
     board_after_move.board.move_piece(start, target)
     board_after_move.under_check?(board_after_move.king_for(target))

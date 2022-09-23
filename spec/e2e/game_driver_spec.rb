@@ -29,7 +29,7 @@ require_relative '../../lib/navigator/pawn_navigator'
 require_relative '../../lib/navigator/queen_navigator'
 require_relative '../../lib/navigator/rook_navigator'
 
-describe GameDriver do
+xdescribe GameDriver do
   describe '#start' do
     context 'when promotion ends the game' do
       subject(:promoted_to_win) { described_class }

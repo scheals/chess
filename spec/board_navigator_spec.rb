@@ -165,7 +165,7 @@ describe BoardNavigator do
   end
 
   # rubocop: disable RSpec/MultipleMemoizedHelpers
-  describe '#checks_king?' do
+  describe '#move_checks_own_king?' do
     let(:navigator_factory) { class_double(NavigatorFactory) }
     let(:board) { instance_double(Board) }
     let(:board_copy) { instance_double(Board) }
@@ -194,19 +194,19 @@ describe BoardNavigator do
 
       it 'always sends Board a copy message' do
         move = 'a2'
-        king_checking.checks_king?(white_piece.position, move)
+        king_checking.move_checks_own_king?(white_piece.position, move)
         expect(board).to have_received(:copy)
       end
 
       it 'always sends the copy of Board a move_piece message' do
         move = 'a2'
-        king_checking.checks_king?(white_piece.position, move)
+        king_checking.move_checks_own_king?(white_piece.position, move)
         expect(board_copy).to have_received(:move_piece).with(white_piece.position, move)
       end
 
       it 'always sends the copy of Board a find_kings message' do
         move = 'a2'
-        king_checking.checks_king?(white_piece.position, move)
+        king_checking.move_checks_own_king?(white_piece.position, move)
         expect(board_copy).to have_received(:find_kings)
       end
     end
@@ -242,20 +242,20 @@ describe BoardNavigator do
 
       it 'sends the NavigatorFactory a for message with a King' do
         move = 'b4'
-        navigate_check.checks_king?(white_rook.position, move)
+        navigate_check.move_checks_own_king?(white_rook.position, move)
         expect(navigator_factory).to have_received(:for).with(having_attributes(board: board_copy), white_king)
       end
 
       it 'sends the NavigatorFactory a for message with enemy pieces' do
         move = 'b4'
-        navigate_check.checks_king?(white_rook.position, move)
+        navigate_check.move_checks_own_king?(white_rook.position, move)
         expect(navigator_factory).to have_received(:for).with(having_attributes(board: board_copy), black_rook)
       end
 
       it 'returns true' do
         start = 'a4'
         target = 'b4'
-        expect(navigate_check.checks_king?(start, target)).to be true
+        expect(navigate_check.move_checks_own_king?(start, target)).to be true
       end
     end
 
@@ -288,20 +288,20 @@ describe BoardNavigator do
 
       it 'sends the NavigatorFactory a for message' do
         move = 'a7'
-        navigate_checkless.checks_king?(black_rook.position, move)
+        navigate_checkless.move_checks_own_king?(black_rook.position, move)
         expect(navigator_factory).to have_received(:for).with(having_attributes(board: board_copy), black_king)
       end
 
       it 'sends the NavigatorFactory a for message with enemy pieces' do
         move = 'a7'
-        navigate_checkless.checks_king?(black_rook.position, move)
+        navigate_checkless.move_checks_own_king?(black_rook.position, move)
         expect(navigator_factory).to have_received(:for).with(having_attributes(board: board_copy), white_rook)
       end
 
       it 'returns false' do
         start = 'h7'
         target = 'a7'
-        expect(navigate_checkless.checks_king?(start, target)).to be false
+        expect(navigate_checkless.move_checks_own_king?(start, target)).to be false
       end
     end
   end
