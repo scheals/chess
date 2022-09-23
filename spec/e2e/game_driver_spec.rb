@@ -115,7 +115,7 @@ describe GameDriver do
 
       it 'captures the piece correctly' do
         en_passant_finish.start(game)
-        expect(game.board_navigator.board.piece_for('f5')).to be_a(NilPiece)
+        expect(game.board.piece_for('f5')).to be_a(NilPiece)
       end
 
       it 'correctly reflects that by ending the loop' do

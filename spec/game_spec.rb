@@ -9,9 +9,8 @@ require_relative '../lib/display'
 describe Game do
   describe '#pick_piece' do
     context 'when piece belongs to current player' do
-      subject(:valid_piece_picking) { described_class.new(player_white, player_black, board_navigator) }
+      subject(:valid_piece_picking) { described_class.new(player_white, player_black, board) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:white_piece) { instance_double(Piece, colour: :white) }
       let(:player_white) { instance_double(Player, colour: :white) }
@@ -27,9 +26,8 @@ describe Game do
     end
 
     context 'when piece does not belong to current player' do
-      subject(:invalid_piece_picking) { described_class.new(player_black, player_white, board_navigator) }
+      subject(:invalid_piece_picking) { described_class.new(player_black, player_white, board) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:white_piece) { instance_double(Piece, colour: :white) }
       let(:player_black) { instance_double(Player, colour: :black) }
@@ -87,7 +85,7 @@ describe Game do
       let(:proper_move) { 'a2a4' }
 
       before do
-        out_of_bounds_input.board_navigator.board.setup_from_fen
+        out_of_bounds_input.board.setup_from_fen
         allow(out_of_bounds_input).to receive(:gets).and_return(improper_move, proper_move)
       end
 
@@ -99,10 +97,9 @@ describe Game do
 
   describe '#in_bounds?' do
     context 'when the full move is in bounds' do
-      subject(:game_in_bound_move) { described_class.new(player, player, board_navigator) }
+      subject(:game_in_bound_move) { described_class.new(player, player, board) }
 
       let(:player) { instance_double(Player) }
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:in_bounds_move) { Move.parse('a1b1') }
 
@@ -117,10 +114,9 @@ describe Game do
     end
 
     context 'when the partial move is not in bounds' do
-      subject(:game_out_of_bound_move) { described_class.new(player, player, board_navigator) }
+      subject(:game_out_of_bound_move) { described_class.new(player, player, board) }
 
       let(:player) { instance_double(Player) }
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:out_of_bounds_move) { Move.parse('a9') }
 
@@ -136,10 +132,9 @@ describe Game do
 
   describe '#current_player_owns?' do
     context 'when the current player owns the piece' do
-      subject(:game_current_player_owns) { described_class.new(player, player, board_navigator) }
+      subject(:game_current_player_owns) { described_class.new(player, player, board) }
 
       let(:player) { instance_double(Player, colour: 'white') }
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:move) { Move.parse('a3b3') }
       let(:piece) { instance_double(Piece, colour: 'white') }
@@ -154,10 +149,9 @@ describe Game do
     end
 
     context 'when the current players does not own the piece' do
-      subject(:game_current_player_does_not_own) { described_class.new(player, player, board_navigator) }
+      subject(:game_current_player_does_not_own) { described_class.new(player, player, board) }
 
       let(:player) { instance_double(Player, colour: 'black') }
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:move) { Move.parse('a6d6') }
       let(:piece) { instance_double(Piece, colour: 'white') }
@@ -175,10 +169,9 @@ describe Game do
 
   describe '#legal_target?' do
     context 'when target is legal' do
-      subject(:game_legal_target) { described_class.new(player, player, board_navigator) }
+      subject(:game_legal_target) { described_class.new(player, player, board) }
 
       let(:player) { instance_double(Player, colour: 'black') }
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:move) { Move.parse('a6d6') }
 
@@ -192,10 +185,9 @@ describe Game do
     end
 
     context 'when target is illegal' do
-      subject(:game_illegal_target) { described_class.new(player, player, board_navigator) }
+      subject(:game_illegal_target) { described_class.new(player, player, board) }
 
       let(:player) { instance_double(Player, colour: 'black') }
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:move) { Move.parse('b7h2') }
 
@@ -216,7 +208,7 @@ describe Game do
       let(:move) { Move.parse('b7h7') }
 
       before do
-        game_valid_move.board_navigator.board.setup_from_fen('k7/1r6/8/8/8/8/8/K7')
+        game_valid_move.board.setup_from_fen('k7/1r6/8/8/8/8/8/K7')
       end
 
       it 'returns the move' do
@@ -226,10 +218,9 @@ describe Game do
 
     context 'when target is not legal' do
       context 'when move is completed afterwards' do
-        subject(:game_target_complete) { described_class.new(player, player, board_navigator, display) }
+        subject(:game_target_complete) { described_class.new(player, player, board, display) }
 
         let(:player) { instance_double(Player) }
-        let(:board_navigator) { instance_double(BoardNavigator, board:) }
         let(:board) { instance_double(Board) }
         let(:display) { class_double(Display) }
         let(:move) { Move.parse('b7h9') }
@@ -247,10 +238,9 @@ describe Game do
       end
 
       context 'when \'q\' is input' do
-        subject(:game_target_quit) { described_class.new(player, player, board_navigator, display) }
+        subject(:game_target_quit) { described_class.new(player, player, board, display) }
 
         let(:player) { instance_double(Player) }
-        let(:board_navigator) { instance_double(BoardNavigator, board:) }
         let(:board) { instance_double(Board) }
         let(:display) { class_double(Display) }
         let(:move) { Move.parse('b7h9') }
@@ -318,10 +308,9 @@ describe Game do
 
   describe '#tie?' do
     context 'when it is a stalemate' do
-      subject(:stalemate) { described_class.new(player, player, board_navigator) }
+      subject(:stalemate) { described_class.new(player, player, board) }
 
       let(:player) { instance_double(Player, name: 'test') }
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:current_player_colour) { 'white' }
 
@@ -399,10 +388,9 @@ describe Game do
 
   describe '#promoteable?' do
     context 'when piece at the coordinate is promoteable' do
-      subject(:promoteable_game) { described_class.new(player, player, board_navigator) }
+      subject(:promoteable_game) { described_class.new(player, player, board) }
 
       let(:player) { instance_double(Player) }
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:coordinate) { 'a8' }
 
@@ -416,10 +404,9 @@ describe Game do
     end
 
     context 'when piece at the coordinate is not promoteable' do
-      subject(:nonpromoteable_game) { described_class.new(player, player, board_navigator) }
+      subject(:nonpromoteable_game) { described_class.new(player, player, board) }
 
       let(:player) { instance_double(Player) }
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:coordinate) { 'a8' }
 
@@ -434,10 +421,9 @@ describe Game do
   end
 
   describe '#promote' do
-    subject(:promoted_game) { described_class.new(player, player, board_navigator) }
+    subject(:promoted_game) { described_class.new(player, player, board) }
 
     let(:player) { instance_double(Player, name: 'Tester') }
-    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:queen) { Queen.new(coordinate, colour: 'black') }
     let(:coordinate) { 'c8' }
@@ -459,9 +445,8 @@ describe Game do
 
   describe '#castling?' do
     context 'when it is a castling move' do
-      subject(:castling_game) { described_class.new(player, player, board_navigator) }
+      subject(:castling_game) { described_class.new(player, player, board) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:king) { instance_double(King) }
@@ -483,9 +468,8 @@ describe Game do
     end
 
     context 'when it is not a castling move' do
-      subject(:noncastling_game) { described_class.new(player, player, board_navigator) }
+      subject(:noncastling_game) { described_class.new(player, player, board) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:king) { instance_double(King) }
@@ -507,9 +491,8 @@ describe Game do
     end
 
     context 'when it is not a move done by a King' do
-      subject(:rook_castle_attempt_game) { described_class.new(player, player, board_navigator) }
+      subject(:rook_castle_attempt_game) { described_class.new(player, player, board) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:rook) { instance_double(Rook) }
@@ -533,9 +516,8 @@ describe Game do
 
   describe '#castle' do
     context 'when black is performing queenside castling' do
-      subject(:castle_move_game) { described_class.new(player, player, board_navigator) }
+      subject(:castle_move_game) { described_class.new(player, player, board) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:queenside_move) { Move.parse('e8c8') }
@@ -552,9 +534,8 @@ describe Game do
     end
 
     context 'when black is performing kingside castling' do
-      subject(:castle_move_game) { described_class.new(player, player, board_navigator) }
+      subject(:castle_move_game) { described_class.new(player, player, board) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:kingside_move) { Move.parse('e8g8') }
@@ -571,9 +552,8 @@ describe Game do
     end
 
     context 'when white is performing queenside castling' do
-      subject(:castle_move_game) { described_class.new(player, player, board_navigator) }
+      subject(:castle_move_game) { described_class.new(player, player, board) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:queenside_move) { Move.parse('e1c1') }
@@ -590,9 +570,8 @@ describe Game do
     end
 
     context 'when white is performing kingside castling' do
-      subject(:castle_move_game) { described_class.new(player, player, board_navigator) }
+      subject(:castle_move_game) { described_class.new(player, player, board) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:kingside_move) { Move.parse('e1g1') }
@@ -611,9 +590,8 @@ describe Game do
 
   describe '#en_passant_opportunity?' do
     context 'when it creates an en passant opportunity' do
-      subject(:en_passant_opportunity) { described_class.new(player, player, board_navigator) }
+      subject(:en_passant_opportunity) { described_class.new(player, player, board) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:move) { Move.parse('a2a4') }
@@ -635,9 +613,8 @@ describe Game do
     end
 
     context 'when it does not create an en passant opportunity' do
-      subject(:no_en_passant) { described_class.new(player, player, board_navigator) }
+      subject(:no_en_passant) { described_class.new(player, player, board) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:move) { Move.parse('a2a3') }
@@ -660,9 +637,8 @@ describe Game do
   end
 
   describe '#send_en_passant_opportunity' do
-    subject(:en_passant_game) { described_class.new(player, player, board_navigator) }
+    subject(:en_passant_game) { described_class.new(player, player, board) }
 
-    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:player) { instance_double(Player) }
     let(:move) { Move.parse('d7d5') }
@@ -702,12 +678,12 @@ describe Game do
     context 'when the move is not en passant' do
       subject(:no_passant_game) { described_class.new }
 
-      let(:black_pawn) { no_passant_game.board_navigator.board.piece_for('c7') }
+      let(:black_pawn) { no_passant_game.board.piece_for('c7') }
       let(:no_passant_opportunity) { Move.parse('c7c6') }
-      let(:white_pawn) { no_passant_game.board_navigator.board.piece_for('d5') }
+      let(:white_pawn) { no_passant_game.board.piece_for('d5') }
 
       before do
-        no_passant_game.board_navigator.board.setup_from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
+        no_passant_game.board.setup_from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
         no_passant_game.board.move_piece(black_pawn.position, no_passant_opportunity.target)
         no_passant_game.board.move_piece(white_pawn.position, black_pawn.position)
       end
@@ -722,9 +698,8 @@ describe Game do
 
   describe '#calculate_halfmove_clock' do
     context 'when piece is a Pawn' do
-      subject(:halfmove_pawn_reset) { described_class.new(player, player, board_navigator) }
+      subject(:halfmove_pawn_reset) { described_class.new(player, player, board) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:move) { Move.parse('a2b3') }
@@ -751,9 +726,8 @@ describe Game do
     end
 
     context 'when move is a capture' do
-      subject(:halfmove_capture_reset) { described_class.new(player, player, board_navigator) }
+      subject(:halfmove_capture_reset) { described_class.new(player, player, board) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:move) { Move.parse('a2a6') }
@@ -780,9 +754,8 @@ describe Game do
     end
 
     context 'when move is not a capture nor made by a Pawn' do
-      subject(:halfmove_increment) { described_class.new(player, player, board_navigator) }
+      subject(:halfmove_increment) { described_class.new(player, player, board) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:move) { Move.parse('a2a4') }
@@ -812,7 +785,7 @@ describe Game do
       subject(:starting_position) { described_class.new }
 
       before do
-        starting_position.board_navigator.board.setup_from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
+        starting_position.board.setup_from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
       end
 
       it 'returns the correct string' do
@@ -825,7 +798,7 @@ describe Game do
       subject(:starting_position) { described_class.new }
 
       before do
-        starting_position.board_navigator.board.setup_from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
+        starting_position.board.setup_from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
       end
 
       it 'returns the correct string' do

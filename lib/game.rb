@@ -9,14 +9,13 @@ require_relative './display'
 # rubocop: disable Metrics/ClassLength
 # This class handles a game of Chess.
 class Game
-  attr_reader :board_navigator, :current_player, :player1, :player2, :display, :board
+  attr_reader :current_player, :player1, :player2, :display, :board
 
   def initialize(player1 = Player.new('White', 'white'),
                  player2 = Player.new('Black', 'black'),
-                 board_navigator = BoardNavigator.new(Board.new),
+                 board = Board.new,
                  display = Display)
-    @board_navigator = board_navigator
-    @board = board_navigator.board
+    @board = board
     @player1 = player1
     @player2 = player2
     @current_player = player1

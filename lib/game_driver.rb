@@ -72,7 +72,7 @@ module GameDriver
   def self.start(game)
     puts game.display.greeting
     loop do
-      puts game.display.turn_beginning(game.current_player, game.board_navigator.board)
+      puts game.display.turn_beginning(game.current_player, game.board)
       move = game.ask_for_move until move
       return game.save_game if move.to_s == 'save'
 
@@ -87,7 +87,7 @@ module GameDriver
 
       game.switch_players
     end
-    puts game.display.show(game.board_navigator.board)
+    puts game.display.show(game.board)
     puts game.display.thanks(game.player1, game.player2)
   end
 end
