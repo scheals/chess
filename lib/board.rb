@@ -80,7 +80,11 @@ class Board
   end
 
   def find_kings
-    pieces.select { |piece| piece.instance_of?(King) }
+    pieces{ |piece| piece.instance_of?(King) }
+  end
+
+  def king_for(coordinate)
+    find_kings.find { |king| piece_for(coordinate).ally?(king) }
   end
 
   def put(piece, coordinate)

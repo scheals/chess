@@ -140,31 +140,7 @@ describe BoardNavigator do
       end
     end
   end
-  # rubocop: enable RSpec/MultipleMemoizedHelpers
 
-  describe '#king_for' do
-    subject(:navigating_for_a_king) { described_class.new(board, navigator_factory) }
-
-    let(:board) { instance_double(Board) }
-    let(:navigator_factory) { class_double(NavigatorFactory) }
-    let(:white_king) { instance_double(King, position: 'a1', colour: 'white') }
-    let(:black_king) { instance_double(King, position: 'a2', colour: 'black') }
-    let(:white_piece) { instance_double(Piece, position: 'a3', colour: 'white') }
-
-    before do
-      allow(board).to receive(:find_kings).and_return([white_king, black_king])
-      allow(board).to receive(:piece_for).with('a3').and_return(white_piece)
-      allow(white_piece).to receive(:ally?).with(white_king).and_return true
-      allow(white_piece).to receive(:ally?).with(black_king).and_return false
-    end
-
-    it 'returns allied King of a piece' do
-      coordinate = 'a3'
-      expect(navigating_for_a_king.king_for(coordinate)).to eq(white_king)
-    end
-  end
-
-  # rubocop: disable RSpec/MultipleMemoizedHelpers
   describe '#move_checks_own_king?' do
     let(:navigator_factory) { class_double(NavigatorFactory) }
     let(:board) { instance_double(Board) }
@@ -182,7 +158,7 @@ describe BoardNavigator do
         move = 'a2'
         allow(board).to receive(:copy).and_return(board_copy)
         allow(board_copy).to receive(:move_piece).with(white_piece.position, move)
-        allow(board_copy).to receive(:find_kings).and_return([white_king, black_king])
+        allow(board_copy).to receive(:king_for).with(move).and_return(white_king)
         allow(board_copy).to receive(:piece_for).with(move).and_return(white_piece)
         allow(white_piece).to receive(:ally?).with(white_king).and_return(true)
         allow(white_piece).to receive(:ally?).with(black_king).and_return(false)
@@ -204,10 +180,10 @@ describe BoardNavigator do
         expect(board_copy).to have_received(:move_piece).with(white_piece.position, move)
       end
 
-      it 'always sends the copy of Board a find_kings message' do
+      it 'always sends the copy of Board a king_for message' do
         move = 'a2'
         king_checking.move_checks_own_king?(white_piece.position, move)
-        expect(board_copy).to have_received(:find_kings)
+        expect(board_copy).to have_received(:king_for).with(move)
       end
     end
 
@@ -224,7 +200,7 @@ describe BoardNavigator do
         move = 'b4'
         allow(board).to receive(:copy).and_return(board_copy)
         allow(board_copy).to receive(:move_piece).with(white_rook.position, move)
-        allow(board_copy).to receive(:find_kings).and_return([white_king, black_king])
+        allow(board_copy).to receive(:king_for).with(move).and_return(white_king)
         allow(board_copy).to receive(:piece_for).with(move).and_return(white_rook).thrice
         allow(white_rook).to receive(:ally?).and_return(true, false)
         allow(navigator_factory).to receive(:for).with(having_attributes(board: board_copy), white_king).and_return(white_king_navigator)
@@ -272,7 +248,7 @@ describe BoardNavigator do
         move = 'a7'
         allow(board).to receive(:copy).and_return(board_copy)
         allow(board_copy).to receive(:move_piece).with(black_rook.position, move)
-        allow(board_copy).to receive(:find_kings).and_return([white_king, black_king])
+        allow(board_copy).to receive(:king_for).with(move).and_return(black_king)
         allow(board_copy).to receive(:piece_for).with(move).and_return(black_rook).exactly(4).times
         allow(black_rook).to receive(:ally?).and_return(false, true)
         allow(navigator_factory).to receive(:for).with(having_attributes(board: board_copy), black_king).and_return(black_king_navigator)

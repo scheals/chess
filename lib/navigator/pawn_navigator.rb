@@ -43,7 +43,7 @@ class PawnNavigator < PieceNavigator
     else
       black_passant_capture(board_after_move)
     end
-    board_after_move.under_check?(board_after_move.king_for(target))
+    board_after_move.under_check?(board_after_move.board.king_for(target))
   end
 
   def white_en_passant

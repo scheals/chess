@@ -26,10 +26,6 @@ class BoardNavigator
     moves_after_collision_for(coordinate).reject { |move| move_checks_own_king?(coordinate, move.to_s) }
   end
 
-  def king_for(coordinate)
-    board.find_kings.select { |king| board.piece_for(coordinate).ally?(king) }.first
-  end
-
   def under_check?(king)
     king_navigator = if king.instance_of?(KingNavigator)
                        king
@@ -45,7 +41,7 @@ class BoardNavigator
   def move_checks_own_king?(start, target)
     board_after_move = BoardNavigator.new(board.copy, navigator_factory)
     board_after_move.board.move_piece(start, target)
-    board_after_move.under_check?(board_after_move.king_for(target))
+    board_after_move.under_check?(board_after_move.board.king_for(target))
   end
 
   def enemy_moves(piece_navigator)

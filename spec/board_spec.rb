@@ -507,6 +507,29 @@ describe Board do
       end
     end
   end
+
+  describe '#king_for' do
+    subject(:looking_for_a_king) { described_class.new }
+
+    let(:white_king) { instance_double(King, position: 'a1', colour: 'white', real?: true) }
+    let(:black_king) { instance_double(King, position: 'a2', colour: 'black', real?: true) }
+    let(:white_piece) { instance_double(Piece, position: 'a3', colour: 'white', real?: true) }
+
+    before do
+      allow(white_king).to receive(:instance_of?).with(King).and_return true
+      allow(black_king).to receive(:instance_of?).with(King).and_return true
+      allow(white_piece).to receive(:ally?).with(white_king).and_return true
+      allow(white_piece).to receive(:ally?).with(black_king).and_return false
+      looking_for_a_king.put(white_king, 'a1')
+      looking_for_a_king.put(black_king, 'a2')
+      looking_for_a_king.put(white_piece, 'a3')
+    end
+
+    it 'returns allied King of a piece' do
+      coordinate = 'a3'
+      expect(looking_for_a_king.king_for(coordinate)).to eq(white_king)
+    end
+  end
 end
 
 describe Square do
