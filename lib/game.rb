@@ -207,7 +207,7 @@ class Game
   end
 
   def fifty_move_rule?
-    if @half_move_clock == 50
+    if @half_move_clock == 100
       puts display.fifty_moves_tie(player1, player2)
       return true
     end

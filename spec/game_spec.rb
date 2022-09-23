@@ -339,7 +339,7 @@ describe Game do
       subject(:fifty_move_rule) { described_class.new }
 
       before do
-        fifty_move_rule.instance_variable_set(:@half_move_clock, 50)
+        fifty_move_rule.instance_variable_set(:@half_move_clock, 100)
       end
 
       it 'returns true' do
