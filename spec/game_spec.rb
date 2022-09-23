@@ -11,14 +11,14 @@ describe Game do
     context 'when piece belongs to current player' do
       subject(:valid_piece_picking) { described_class.new(player_white, player_black, board_navigator) }
 
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:white_piece) { instance_double(Piece, colour: :white) }
       let(:player_white) { instance_double(Player, colour: :white) }
       let(:player_black) { instance_double(Player, colour: :black) }
 
       before do
-        allow(board_navigator).to receive(:piece_for).with('a1').and_return(white_piece)
+        allow(board).to receive(:piece_for).with('a1').and_return(white_piece)
       end
 
       it 'returns the picked piece' do
@@ -29,14 +29,14 @@ describe Game do
     context 'when piece does not belong to current player' do
       subject(:invalid_piece_picking) { described_class.new(player_black, player_white, board_navigator) }
 
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:white_piece) { instance_double(Piece, colour: :white) }
       let(:player_black) { instance_double(Player, colour: :black) }
       let(:player_white) { instance_double(Player, colour: :white) }
 
       before do
-        allow(board_navigator).to receive(:piece_for).with('a2').and_return(white_piece)
+        allow(board).to receive(:piece_for).with('a2').and_return(white_piece)
       end
 
       it 'returns nil' do
@@ -139,12 +139,13 @@ describe Game do
       subject(:game_current_player_owns) { described_class.new(player, player, board_navigator) }
 
       let(:player) { instance_double(Player, colour: 'white') }
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:move) { Move.parse('a3b3') }
       let(:piece) { instance_double(Piece, colour: 'white') }
 
       before do
-        allow(board_navigator).to receive(:piece_for).with(move.start).and_return(piece)
+        allow(board).to receive(:piece_for).with(move.start).and_return(piece)
       end
 
       it 'returns true' do
@@ -156,13 +157,14 @@ describe Game do
       subject(:game_current_player_does_not_own) { described_class.new(player, player, board_navigator) }
 
       let(:player) { instance_double(Player, colour: 'black') }
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:move) { Move.parse('a6d6') }
       let(:piece) { instance_double(Piece, colour: 'white') }
 
       before do
         game_current_player_does_not_own.instance_variable_set(:@current_player, player)
-        allow(board_navigator).to receive(:piece_for).with(move.start).and_return(piece)
+        allow(board).to receive(:piece_for).with(move.start).and_return(piece)
       end
 
       it 'returns false' do
@@ -176,7 +178,8 @@ describe Game do
       subject(:game_legal_target) { described_class.new(player, player, board_navigator) }
 
       let(:player) { instance_double(Player, colour: 'black') }
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:move) { Move.parse('a6d6') }
 
       before do
@@ -192,7 +195,8 @@ describe Game do
       subject(:game_illegal_target) { described_class.new(player, player, board_navigator) }
 
       let(:player) { instance_double(Player, colour: 'black') }
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:move) { Move.parse('b7h2') }
 
       before do
@@ -225,14 +229,14 @@ describe Game do
         subject(:game_target_complete) { described_class.new(player, player, board_navigator, display) }
 
         let(:player) { instance_double(Player) }
-        let(:board_navigator) { instance_double(BoardNavigator) }
+        let(:board_navigator) { instance_double(BoardNavigator, board:) }
+        let(:board) { instance_double(Board) }
         let(:display) { class_double(Display) }
         let(:move) { Move.parse('b7h9') }
 
         before do
           allow(game_target_complete).to receive(:gets).and_return('b8')
           allow(board_navigator).to receive(:moves_for).with(move.start).and_return([Coordinate.parse('b8')])
-          allow(board_navigator).to receive(:board).once
           allow(display).to receive(:possible_moves)
           allow(display).to receive(:move_impossible_for_piece)
         end
@@ -246,14 +250,14 @@ describe Game do
         subject(:game_target_quit) { described_class.new(player, player, board_navigator, display) }
 
         let(:player) { instance_double(Player) }
-        let(:board_navigator) { instance_double(BoardNavigator) }
+        let(:board_navigator) { instance_double(BoardNavigator, board:) }
+        let(:board) { instance_double(Board) }
         let(:display) { class_double(Display) }
         let(:move) { Move.parse('b7h9') }
 
         before do
           allow(game_target_quit).to receive(:gets).and_return('q')
           allow(board_navigator).to receive(:moves_for).with(move.start).and_return([Coordinate.parse('b8')])
-          allow(board_navigator).to receive(:board).twice
           allow(display).to receive(:possible_moves)
           allow(display).to receive(:turn_beginning)
           allow(display).to receive(:move_impossible_for_piece)
@@ -317,7 +321,8 @@ describe Game do
       subject(:stalemate) { described_class.new(player, player, board_navigator) }
 
       let(:player) { instance_double(Player, name: 'test') }
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:current_player_colour) { 'white' }
 
       before do
@@ -432,7 +437,8 @@ describe Game do
     subject(:promoted_game) { described_class.new(player, player, board_navigator) }
 
     let(:player) { instance_double(Player, name: 'Tester') }
-    let(:board_navigator) { instance_double(BoardNavigator) }
+    let(:board_navigator) { instance_double(BoardNavigator, board:) }
+    let(:board) { instance_double(Board) }
     let(:queen) { Queen.new(coordinate, colour: 'black') }
     let(:coordinate) { 'c8' }
 
@@ -455,19 +461,20 @@ describe Game do
     context 'when it is a castling move' do
       subject(:castling_game) { described_class.new(player, player, board_navigator) }
 
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:king) { instance_double(King) }
       let(:move) { Move.parse('e1c1') }
 
       before do
         allow(king).to receive(:is_a?).with(King).and_return(true)
-        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(king)
+        allow(board).to receive(:piece_for).with(move.target).and_return(king)
       end
 
-      it 'sends BoardNavigator a piece_for message' do
+      it 'sends Board a piece_for message' do
         castling_game.castling?(move)
-        expect(board_navigator).to have_received(:piece_for).with(move.target)
+        expect(board).to have_received(:piece_for).with(move.target)
       end
 
       it 'returns true' do
@@ -478,19 +485,20 @@ describe Game do
     context 'when it is not a castling move' do
       subject(:noncastling_game) { described_class.new(player, player, board_navigator) }
 
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:king) { instance_double(King) }
       let(:move) { Move.new('e1f1') }
 
       before do
         allow(king).to receive(:is_a?).with(King).and_return(true)
-        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(king)
+        allow(board).to receive(:piece_for).with(move.target).and_return(king)
       end
 
-      it 'sends BoardNavigator a piece_for message' do
+      it 'sends Board a piece_for message' do
         noncastling_game.castling?(move)
-        expect(board_navigator).to have_received(:piece_for).with(move.target)
+        expect(board).to have_received(:piece_for).with(move.target)
       end
 
       it 'returns false' do
@@ -501,19 +509,20 @@ describe Game do
     context 'when it is not a move done by a King' do
       subject(:rook_castle_attempt_game) { described_class.new(player, player, board_navigator) }
 
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:rook) { instance_double(Rook) }
       let(:move) { Move.new('e1g1') }
 
       before do
         allow(rook).to receive(:is_a?).with(King).and_return(false)
-        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(rook)
+        allow(board).to receive(:piece_for).with(move.target).and_return(rook)
       end
 
-      it 'sends BoardNavigator a piece_for message' do
+      it 'sends Board a piece_for message' do
         rook_castle_attempt_game.castling?(move)
-        expect(board_navigator).to have_received(:piece_for).with(move.target)
+        expect(board).to have_received(:piece_for).with(move.target)
       end
 
       it 'returns false' do
@@ -526,7 +535,8 @@ describe Game do
     context 'when black is performing queenside castling' do
       subject(:castle_move_game) { described_class.new(player, player, board_navigator) }
 
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:queenside_move) { Move.parse('e8c8') }
       let(:rook_move) { Move.parse('a8d8') }
@@ -544,7 +554,8 @@ describe Game do
     context 'when black is performing kingside castling' do
       subject(:castle_move_game) { described_class.new(player, player, board_navigator) }
 
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:kingside_move) { Move.parse('e8g8') }
       let(:rook_move) { Move.parse('h8f8') }
@@ -562,7 +573,8 @@ describe Game do
     context 'when white is performing queenside castling' do
       subject(:castle_move_game) { described_class.new(player, player, board_navigator) }
 
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:queenside_move) { Move.parse('e1c1') }
       let(:rook_move) { Move.parse('a1d1') }
@@ -580,7 +592,8 @@ describe Game do
     context 'when white is performing kingside castling' do
       subject(:castle_move_game) { described_class.new(player, player, board_navigator) }
 
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:kingside_move) { Move.parse('e1g1') }
       let(:rook_move) { Move.parse('h1f1') }
@@ -600,19 +613,20 @@ describe Game do
     context 'when it creates an en passant opportunity' do
       subject(:en_passant_opportunity) { described_class.new(player, player, board_navigator) }
 
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:move) { Move.parse('a2a4') }
       let(:pawn) { instance_double(Pawn) }
 
       before do
         allow(pawn).to receive(:is_a?).and_return(Pawn)
-        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(pawn)
+        allow(board).to receive(:piece_for).with(move.target).and_return(pawn)
       end
 
-      it 'sends BoardNavigator a piece_for message' do
+      it 'sends Board a piece_for message' do
         en_passant_opportunity.en_passant_opportunity?(move)
-        expect(board_navigator).to have_received(:piece_for).with(move.target).once
+        expect(board).to have_received(:piece_for).with(move.target).once
       end
 
       it 'returns true' do
@@ -623,19 +637,20 @@ describe Game do
     context 'when it does not create an en passant opportunity' do
       subject(:no_en_passant) { described_class.new(player, player, board_navigator) }
 
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:move) { Move.parse('a2a3') }
       let(:pawn) { instance_double(Pawn) }
 
       before do
         allow(pawn).to receive(:is_a?).and_return(Pawn)
-        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(pawn)
+        allow(board).to receive(:piece_for).with(move.target).and_return(pawn)
       end
 
-      it 'sends BoardNavigator a piece_for message' do
+      it 'sends Board a piece_for message' do
         no_en_passant.en_passant_opportunity?(move)
-        expect(board_navigator).to have_received(:piece_for).with(move.target).once
+        expect(board).to have_received(:piece_for).with(move.target).once
       end
 
       it 'returns false' do
@@ -647,7 +662,8 @@ describe Game do
   describe '#send_en_passant_opportunity' do
     subject(:en_passant_game) { described_class.new(player, player, board_navigator) }
 
-    let(:board_navigator) { instance_double(BoardNavigator) }
+    let(:board_navigator) { instance_double(BoardNavigator, board:) }
+    let(:board) { instance_double(Board) }
     let(:player) { instance_double(Player) }
     let(:move) { Move.parse('d7d5') }
 
@@ -708,22 +724,23 @@ describe Game do
     context 'when piece is a Pawn' do
       subject(:halfmove_pawn_reset) { described_class.new(player, player, board_navigator) }
 
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:move) { Move.parse('a2b3') }
       let(:pawn) { instance_double(Pawn) }
 
       before do
         halfmove_pawn_reset.instance_variable_set(:@half_move_clock, 12)
-        allow(board_navigator).to receive(:piece_for).with(move.start).and_return(pawn).once
+        allow(board).to receive(:piece_for).with(move.start).and_return(pawn).once
         allow(pawn).to receive(:is_a?).with(Pawn).and_return(true).once
-        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(pawn).once
+        allow(board).to receive(:piece_for).with(move.target).and_return(pawn).once
         allow(pawn).to receive(:real?).and_return(true).once
       end
 
-      it 'sends BoardNavigator a piece_for message twice' do
+      it 'sends Board a piece_for message twice' do
         halfmove_pawn_reset.calculate_halfmove_clock(move)
-        expect(board_navigator).to have_received(:piece_for).twice
+        expect(board).to have_received(:piece_for).twice
       end
 
       it 'makes @half_move_clock equal to 0' do
@@ -736,22 +753,23 @@ describe Game do
     context 'when move is a capture' do
       subject(:halfmove_capture_reset) { described_class.new(player, player, board_navigator) }
 
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:move) { Move.parse('a2a6') }
       let(:rook) { instance_double(Rook) }
 
       before do
         halfmove_capture_reset.instance_variable_set(:@half_move_clock, 12)
-        allow(board_navigator).to receive(:piece_for).with(move.start).and_return(rook).once
+        allow(board).to receive(:piece_for).with(move.start).and_return(rook).once
         allow(rook).to receive(:is_a?).with(Pawn).and_return(false).once
-        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(rook).once
+        allow(board).to receive(:piece_for).with(move.target).and_return(rook).once
         allow(rook).to receive(:real?).and_return(true).once
       end
 
-      it 'sends BoardNavigator a piece_for message twice' do
+      it 'sends Board a piece_for message twice' do
         halfmove_capture_reset.calculate_halfmove_clock(move)
-        expect(board_navigator).to have_received(:piece_for).twice
+        expect(board).to have_received(:piece_for).twice
       end
 
       it 'makes @half_move_clock equal to 0' do
@@ -764,26 +782,27 @@ describe Game do
     context 'when move is not a capture nor made by a Pawn' do
       subject(:halfmove_increment) { described_class.new(player, player, board_navigator) }
 
-      let(:board_navigator) { instance_double(BoardNavigator) }
+      let(:board_navigator) { instance_double(BoardNavigator, board:) }
+      let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
       let(:move) { Move.parse('a2a4') }
       let(:rook) { instance_double(Rook) }
 
       before do
         halfmove_increment.instance_variable_set(:@half_move_clock, 12)
-        allow(board_navigator).to receive(:piece_for).with(move.start).and_return(rook).once
+        allow(board).to receive(:piece_for).with(move.start).and_return(rook).once
         allow(rook).to receive(:is_a?).with(Pawn).and_return(false).once
-        allow(board_navigator).to receive(:piece_for).with(move.target).and_return(rook).once
+        allow(board).to receive(:piece_for).with(move.target).and_return(rook).once
         allow(rook).to receive(:real?).and_return(false).once
       end
 
-      it 'sends BoardNavigator a piece_for message twice' do
+      it 'sends Board a piece_for message twice' do
         halfmove_increment.calculate_halfmove_clock(move)
-        expect(board_navigator).to have_received(:piece_for).twice
+        expect(board).to have_received(:piece_for).twice
       end
 
       it 'increments @half_move_clock by 1' do
-        expect{ halfmove_increment.calculate_halfmove_clock(move) }.to change{ halfmove_increment.instance_variable_get(:@half_move_clock) }.by(1)
+        expect { halfmove_increment.calculate_halfmove_clock(move) }.to change { halfmove_increment.instance_variable_get(:@half_move_clock) }.by(1)
       end
     end
   end

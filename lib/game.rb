@@ -9,13 +9,14 @@ require_relative './display'
 # rubocop: disable Metrics/ClassLength
 # This class handles a game of Chess.
 class Game
-  attr_reader :board_navigator, :current_player, :player1, :player2, :display
+  attr_reader :board_navigator, :current_player, :player1, :player2, :display, :board
 
   def initialize(player1 = Player.new('White', 'white'),
                  player2 = Player.new('Black', 'black'),
                  board_navigator = BoardNavigator.new(Board.new),
                  display = Display)
     @board_navigator = board_navigator
+    @board = board_navigator.board
     @player1 = player1
     @player2 = player2
     @current_player = player1
@@ -26,7 +27,7 @@ class Game
   end
 
   def pick_piece(coordinate)
-    piece = board_navigator.piece_for(coordinate)
+    piece = board.piece_for(coordinate)
     return nil unless piece.colour == current_player.colour
 
     piece
@@ -106,7 +107,7 @@ class Game
 
   def castling?(move)
     castling_moves = %w[e1c1 e8c8 e1g1 e8g8]
-    return true if board_navigator.piece_for(move.target).is_a?(King) && castling_moves.include?(move.to_s)
+    return true if board.piece_for(move.target).is_a?(King) && castling_moves.include?(move.to_s)
 
     false
   end
@@ -121,7 +122,7 @@ class Game
   end
 
   def en_passant_opportunity?(move)
-    return true if board_navigator.piece_for(move.target).is_a?(Pawn) &&
+    return true if board.piece_for(move.target).is_a?(Pawn) &&
                    (move.start.row.to_i - move.target.row.to_i).abs == 2
 
     false
@@ -133,7 +134,7 @@ class Game
 
   def en_passant?(move)
     return true if move.target == board_navigator.en_passant_coordinate &&
-                   board_navigator.piece_for(move.target).is_a?(Pawn)
+                   board.piece_for(move.target).is_a?(Pawn)
 
     false
   end
@@ -229,8 +230,8 @@ class Game
   end
 
   def calculate_halfmove_clock(move)
-    piece = board_navigator.piece_for(move.start)
-    capture = board_navigator.piece_for(move.target).real?
+    piece = board.piece_for(move.start)
+    capture = board.piece_for(move.target).real?
     if piece.is_a?(Pawn) || capture
       @half_move_clock = 0
     else
