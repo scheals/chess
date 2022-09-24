@@ -3,7 +3,7 @@
 # rubocop: disable Metrics/ClassLength
 # This class handles a game of Chess.
 class Game
-  attr_reader :current_player, :white_player, :black_player, :display
+  attr_reader :current_player, :white_player, :black_player, :display, :half_move_clock, :full_move_clock
   attr_accessor :board
 
   # rubocop: disable Metrics/ParameterLists
@@ -24,7 +24,7 @@ class Game
     @board_state_history = []
   end
   # rubocop: enable Metrics/ParameterLists
-  
+
   def pick_piece(coordinate)
     piece = board.piece_for(coordinate)
     return nil unless piece.colour == current_player.colour
@@ -257,19 +257,6 @@ class Game
       file.puts to_fen
     end
     puts display.save_goodbye(to_fen, filename, white_player, black_player)
-  end
-
-  def load(fen_string)
-    save_state = SaveState.new(fen_string)
-    game_state = save_state.game_state
-    @current_player = load_current_player(game_state[:current_player])
-    @half_move_clock = game_state[:half_move_clock]
-    @full_move_clock = game_state[:full_move_clock]
-    @board = Board.from_fen(fen_string)
-  end
-
-  def load_current_player(string)
-    @current_player = [white_player, black_player].find { |player| player.colour[0] == string }
   end
 
   def correct_length?(move)

@@ -21,16 +21,20 @@ module GameDriver
     savegames = get_savegame_names
     return empty_save_directory(game) if savegames.empty?
 
-    load(game, choose_save(savegames))
-    game
+    load(choose_save(savegames))
   end
 
-  def self.load(game, save)
+  def self.load(save)
     fen_string = nil
     File.open("savegames/#{save}", 'r') do |file|
       fen_string = file.gets.chomp
     end
-    game.load(fen_string)
+
+    puts 'Who is playing as white?'
+    white_player = Player.new(gets.chomp, 'white')
+    puts 'Who is playing as black?'
+    black_player = Player.new(gets.chomp, 'black')
+    FEN.new(fen_string).to_game(white_player, black_player)
   end
 
   def self.choose_save(savegames)

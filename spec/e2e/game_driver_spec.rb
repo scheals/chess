@@ -7,15 +7,10 @@ describe GameDriver do
     context 'when promotion ends the game' do
       subject(:promoted_to_win) { described_class }
 
-      let(:game) { Game.new }
+      let(:game) { FEN.new(save).to_game(Player.new('White', 'white'), Player.new('Black', 'black')) }
       let(:save) { '4kbnr/P3pppp/8/8/8/8/1PP1PPPP/RNBQKBNR w KQk - 1 2' }
-      let(:file) { instance_double(File) }
-      let(:filename) { 'promotion' }
 
       before do
-        allow(File).to receive(:open).with("savegames/#{filename}", 'r').and_yield(file)
-        allow(file).to receive(:gets).and_return(save)
-        promoted_to_win.load(game, filename)
         allow(game).to receive(:gets).and_return('a7a8', 'queen')
         allow(promoted_to_win).to receive(:puts)
       end
@@ -29,15 +24,12 @@ describe GameDriver do
     context 'when castling ends the game' do
       subject(:castled_to_win) { described_class }
 
-      let(:game) { Game.new }
+      let(:game) { FEN.new(save).to_game(Player.new('White', 'white'), Player.new('Black', 'black')) }
       let(:save) { 'rnb2kr1/pppp2pp/8/8/8/8/PPPPQ1PP/RNB1K2R w KQ - 0 1' }
       let(:file) { instance_double(File) }
       let(:filename) { 'castling' }
 
       before do
-        allow(File).to receive(:open).with("savegames/#{filename}", 'r').and_yield(file)
-        allow(file).to receive(:gets).and_return(save)
-        castled_to_win.load(game, filename)
         allow(game).to receive(:gets).and_return('e1g1').once
         allow(castled_to_win).to receive(:puts)
       end
@@ -51,15 +43,10 @@ describe GameDriver do
     context "when Fool's mate occurs" do
       subject(:fools_game) { described_class }
 
-      let(:game) { Game.new }
+      let(:game) { FEN.new(save).to_game(Player.new('White', 'white'), Player.new('Black', 'black')) }
       let(:save) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' }
-      let(:file) { instance_double(File) }
-      let(:filename) { 'foolsmate' }
 
       before do
-        allow(File).to receive(:open).with("savegames/#{filename}", 'r').and_yield(file)
-        allow(file).to receive(:gets).and_return(save)
-        fools_game.load(game, filename)
         allow(game).to receive(:gets).and_return('f2f3', 'e7e6', 'g2g4', 'd8h4')
         allow(fools_game).to receive(:puts)
       end
@@ -73,15 +60,12 @@ describe GameDriver do
     context 'when en passant ends the game' do
       subject(:en_passant_finish) { described_class }
 
-      let(:game) { Game.new }
+      let(:game) { FEN.new(save).to_game(Player.new('White', 'white'), Player.new('Black', 'black')) }
       let(:save) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' }
       let(:file) { instance_double(File) }
       let(:filename) { 'enpassant' }
 
       before do
-        allow(File).to receive(:open).with("savegames/#{filename}", 'r').and_yield(file)
-        allow(file).to receive(:gets).and_return(save)
-        en_passant_finish.load(game, filename)
         allow(game).to receive(:gets).and_return('e2e4', 'e7e6', 'e4e5', 'g7g5', 'b1c3', 'g8h6', 'd1h5', 'e8e7', 'c3e4', 'f7f5', 'e5f6')
         allow(en_passant_finish).to receive(:puts)
       end
@@ -100,10 +84,8 @@ describe GameDriver do
     context 'when threefold repetition ends the game' do
       subject(:threefold_finish) { described_class }
 
-      let(:game) { Game.new }
+      let(:game) { FEN.new(save).to_game(Player.new('White', 'white'), Player.new('Black', 'black')) }
       let(:save) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' }
-      let(:file) { instance_double(File) }
-      let(:filename) { 'threefold' }
 
       before do
         # portisch_korchnoi_1970 = %w[g1f3 c7c5 c2c4 g8f6 b1c3 b8c6 d2d4 c5d4 f3d4 e7e6 g2g3 d8b6
@@ -111,9 +93,6 @@ describe GameDriver do
         #                             f7f6 c4c5 b6d8 a2a3 b4c3 d2c3 f6e5 c3e5 b7b6 f1g2
         #                             c6e5 g2a8 e5f7 a8g2 b6c5 b3c5 d8b6 e2f2 b6b5
         #                             g2f1 b5c6 f1g2 c6b5 g2f1 b5c6 f1g2 c6b5]
-        allow(File).to receive(:open).with("savegames/#{filename}", 'r').and_yield(file)
-        allow(file).to receive(:gets).and_return(save)
-        threefold_finish.load(game, filename)
         allow(game).to receive(:gets).and_return('g1f3', 'c7c5', 'c2c4', 'g8f6', 'b1c3', 'b8c6', 'd2d4', 'c5d4', 'f3d4', 'e7e6', 'g2g3', 'd8b6',
                                                              'd4b3', 'c6e5', 'e2e4', 'f8b4', 'd1e2', 'e8g8', 'f2f4', 'e5c6', 'e4e5', 'f6e8', 'c1d2',
                                                              'f7f6', 'c4c5', 'b6d8', 'a2a3', 'b4c3', 'd2c3', 'f6e5', 'c3e5', 'b7b6', 'f1g2',
@@ -131,16 +110,13 @@ describe GameDriver do
     context 'when fifty move rule ends the game' do
       subject(:fifty_move_finish) { described_class }
 
-      let(:game) { Game.new }
+      let(:game) { FEN.new(save).to_game(Player.new('White', 'white'), Player.new('Black', 'black')) }
       let(:save) { '8/6R1/4k3/1KB5/7r/6p1/8/8 w - - 0 69' }
       let(:file) { instance_double(File) }
       let(:filename) { 'fiftymove' }
 
       before do
         # timman_lutz_1995_partial
-        allow(File).to receive(:open).with("savegames/#{filename}", 'r').and_yield(file)
-        allow(file).to receive(:gets).and_return(save)
-        fifty_move_finish.load(game, filename)
         allow(game).to receive(:gets).and_return('g7g3', 'h4h1', 'b5c6', 'h1e1', 'c5d4', 'e1c1', 'd4c3', 'c1d1', 'g3e3', 'e6f5',
                                                  'c6c5', 'd1d8', 'c3e5', 'd8c8', 'c5d5', 'c8a8', 'e3f3', 'f5g4', 'f3f7', 'a8a5',
                                                  'd5e4', 'a5a4', 'e5d4', 'g4g5', 'f7g7', 'g5h4', 'e4e5', 'h4h3', 'g7g1', 'a4b4',

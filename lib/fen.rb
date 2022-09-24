@@ -4,7 +4,7 @@ require_relative '../chess'
 
 # This class takes care of loading FEN strings.
 class FEN
-  attr_reader :fen_string, :board
+  attr_reader :fen_string, :board, :current_player_colour, :half_move_clock, :full_move_clock
 
   def initialize(fen_string)
     convert_string_to_variables(fen_string)
@@ -27,9 +27,10 @@ class FEN
     end
   end
 
-  # def to_game
-  #   @board = to_board
-  # end
+  def to_game(white_player, black_player)
+    @board = to_board
+    Game.new(white_player:, black_player:, board:, current_player_colour:, half_move_clock:, full_move_clock:)
+  end
 
   def to_board
     @board = Board.new
