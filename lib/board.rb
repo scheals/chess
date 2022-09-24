@@ -123,29 +123,16 @@ class Board
     coordinate = Coordinate.parse(string)
     return if coordinate.to_s == '-'
 
-    case colour
-    when 'white' then @en_passant_pair = create_passant_pair(piece_for(coordinate.down), coordinate)
-    when 'black' then @en_passant_pair = create_passant_pair(piece_for(coordinate.up), coordinate)
-    end
-  end
-
-  def create_passant_pair(piece, coordinate)
-    EnPassantPair.new(piece, coordinate)
+    @en_passant_pair = EnPassantPair.create_from_coordinate(coordinate, colour, self)
   end
 
   def create_en_passant_pair(move)
     piece = piece_for(move.target)
-
-    case piece.colour
-    when 'white'
-      @en_passant_pair = create_passant_pair(piece, move.target.down)
-    when 'black'
-      @en_passant_pair = create_passant_pair(piece, move.target.up)
-    end
+    @en_passant_pair = EnPassantPair.create_from_piece(piece)
   end
 
   def clear_en_passant_pair
-    @en_passant_pair = create_passant_pair(nil, nil)
+    @en_passant_pair = EnPassantPair.new(nil, nil)
   end
 
   def en_passant_coordinate
