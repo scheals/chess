@@ -6,20 +6,25 @@ class Game
   attr_reader :current_player, :white_player, :black_player, :display
   attr_accessor :board
 
+  # rubocop: disable Metrics/ParameterLists
   def initialize(board: Board.starting_state,
                  black_player: Player.new('Black', 'black'),
                  white_player: Player.new('White', 'white'),
+                 current_player_colour: 'white',
+                 full_move_clock: 1,
+                 half_move_clock: 0,
                  display: Display)
     @board = board
     @white_player = white_player
     @black_player = black_player
-    @current_player = white_player
+    @current_player = (current_player_colour == 'white' ? @white_player : @black_player)
     @display = display
-    @full_move_clock = 1
-    @half_move_clock = 0
+    @full_move_clock = full_move_clock
+    @half_move_clock = half_move_clock
     @board_state_history = []
   end
-
+  # rubocop: enable Metrics/ParameterLists
+  
   def pick_piece(coordinate)
     piece = board.piece_for(coordinate)
     return nil unless piece.colour == current_player.colour
