@@ -2,7 +2,7 @@
 
 require_relative '../chess'
 
-# This class takes care of saving/loading FEN strings.
+# This class takes care of loading FEN strings.
 class FEN
   attr_reader :fen_string, :board
 
@@ -13,7 +13,7 @@ class FEN
   def convert_string_to_variables(string)
     split_fen = string.split
     @board_pieces = split_fen[0]
-    @current_player = decode_player(split_fen[1])
+    @current_player_colour = decode_player(split_fen[1])
     @castling_rights = split_fen[2]
     @en_passant_coordinate = split_fen[3]
     @half_move_clock = split_fen[4].to_i
@@ -39,7 +39,7 @@ class FEN
 
   def load_board
     place_pieces
-    load_en_passant_coordinate(@en_passant_coordinate, @current_player)
+    load_en_passant_coordinate(@en_passant_coordinate, @current_player_colour)
     load_castling_rights
   end
 
