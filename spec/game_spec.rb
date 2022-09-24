@@ -5,12 +5,12 @@ require_relative '../chess'
 describe Game do
   describe '#pick_piece' do
     context 'when piece belongs to current player' do
-      subject(:valid_piece_picking) { described_class.new(player_white, player_black, board) }
+      subject(:valid_piece_picking) { described_class.new(board:, white_player:, black_player:) }
 
       let(:board) { instance_double(Board) }
       let(:white_piece) { instance_double(Piece, colour: :white) }
-      let(:player_white) { instance_double(Player, colour: :white) }
-      let(:player_black) { instance_double(Player, colour: :black) }
+      let(:white_player) { instance_double(Player, colour: :white) }
+      let(:black_player) { instance_double(Player, colour: :black) }
 
       before do
         allow(board).to receive(:piece_for).with('a1').and_return(white_piece)
@@ -22,14 +22,15 @@ describe Game do
     end
 
     context 'when piece does not belong to current player' do
-      subject(:invalid_piece_picking) { described_class.new(player_black, player_white, board) }
+      subject(:invalid_piece_picking) { described_class.new(board:, white_player:, black_player:) }
 
       let(:board) { instance_double(Board) }
       let(:white_piece) { instance_double(Piece, colour: :white) }
-      let(:player_black) { instance_double(Player, colour: :black) }
-      let(:player_white) { instance_double(Player, colour: :white) }
+      let(:black_player) { instance_double(Player, colour: :black) }
+      let(:white_player) { instance_double(Player, colour: :white) }
 
       before do
+        invalid_piece_picking.instance_variable_set(:@current_player, black_player)
         allow(board).to receive(:piece_for).with('a2').and_return(white_piece)
       end
 
@@ -92,7 +93,7 @@ describe Game do
 
   describe '#in_bounds?' do
     context 'when the full move is in bounds' do
-      subject(:game_in_bound_move) { described_class.new(player, player, board) }
+      subject(:game_in_bound_move) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:player) { instance_double(Player) }
       let(:board) { instance_double(Board) }
@@ -109,7 +110,7 @@ describe Game do
     end
 
     context 'when the partial move is not in bounds' do
-      subject(:game_out_of_bound_move) { described_class.new(player, player, board) }
+      subject(:game_out_of_bound_move) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:player) { instance_double(Player) }
       let(:board) { instance_double(Board) }
@@ -127,7 +128,7 @@ describe Game do
 
   describe '#current_player_owns?' do
     context 'when the current player owns the piece' do
-      subject(:game_current_player_owns) { described_class.new(player, player, board) }
+      subject(:game_current_player_owns) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:player) { instance_double(Player, colour: 'white') }
       let(:board) { instance_double(Board) }
@@ -144,7 +145,7 @@ describe Game do
     end
 
     context 'when the current players does not own the piece' do
-      subject(:game_current_player_does_not_own) { described_class.new(player, player, board) }
+      subject(:game_current_player_does_not_own) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:player) { instance_double(Player, colour: 'black') }
       let(:board) { instance_double(Board) }
@@ -164,7 +165,7 @@ describe Game do
 
   describe '#legal_target?' do
     context 'when target is legal' do
-      subject(:game_legal_target) { described_class.new(player, player, board) }
+      subject(:game_legal_target) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:player) { instance_double(Player, colour: 'black') }
       let(:board) { instance_double(Board) }
@@ -180,7 +181,7 @@ describe Game do
     end
 
     context 'when target is illegal' do
-      subject(:game_illegal_target) { described_class.new(player, player, board) }
+      subject(:game_illegal_target) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:player) { instance_double(Player, colour: 'black') }
       let(:board) { instance_double(Board) }
@@ -198,7 +199,7 @@ describe Game do
 
   describe '#validate_target' do
     context 'when target is legal' do
-      subject(:game_valid_move) { described_class.new(white_player, black_player, board) }
+      subject(:game_valid_move) { described_class.new(board:, white_player:, black_player:) }
 
       let(:white_player) { Player.new('test', 'white') }
       let(:black_player) { Player.new('test2', 'black') }
@@ -212,7 +213,7 @@ describe Game do
 
     context 'when target is not legal' do
       context 'when move is completed afterwards' do
-        subject(:game_target_complete) { described_class.new(player, player, board, display) }
+        subject(:game_target_complete) { described_class.new(board:, white_player: player, black_player: player, display:) }
 
         let(:player) { instance_double(Player) }
         let(:board) { instance_double(Board) }
@@ -232,7 +233,7 @@ describe Game do
       end
 
       context 'when \'q\' is input' do
-        subject(:game_target_quit) { described_class.new(player, player, board, display) }
+        subject(:game_target_quit) { described_class.new(board:, white_player: player, black_player: player, display:) }
 
         let(:player) { instance_double(Player) }
         let(:board) { instance_double(Board) }
@@ -264,7 +265,7 @@ describe Game do
 
   describe '#game_over?' do
     context 'when game is still on' do
-      subject(:game_continue) { described_class.new(white_player, black_player, board) }
+      subject(:game_continue) { described_class.new(board:, white_player:, black_player:) }
 
       let(:white_player) { Player.new('test', 'white') }
       let(:black_player) { Player.new('test2', 'black') }
@@ -276,7 +277,7 @@ describe Game do
     end
 
     context 'when game is won' do
-      subject(:game_won) { described_class.new(white_player, black_player, board) }
+      subject(:game_won) { described_class.new(board:, white_player:, black_player:) }
 
       let(:white_player) { Player.new('test', 'white') }
       let(:black_player) { Player.new('test2', 'black') }
@@ -288,7 +289,7 @@ describe Game do
     end
 
     context 'when game is tied' do
-      subject(:game_tied) { described_class.new(white_player, black_player, board) }
+      subject(:game_tied) { described_class.new(board:, white_player:, black_player:) }
 
       let(:white_player) { Player.new('test', 'white') }
       let(:black_player) { Player.new('test2', 'black') }
@@ -302,7 +303,7 @@ describe Game do
 
   describe '#tie?' do
     context 'when it is a stalemate' do
-      subject(:stalemate) { described_class.new(player, player, board) }
+      subject(:stalemate) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:player) { instance_double(Player, name: 'test') }
       let(:board) { instance_double(Board) }
@@ -382,7 +383,7 @@ describe Game do
 
   describe '#promoteable?' do
     context 'when piece at the coordinate is promoteable' do
-      subject(:promoteable_game) { described_class.new(player, player, board) }
+      subject(:promoteable_game) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:player) { instance_double(Player) }
       let(:board) { instance_double(Board) }
@@ -398,7 +399,7 @@ describe Game do
     end
 
     context 'when piece at the coordinate is not promoteable' do
-      subject(:nonpromoteable_game) { described_class.new(player, player, board) }
+      subject(:nonpromoteable_game) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:player) { instance_double(Player) }
       let(:board) { instance_double(Board) }
@@ -415,7 +416,7 @@ describe Game do
   end
 
   describe '#promote' do
-    subject(:promoted_game) { described_class.new(player, player, board) }
+    subject(:promoted_game) { described_class.new(board:, white_player: player, black_player: player) }
 
     let(:player) { instance_double(Player, name: 'Tester') }
     let(:board) { instance_double(Board) }
@@ -439,7 +440,7 @@ describe Game do
 
   describe '#castling?' do
     context 'when it is a castling move' do
-      subject(:castling_game) { described_class.new(player, player, board) }
+      subject(:castling_game) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
@@ -462,7 +463,7 @@ describe Game do
     end
 
     context 'when it is not a castling move' do
-      subject(:noncastling_game) { described_class.new(player, player, board) }
+      subject(:noncastling_game) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
@@ -485,7 +486,7 @@ describe Game do
     end
 
     context 'when it is not a move done by a King' do
-      subject(:rook_castle_attempt_game) { described_class.new(player, player, board) }
+      subject(:rook_castle_attempt_game) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
@@ -510,7 +511,7 @@ describe Game do
 
   describe '#castle' do
     context 'when black is performing queenside castling' do
-      subject(:castle_move_game) { described_class.new(player, player, board) }
+      subject(:castle_move_game) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
@@ -528,7 +529,7 @@ describe Game do
     end
 
     context 'when black is performing kingside castling' do
-      subject(:castle_move_game) { described_class.new(player, player, board) }
+      subject(:castle_move_game) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
@@ -546,7 +547,7 @@ describe Game do
     end
 
     context 'when white is performing queenside castling' do
-      subject(:castle_move_game) { described_class.new(player, player, board) }
+      subject(:castle_move_game) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
@@ -564,7 +565,7 @@ describe Game do
     end
 
     context 'when white is performing kingside castling' do
-      subject(:castle_move_game) { described_class.new(player, player, board) }
+      subject(:castle_move_game) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
@@ -584,7 +585,7 @@ describe Game do
 
   describe '#en_passant_opportunity?' do
     context 'when it creates an en passant opportunity' do
-      subject(:en_passant_opportunity) { described_class.new(player, player, board) }
+      subject(:en_passant_opportunity) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
@@ -607,7 +608,7 @@ describe Game do
     end
 
     context 'when it does not create an en passant opportunity' do
-      subject(:no_en_passant) { described_class.new(player, player, board) }
+      subject(:no_en_passant) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
@@ -631,7 +632,7 @@ describe Game do
   end
 
   describe '#send_en_passant_opportunity' do
-    subject(:en_passant_game) { described_class.new(player, player, board) }
+    subject(:en_passant_game) { described_class.new(board:, white_player: player, black_player: player) }
 
     let(:board) { instance_double(Board) }
     let(:player) { instance_double(Player) }
@@ -649,7 +650,7 @@ describe Game do
 
   describe '#en_passant?' do
     context 'when the move is en passant' do
-      subject(:passant_game) { described_class.new(Player.new('test', 'white'), Player.new('test2', 'black'), board) }
+      subject(:passant_game) { described_class.new(board:, white_player: Player.new('test', 'white'), black_player: Player.new('test2', 'black')) }
 
       let(:board) { Board.from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR - 0 1') }
       let(:passant_opportunity) { Move.parse('c7c5') }
@@ -670,7 +671,7 @@ describe Game do
     end
 
     context 'when the move is not en passant' do
-      subject(:no_passant_game) { described_class.new(Player.new('test', 'white'), Player.new('test2', 'black'), board) }
+      subject(:no_passant_game) { described_class.new(board:, white_player: Player.new('test', 'white'), black_player: Player.new('test2', 'black')) }
 
       let(:board) { Board.from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR - 0 1') }
       let(:black_pawn) { no_passant_game.board.piece_for('c7') }
@@ -692,7 +693,7 @@ describe Game do
 
   describe '#calculate_halfmove_clock' do
     context 'when piece is a Pawn' do
-      subject(:halfmove_pawn_reset) { described_class.new(player, player, board) }
+      subject(:halfmove_pawn_reset) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
@@ -720,7 +721,7 @@ describe Game do
     end
 
     context 'when move is a capture' do
-      subject(:halfmove_capture_reset) { described_class.new(player, player, board) }
+      subject(:halfmove_capture_reset) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
@@ -748,7 +749,7 @@ describe Game do
     end
 
     context 'when move is not a capture nor made by a Pawn' do
-      subject(:halfmove_increment) { described_class.new(player, player, board) }
+      subject(:halfmove_increment) { described_class.new(board:, white_player: player, black_player: player) }
 
       let(:board) { instance_double(Board) }
       let(:player) { instance_double(Player) }
@@ -776,7 +777,7 @@ describe Game do
 
   describe '#to_fen' do
     context 'when converting a starting position' do
-      subject(:starting_position) { described_class.new(Player.new('test', 'white'), Player.new('test2', 'black'), board) }
+      subject(:starting_position) { described_class.new(board:, white_player: Player.new('test', 'white'), black_player: Player.new('test2', 'black')) }
 
       let(:board) { Board.starting_state }
 
@@ -787,7 +788,7 @@ describe Game do
     end
 
     context 'when converting a starting position partially' do
-      subject(:starting_position) { described_class.new(Player.new('test', 'white'), Player.new('test2', 'black'), board) }
+      subject(:starting_position) { described_class.new(board:, white_player: Player.new('test', 'white'), black_player: Player.new('test2', 'black')) }
 
       let(:board) { Board.starting_state }
 
