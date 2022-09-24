@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../piece_navigator'
-require_relative '../moves'
-
 # This class handles collision for Pawn pieces.
 class PawnNavigator < PieceNavigator
   attr_reader :piece

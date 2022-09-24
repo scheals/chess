@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/coordinate'
+require_relative '../chess'
 
 describe Coordinate do
   describe '@parse' do

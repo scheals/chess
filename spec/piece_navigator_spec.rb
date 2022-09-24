@@ -1,15 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/piece_navigator'
-require_relative '../lib/navigator/bishop_navigator'
-require_relative '../lib/navigator/pawn_navigator'
-require_relative '../lib/navigator/rook_navigator'
-require_relative '../lib/navigator/knight_navigator'
-require_relative '../lib/navigator/queen_navigator'
-require_relative '../lib/navigator/king_navigator'
-require_relative '../lib/board'
-require_relative '../lib/board_navigator'
-require_relative '../lib/move'
+require_relative '../chess'
 
 describe PieceNavigator do
   describe '#allied_coordinates' do

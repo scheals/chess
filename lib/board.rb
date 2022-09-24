@@ -1,12 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'square'
-require_relative 'piece_factory'
-require_relative 'display'
-require_relative 'en_passant_pair'
-require_relative 'coordinate'
-require_relative 'board_navigator'
-
 # This class handles a chess board.
 class Board
   include Display

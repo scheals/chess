@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/moves'
-require_relative '../lib/piece_navigator'
-require_relative '../lib/board'
-require_relative '../lib/board_navigator'
+require_relative '../chess'
 
 # rubocop: disable RSpec/MultipleMemoizedHelpers
 describe Moves::HorizontalMoves do

@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/game'
-require_relative '../lib/board_navigator'
-require_relative '../lib/board'
-require_relative '../lib/save_state'
-require_relative '../lib/display'
+require_relative '../chess'
 
 describe Game do
   describe '#pick_piece' do

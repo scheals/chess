@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'coordinate'
-
 # This class stores start and end of a move.
 class Move
   attr_reader :start, :target

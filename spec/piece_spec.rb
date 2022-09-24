@@ -1,15 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/piece_factory'
-require_relative '../lib/piece'
-require_relative '../lib/piece/rook'
-require_relative '../lib/piece/bishop'
-require_relative '../lib/piece/queen'
-require_relative '../lib/piece/king'
-require_relative '../lib/piece/knight'
-require_relative '../lib/piece/pawn'
-require_relative '../lib/piece/nil_piece'
-require_relative '../lib/square'
+require_relative '../chess'
 
 # rubocop: disable Layout/LineLength
 describe Piece do

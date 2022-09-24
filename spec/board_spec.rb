@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/board'
-require_relative '../lib/square'
-require_relative '../lib/move'
+require_relative '../chess'
 
 # rubocop: disable Layout/LineLength
 describe Board do

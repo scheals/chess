@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'navigator_factory'
-require_relative 'coordinate'
-
 # This class handles movement logic for a chessboard.
 class BoardNavigator
   attr_reader :board, :navigator_factory, :coordinate_system

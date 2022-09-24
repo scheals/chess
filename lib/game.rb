@@ -1,11 +1,5 @@
 # frozen_string_literal: true
 
-require_relative './player'
-require_relative './move'
-require_relative './coordinate'
-require_relative './save_state'
-require_relative './display'
-
 # rubocop: disable Metrics/ClassLength
 # This class handles a game of Chess.
 class Game

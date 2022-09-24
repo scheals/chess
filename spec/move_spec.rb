@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/move'
-require_relative '../lib/board'
+require_relative '../chess'
 
 describe Move do
   describe '@parse' do

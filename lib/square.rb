@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'piece/nil_piece'
-
 # This class handles a square on a chessboard.
 class Square
   attr_reader :position, :piece

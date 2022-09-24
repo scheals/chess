@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'coordinate'
-
 # This class handles abstract chess pieces.
 class Piece
   attr_reader :position, :colour, :move_history, :coordinate
