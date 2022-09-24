@@ -10,7 +10,9 @@ describe PieceNavigator do
     let(:white_rook) { Rook.new('a1', colour: 'white') }
 
     it 'returns an array of squares that allied pieces are on from given coordinates' do
-      expect(navigate_allies.allied_coordinates(navigate_allies.board.coordinates)).to contain_exactly("a1", "a2", "b1", "b2", "c1", "c2", "d1", "d2", "e1", "e2", "f1", "f2", "g1", "g2", "h1", "h2")
+      expect(navigate_allies.allied_coordinates(navigate_allies.board.coordinates)).to contain_exactly('a1', 'a2', 'b1', 'b2', 'c1', 'c2', 'd1',
+                                                                                                       'd2', 'e1', 'e2', 'f1', 'f2', 'g1', 'g2',
+                                                                                                       'h1', 'h2')
     end
   end
 
@@ -25,7 +27,8 @@ describe PieceNavigator do
     end
 
     it 'returns an array of squares that enemy pieces are on from given coordinates' do
-      expect(navigate_enemies.enemy_coordinates(navigate_enemies.board.coordinates)).to contain_exactly("a1", "a2", "b1", "b2", "c1", "c2", "d1", "d2", "e1", "e2", "f1", "f2", "g1", "g2", "h1", "h2")
+      expect(navigate_enemies.enemy_coordinates(navigate_enemies.board.coordinates)).to contain_exactly('a1', 'a2',
+                                                                                                        'b1', 'b2', 'c1', 'c2', 'd1', 'd2', 'e1', 'e2', 'f1', 'f2', 'g1', 'g2', 'h1', 'h2')
     end
   end
 
@@ -255,7 +258,7 @@ describe KingNavigator do
     context 'when kingside castling is not possible based on loaded castling rights' do
       subject(:loaded_impossible_kingside) { described_class.new(board, black_king) }
 
-      let(:board) {instance_double(Board) }
+      let(:board) { instance_double(Board) }
       let(:black_king) { instance_double(King, colour: 'black') }
       let(:castling_rights) { { black_kingside: false } }
 
@@ -350,7 +353,7 @@ describe KingNavigator do
     context 'when queenside castling is not possible based on loaded castling rights' do
       subject(:loaded_impossible_queenside) { described_class.new(board, black_king) }
 
-      let(:board) {instance_double(Board) }
+      let(:board) { instance_double(Board) }
       let(:black_king) { instance_double(King, colour: 'black') }
       let(:castling_rights) { { black_queenside: false } }
 

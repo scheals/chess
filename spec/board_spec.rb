@@ -366,7 +366,7 @@ describe Board do
   end
 
   describe '#vacate' do
-    subject(:vacate_board) { Board.new(square_class) }
+    subject(:vacate_board) { described_class.new(square_class) }
 
     let(:square_class) { class_double(Square) }
     let(:square) { instance_double(Square, position: 'a1') }

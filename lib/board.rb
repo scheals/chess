@@ -78,7 +78,7 @@ class Board
   end
 
   def find_kings
-    pieces{ |piece| piece.instance_of?(King) }
+    pieces { |piece| piece.instance_of?(King) }
   end
 
   def king_for(coordinate)
@@ -139,7 +139,7 @@ class Board
     return false unless castling_rights["#{colour}_queenside".to_sym]
 
     colour_pieces = pieces { |piece| piece.colour == colour }
-    king = colour_pieces.select { |piece| piece.is_a?(King) }.first
+    king = colour_pieces.find { |piece| piece.is_a?(King) }
     queenside_rook = colour_pieces.select { |piece| piece.is_a?(Rook) && piece.position.column == 'a' }
 
     return true if king.can_castle? &&
@@ -152,7 +152,7 @@ class Board
     return false unless castling_rights["#{colour}_kingside".to_sym]
 
     colour_pieces = pieces { |piece| piece.colour == colour }
-    king = colour_pieces.select { |piece| piece.is_a?(King) }.first
+    king = colour_pieces.find { |piece| piece.is_a?(King) }
     kingside_rook = colour_pieces.select { |piece| piece.is_a?(Rook) && piece.position.column == 'h' }
 
     return true if king.can_castle? &&

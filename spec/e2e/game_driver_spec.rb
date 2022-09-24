@@ -105,7 +105,6 @@ describe GameDriver do
       let(:file) { instance_double(File) }
       let(:filename) { 'threefold' }
 
-
       before do
         # portisch_korchnoi_1970 = %w[g1f3 c7c5 c2c4 g8f6 b1c3 b8c6 d2d4 c5d4 f3d4 e7e6 g2g3 d8b6
         #                             d4b3 c6e5 e2e4 f8b4 d1e2 e8g8 f2f4 e5c6 e4e5 f6e8 c1d2

@@ -211,7 +211,7 @@ class Game
   end
 
   def threefold_repetition?
-    if @board_state_history.tally.values.any? { |value| value == 3 }
+    if @board_state_history.tally.values.any?(3)
       puts display.threefold_tie(player1, player2)
       return true
     end
@@ -236,7 +236,7 @@ class Game
   def to_fen(full: true)
     result = []
     result << board.dump_to_fen
-    result << current_player.colour.chars.first
+    result << current_player.colour[0]
     result << board.record_castling_rights
     result << board.record_en_passant_coordinate
     result << @half_move_clock if full
@@ -264,7 +264,7 @@ class Game
   end
 
   def load_current_player(string)
-    @current_player = [player1, player2].select { |player| player.colour.chars.first == string }.first
+    @current_player = [player1, player2].find { |player| player.colour[0] == string }
   end
 
   def correct_length?(move)
