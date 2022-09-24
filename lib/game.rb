@@ -3,22 +3,24 @@
 # rubocop: disable Metrics/ClassLength
 # This class handles a game of Chess.
 class Game
-  attr_reader :current_player, :player1, :player2, :display
+  attr_reader :current_player, :white_player, :black_player, :display
   attr_accessor :board
 
-  def initialize(player1 = Player.new('White', 'white'),
-                 player2 = Player.new('Black', 'black'),
+  # rubocop: disable Metrics/ParameterLists
+  def initialize(white_player = Player.new('White', 'white'),
+                 black_player = Player.new('Black', 'black'),
                  board = Board.starting_state,
                  display = Display)
     @board = board
-    @player1 = player1
-    @player2 = player2
-    @current_player = player1
+    @white_player = white_player
+    @black_player = black_player
+    @current_player = white_player
     @display = display
     @full_move_clock = 1
     @half_move_clock = 0
     @board_state_history = []
   end
+  # rubocop: enable Metrics/ParameterLists
 
   def pick_piece(coordinate)
     piece = board.piece_for(coordinate)
@@ -164,10 +166,10 @@ class Game
   end
 
   def switch_players
-    @current_player = if current_player == player1
-                        player2
+    @current_player = if current_player == white_player
+                        black_player
                       else
-                        player1
+                        white_player
                       end
   end
 
@@ -194,7 +196,7 @@ class Game
 
   def stalemate?
     if board.stalemate?(current_player.colour)
-      puts display.stalemate(player1, player2)
+      puts display.stalemate(white_player, black_player)
       return true
     end
 
@@ -203,7 +205,7 @@ class Game
 
   def fifty_move_rule?
     if @half_move_clock == 100
-      puts display.fifty_moves_tie(player1, player2)
+      puts display.fifty_moves_tie(white_player, black_player)
       return true
     end
 
@@ -212,7 +214,7 @@ class Game
 
   def threefold_repetition?
     if @board_state_history.tally.values.any?(3)
-      puts display.threefold_tie(player1, player2)
+      puts display.threefold_tie(white_player, black_player)
       return true
     end
 
@@ -247,11 +249,11 @@ class Game
   def save_game
     Dir.mkdir('savegames') unless Dir.exist?('savegames')
 
-    filename = "#{player1.name}-#{player2.name}-#{Time.now}"
+    filename = "#{white_player.name}-#{black_player.name}-#{Time.now}"
     File.open("savegames/#{filename}", 'w') do |file|
       file.puts to_fen
     end
-    puts display.save_goodbye(to_fen, filename, player1, player2)
+    puts display.save_goodbye(to_fen, filename, white_player, black_player)
   end
 
   def load(fen_string)
@@ -264,7 +266,7 @@ class Game
   end
 
   def load_current_player(string)
-    @current_player = [player1, player2].find { |player| player.colour[0] == string }
+    @current_player = [white_player, black_player].find { |player| player.colour[0] == string }
   end
 
   def correct_length?(move)

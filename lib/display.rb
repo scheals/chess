@@ -69,9 +69,9 @@ module Display
     'Incorrect input!'
   end
 
-  def self.thanks(player1, player2)
+  def self.thanks(white_player, black_player)
     <<~HEREDOC
-      Thanks for playing, #{player1.name} and #{player2.name}!
+      Thanks for playing, #{white_player.name} and #{black_player.name}!
     HEREDOC
   end
 
@@ -81,27 +81,27 @@ module Display
     HEREDOC
   end
 
-  def self.stalemate(player1, player2)
+  def self.stalemate(white_player, black_player)
     <<~HEREDOC
-      It's a tie between #{player1.name} and #{player2.name} due to stalemate!
+      It's a tie between #{white_player.name} and #{black_player.name} due to stalemate!
     HEREDOC
   end
 
-  def self.threefold_tie(player1, player2)
+  def self.threefold_tie(white_player, black_player)
     <<~HEREDOC
-      It's a tie between #{player1.name} and #{player2.name} due to threefold repetition!
+      It's a tie between #{white_player.name} and #{black_player.name} due to threefold repetition!
     HEREDOC
   end
 
-  def self.fifty_moves_tie(player1, player2)
+  def self.fifty_moves_tie(white_player, black_player)
     <<~HEREDOC
-      It's a tie between #{player1.name} and #{player2.name} due to fifty move rule!
+      It's a tie between #{white_player.name} and #{black_player.name} due to fifty move rule!
     HEREDOC
   end
 
-  def self.save_goodbye(fen_string, filename, player1, player2)
+  def self.save_goodbye(fen_string, filename, white_player, black_player)
     <<~HEREDOC
-      Thank you for playing, #{player1.name} and #{player2.name}!
+      Thank you for playing, #{white_player.name} and #{black_player.name}!
       Here is your game in FEN format:
       #{fen_string}
       You'll find a text file with it in the saves directory as well called:

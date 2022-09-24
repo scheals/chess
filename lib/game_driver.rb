@@ -4,10 +4,10 @@
 module GameDriver
   def self.setup
     puts 'Who is playing as white?'
-    player1 = Player.new(gets.chomp, 'white')
+    white_player = Player.new(gets.chomp, 'white')
     puts 'Who is playing as black?'
-    player2 = Player.new(gets.chomp, 'black')
-    game = Game.new(player1, player2)
+    black_player = Player.new(gets.chomp, 'black')
+    game = Game.new(white_player, black_player)
     puts 'Are you loading a game? Y/n'
     loading_choice = gets.chomp
     return attempt_to_load(game) if loading_choice.downcase == 'y'
@@ -88,6 +88,6 @@ module GameDriver
       game.switch_players
     end
     puts game.display.show(game.board)
-    puts game.display.thanks(game.player1, game.player2)
+    puts game.display.thanks(game.white_player, game.black_player)
   end
 end

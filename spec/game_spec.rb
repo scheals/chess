@@ -198,10 +198,10 @@ describe Game do
 
   describe '#validate_target' do
     context 'when target is legal' do
-      subject(:game_valid_move) { described_class.new(player1, player2, board) }
+      subject(:game_valid_move) { described_class.new(white_player, black_player, board) }
 
-      let(:player1) { Player.new('test', 'white') }
-      let(:player2) { Player.new('test2', 'black') }
+      let(:white_player) { Player.new('test', 'white') }
+      let(:black_player) { Player.new('test2', 'black') }
       let(:board) { Board.from_fen('k7/1r6/8/8/8/8/8/K7 w KQkq - 0 1') }
       let(:move) { Move.parse('b7h7') }
 
@@ -264,10 +264,10 @@ describe Game do
 
   describe '#game_over?' do
     context 'when game is still on' do
-      subject(:game_continue) { described_class.new(player1, player2, board) }
+      subject(:game_continue) { described_class.new(white_player, black_player, board) }
 
-      let(:player1) { Player.new('test', 'white') }
-      let(:player2) { Player.new('test2', 'black') }
+      let(:white_player) { Player.new('test', 'white') }
+      let(:black_player) { Player.new('test2', 'black') }
       let(:board) { Board.starting_state }
 
       it 'returns false' do
@@ -276,10 +276,10 @@ describe Game do
     end
 
     context 'when game is won' do
-      subject(:game_won) { described_class.new(player1, player2, board) }
+      subject(:game_won) { described_class.new(white_player, black_player, board) }
 
-      let(:player1) { Player.new('test', 'white') }
-      let(:player2) { Player.new('test2', 'black') }
+      let(:white_player) { Player.new('test', 'white') }
+      let(:black_player) { Player.new('test2', 'black') }
       let(:board) { Board.from_fen('R3k3/7R/8/8/8/8/PPPPPPPP/1NBQKBN1 w KQkq - 0 1') }
 
       it 'returns true' do
@@ -288,10 +288,10 @@ describe Game do
     end
 
     context 'when game is tied' do
-      subject(:game_tied) { described_class.new(player1, player2, board) }
+      subject(:game_tied) { described_class.new(white_player, black_player, board) }
 
-      let(:player1) { Player.new('test', 'white') }
-      let(:player2) { Player.new('test2', 'black') }
+      let(:white_player) { Player.new('test', 'white') }
+      let(:black_player) { Player.new('test2', 'black') }
       let(:board) { Board.from_fen('5bnr/4p1pq/4Qpkr/7p/7P/4P3/PPPP1PP1/RNB1KBNR w KQkq - 0 1') }
 
       it 'returns true' do
@@ -808,7 +808,7 @@ describe Game do
 
     context "when loading Game's variables" do
       it 'correctly loads the current player' do
-        expect(loaded_game.current_player).to be loaded_game.player2
+        expect(loaded_game.current_player).to be loaded_game.black_player
       end
 
       it 'correctly loads the half move clock' do

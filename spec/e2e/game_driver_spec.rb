@@ -21,7 +21,7 @@ describe GameDriver do
       end
 
       it 'correctly reflects that by ending the loop' do
-        message = /Checkmate! Congratulations, #{game.player1.name}!/
+        message = /Checkmate! Congratulations, #{game.white_player.name}!/
         expect { promoted_to_win.start(game) }.to output(message).to_stdout
       end
     end
@@ -43,7 +43,7 @@ describe GameDriver do
       end
 
       it 'correctly reflects that by ending the loop' do
-        message = /Checkmate! Congratulations, #{game.player1.name}!/
+        message = /Checkmate! Congratulations, #{game.white_player.name}!/
         expect { castled_to_win.start(game) }.to output(message).to_stdout
       end
     end
@@ -65,7 +65,7 @@ describe GameDriver do
       end
 
       it 'correctly reflects that by ending the loop' do
-        message = /Checkmate! Congratulations, #{game.player2.name}!/
+        message = /Checkmate! Congratulations, #{game.black_player.name}!/
         expect { fools_game.start(game) }.to output(message).to_stdout
       end
     end
@@ -92,7 +92,7 @@ describe GameDriver do
       end
 
       it 'correctly reflects that by ending the loop' do
-        message = /Checkmate! Congratulations, #{game.player1.name}!/
+        message = /Checkmate! Congratulations, #{game.white_player.name}!/
         expect { en_passant_finish.start(game) }.to output(message).to_stdout
       end
     end
@@ -123,7 +123,7 @@ describe GameDriver do
       end
 
       it 'correctly reflects that by ending the loop' do
-        message = /It's a tie between #{game.player1.name} and #{game.player2.name} due to threefold repetition!/
+        message = /It's a tie between #{game.white_player.name} and #{game.black_player.name} due to threefold repetition!/
         expect { threefold_finish.start(game) }.to output(message).to_stdout
       end
     end
@@ -155,7 +155,7 @@ describe GameDriver do
       end
 
       it 'correctly reflects that by ending the loop' do
-        message = /It's a tie between #{game.player1.name} and #{game.player2.name} due to fifty move rule!/
+        message = /It's a tie between #{game.white_player.name} and #{game.black_player.name} due to fifty move rule!/
         expect { fifty_move_finish.start(game) }.to output(message).to_stdout
       end
     end
