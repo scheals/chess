@@ -5,9 +5,8 @@ require_relative '../chess'
 # rubocop: disable RSpec/MultipleMemoizedHelpers
 describe Moves::HorizontalMoves do
   describe '#go_left' do
-    subject(:leftbound_rook) { PieceNavigator.new(board_navigator, white_rook) }
+    subject(:leftbound_rook) { PieceNavigator.new(board, white_rook) }
 
-    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_rook) { instance_double(Rook, position: coordinate.parse('d1'), colour: 'white', coordinate:) }
     let(:coordinate) { Coordinate }
@@ -32,9 +31,8 @@ describe Moves::HorizontalMoves do
   end
 
   describe '#go_right' do
-    subject(:rightbound_rook) { PieceNavigator.new(board_navigator, white_rook) }
+    subject(:rightbound_rook) { PieceNavigator.new(board, white_rook) }
 
-    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_rook) { instance_double(Rook, position: coordinate.parse('e1'), colour: 'white', coordinate:) }
     let(:coordinate) { Coordinate }
@@ -59,9 +57,8 @@ describe Moves::HorizontalMoves do
   end
 
   describe '#go_up' do
-    subject(:upbound_rook) { PieceNavigator.new(board_navigator, white_rook) }
+    subject(:upbound_rook) { PieceNavigator.new(board, white_rook) }
 
-    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_rook) { instance_double(Rook, position: coordinate.parse('f5'), colour: 'white', coordinate:) }
     let(:coordinate) { Coordinate }
@@ -86,9 +83,8 @@ describe Moves::HorizontalMoves do
   end
 
   describe '#go_down' do
-    subject(:downbound_rook) { PieceNavigator.new(board_navigator, white_rook) }
+    subject(:downbound_rook) { PieceNavigator.new(board, white_rook) }
 
-    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_rook) { instance_double(Rook, position: coordinate.parse('e4'), colour: 'white', coordinate:) }
     let(:coordinate) { Coordinate }
@@ -115,9 +111,8 @@ end
 
 describe Moves::DiagonalMoves do
   describe '#go_up_left' do
-    subject(:up_left_bishop) { PieceNavigator.new(board_navigator, white_bishop) }
+    subject(:up_left_bishop) { PieceNavigator.new(board, white_bishop) }
 
-    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_bishop) { instance_double(Bishop, position: coordinate.parse('d5'), colour: 'white', coordinate:) }
     let(:coordinate) { Coordinate }
@@ -142,9 +137,8 @@ describe Moves::DiagonalMoves do
   end
 
   describe '#go_up_right' do
-    subject(:up_right_bishop) { PieceNavigator.new(board_navigator, white_bishop) }
+    subject(:up_right_bishop) { PieceNavigator.new(board, white_bishop) }
 
-    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_bishop) { instance_double(Bishop, position: coordinate.parse('e5'), colour: 'white', coordinate:) }
     let(:coordinate) { Coordinate }
@@ -169,9 +163,8 @@ describe Moves::DiagonalMoves do
   end
 
   describe '#go_down_right' do
-    subject(:down_right_bishop) { PieceNavigator.new(board_navigator, white_bishop) }
+    subject(:down_right_bishop) { PieceNavigator.new(board, white_bishop) }
 
-    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_bishop) { instance_double(Bishop, position: coordinate.parse('e4'), colour: 'white', coordinate:) }
     let(:coordinate) { Coordinate }
@@ -196,9 +189,8 @@ describe Moves::DiagonalMoves do
   end
 
   describe '#go_down_left' do
-    subject(:down_left_bishop) { PieceNavigator.new(board_navigator, white_bishop) }
+    subject(:down_left_bishop) { PieceNavigator.new(board, white_bishop) }
 
-    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_bishop) { instance_double(Bishop, position: coordinate.parse('d4'), colour: 'white', coordinate:) }
     let(:coordinate) { Coordinate }
@@ -225,9 +217,8 @@ end
 
 describe Moves::CollisionlessMoves do
   describe '#collisonless_moves' do
-    subject(:regular_knight) { PieceNavigator.new(board_navigator, white_knight) }
+    subject(:regular_knight) { PieceNavigator.new(board, white_knight) }
 
-    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_knight) { instance_double(Knight, position: coordinate.parse('a8'), colour: 'white') }
     let(:coordinate) { Coordinate }
@@ -253,9 +244,8 @@ end
 
 describe Moves::PawnTakes do
   context 'when Pawn is white' do
-    subject(:white_pawn_piece) { PieceNavigator.new(board_navigator, white_piece) }
+    subject(:white_pawn_piece) { PieceNavigator.new(board, white_piece) }
 
-    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:white_piece) { instance_double(Piece, position: coordinate.parse('b4'), colour: 'white') }
     let(:coordinate) { Coordinate }
@@ -280,9 +270,8 @@ describe Moves::PawnTakes do
   end
 
   context 'when Pawn is black' do
-    subject(:black_pawn_piece) { PieceNavigator.new(board_navigator, black_piece) }
+    subject(:black_pawn_piece) { PieceNavigator.new(board, black_piece) }
 
-    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:black_piece) { instance_double(Piece, position: coordinate.parse('g6'), colour: 'black') }
     let(:coordinate) { Coordinate }
@@ -308,9 +297,8 @@ end
 describe Moves::PawnForward do
   describe '#white_forward' do
     context 'when Pawn is white and not moved' do
-      subject(:white_pawn_piece) { PieceNavigator.new(board_navigator, white_piece) }
+      subject(:white_pawn_piece) { PieceNavigator.new(board, white_piece) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:white_piece) { instance_double(Piece, position: coordinate.parse('g6'), colour: 'white') }
       let(:coordinate) { Coordinate }
@@ -334,9 +322,8 @@ describe Moves::PawnForward do
 
   describe '#black_forward' do
     context 'when Pawn is black and moved' do
-      subject(:black_pawn_piece) { PieceNavigator.new(board_navigator, black_piece) }
+      subject(:black_pawn_piece) { PieceNavigator.new(board, black_piece) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:black_piece) { instance_double(Piece, position: coordinate.parse('c3'), colour: 'black') }
       let(:coordinate) { Coordinate }

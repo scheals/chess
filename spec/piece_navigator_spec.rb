@@ -4,9 +4,9 @@ require_relative '../chess'
 
 describe PieceNavigator do
   describe '#allied_coordinates' do
-    subject(:navigate_allies) { described_class.new(board_navigator, white_rook) }
+    subject(:navigate_allies) { described_class.new(board, white_rook) }
 
-    let(:board_navigator) { BoardNavigator.new(Board.new) }
+    let(:board) { Board.new }
     let(:white_rook) { Rook.new('a1', colour: 'white') }
 
     before do
@@ -19,9 +19,9 @@ describe PieceNavigator do
   end
 
   describe '#enemy_coordinates' do
-    subject(:navigate_enemies) { described_class.new(board_navigator, black_rook) }
+    subject(:navigate_enemies) { described_class.new(board, black_rook) }
 
-    let(:board_navigator) { BoardNavigator.new(Board.new) }
+    let(:board) { Board.new }
     let(:black_rook) { Rook.new('f4', colour: 'black') }
 
     before do
@@ -35,9 +35,8 @@ describe PieceNavigator do
   end
 
   describe '#legal_for' do
-    subject(:navigator) { described_class.new(board_navigator, piece) }
+    subject(:navigator) { described_class.new(board, piece) }
 
-    let(:board_navigator) { instance_double(BoardNavigator, board:) }
     let(:board) { instance_double(Board) }
     let(:piece) { instance_double(Piece) }
 
@@ -59,9 +58,8 @@ describe PieceNavigator do
 
   describe '#passable?' do
     context 'when square is in bounds and not occupied' do
-      subject(:passable_navigator) { described_class.new(board_navigator, king) }
+      subject(:passable_navigator) { described_class.new(board, king) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:king) { instance_double(King) }
       let(:square) { instance_double(Square) }
@@ -79,9 +77,8 @@ describe PieceNavigator do
     end
 
     context 'when square is not in bounds or occupied' do
-      subject(:impassable_navigator) { described_class.new(board_navigator, queen) }
+      subject(:impassable_navigator) { described_class.new(board, queen) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:queen) { instance_double(Queen) }
       let(:square) { instance_double(Square) }
@@ -103,9 +100,8 @@ end
 describe RookNavigator do
   describe '#possible_moves' do
     context 'when checking starting moves' do
-      subject(:navigate_possibilities) { described_class.new(board_navigator, white_rook) }
+      subject(:navigate_possibilities) { described_class.new(board, white_rook) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:white_rook) { board.piece_for('h1') }
       let(:coordinate_system) { Coordinate }
@@ -120,9 +116,8 @@ describe RookNavigator do
     end
 
     context 'when game is underway' do
-      subject(:navigate_rook) { described_class.new(board_navigator, black_rook) }
+      subject(:navigate_rook) { described_class.new(board, black_rook) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:black_rook) { Rook.new('e4', colour: 'black') }
       let(:coordinate_system) { Coordinate }
@@ -143,9 +138,8 @@ end
 describe BishopNavigator do
   describe '#possible_moves' do
     context 'when checking starting moves' do
-      subject(:navigate_possibilities) { described_class.new(board_navigator, black_bishop) }
+      subject(:navigate_possibilities) { described_class.new(board, black_bishop) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate_system) { Coordinate }
       let(:black_bishop) { board.piece_for('c8') }
@@ -160,9 +154,8 @@ describe BishopNavigator do
     end
 
     context 'when game is underway' do
-      subject(:navigate_bishop) { described_class.new(board_navigator, white_bishop) }
+      subject(:navigate_bishop) { described_class.new(board, white_bishop) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:white_bishop) { board.piece_for('e4') }
       let(:coordinate_system) { Coordinate }
@@ -183,9 +176,8 @@ end
 describe KnightNavigator do
   describe '#possible_moves' do
     context 'when checking starting moves' do
-      subject(:navigate_possibilities) { described_class.new(board_navigator, white_knight) }
+      subject(:navigate_possibilities) { described_class.new(board, white_knight) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate_system) { Coordinate }
       let(:white_knight) { board.piece_for('g1') }
@@ -204,9 +196,8 @@ end
 describe QueenNavigator do
   describe '#possible_moves' do
     context 'when checking starting moves' do
-      subject(:navigate_possibilities) { described_class.new(board_navigator, black_queen) }
+      subject(:navigate_possibilities) { described_class.new(board, black_queen) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate_system) { Coordinate }
       let(:black_queen) { board.piece_for('d8') }
@@ -221,9 +212,8 @@ describe QueenNavigator do
     end
 
     context 'when game is underway' do
-      subject(:navigate_queen) { described_class.new(board_navigator, black_queen) }
+      subject(:navigate_queen) { described_class.new(board, black_queen) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:black_queen) { board.piece_for('c6') }
       let(:coordinate_system) { Coordinate }
@@ -244,9 +234,8 @@ end
 describe KingNavigator do
   describe '#possible_moves' do
     context 'when checking starting moves' do
-      subject(:navigate_possibilities) { described_class.new(board_navigator, white_king) }
+      subject(:navigate_possibilities) { described_class.new(board, white_king) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate_system) { Coordinate }
       let(:white_king) { board.piece_for('e1') }
@@ -263,9 +252,8 @@ describe KingNavigator do
 
   describe '#can_castle_kingside?' do
     context 'when kingside castling is possible' do
-      subject(:possible_kingside) { described_class.new(board_navigator, white_king) }
+      subject(:possible_kingside) { described_class.new(board, white_king) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
       let(:white_king) { King.new(coordinate.parse('e1'), colour: 'white') }
@@ -282,9 +270,8 @@ describe KingNavigator do
     end
 
     context 'when kingside castling is not possible because rook has already moved' do
-      subject(:impossible_kingside) { described_class.new(board_navigator, black_king) }
+      subject(:impossible_kingside) { described_class.new(board, black_king) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
       let(:black_king) { King.new(coordinate.parse('e8'), colour: 'black') }
@@ -303,9 +290,8 @@ describe KingNavigator do
     end
 
     context 'when kingside castling is not possible based on loaded castling rights' do
-      subject(:loaded_impossible_kingside) { described_class.new(board_navigator, black_king) }
+      subject(:loaded_impossible_kingside) { described_class.new(board, black_king) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) {instance_double(Board) }
       let(:black_king) { instance_double(King, colour: 'black') }
       let(:castling_rights) { { black_kingside: false } }
@@ -320,9 +306,8 @@ describe KingNavigator do
     end
 
     context 'when kingside castling is not possible because path is not clear' do
-      subject(:obstructed_kingside) { described_class.new(board_navigator, white_king) }
+      subject(:obstructed_kingside) { described_class.new(board, white_king) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
       let(:white_king) { King.new(coordinate.parse('e8'), colour: 'white') }
@@ -339,11 +324,9 @@ describe KingNavigator do
       end
     end
 
-    # rubocop: disable RSpec/MultipleMemoizedHelpers
     context 'when kingside castling is not possible because path is under check' do
-      subject(:checked_kingside) { described_class.new(board_navigator, black_king) }
+      subject(:checked_kingside) { described_class.new(board, black_king) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
       let(:black_king) { King.new(coordinate.parse('e8'), colour: 'black') }
@@ -360,14 +343,12 @@ describe KingNavigator do
         expect(checked_kingside.can_castle_kingside?).to be false
       end
     end
-    # rubocop: enable RSpec/MultipleMemoizedHelpers
   end
 
   describe '#can_castle_queenside?' do
     context 'when queenside castling is possible' do
-      subject(:possible_queenside) { described_class.new(board_navigator, white_king) }
+      subject(:possible_queenside) { described_class.new(board, white_king) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
       let(:white_king) { King.new(coordinate.parse('e1'), colour: 'white') }
@@ -384,9 +365,8 @@ describe KingNavigator do
     end
 
     context 'when queenside castling is not possible because rook has already moved' do
-      subject(:impossible_queenside) { described_class.new(board_navigator, black_king) }
+      subject(:impossible_queenside) { described_class.new(board, black_king) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
       let(:black_king) { King.new(coordinate.parse('e8'), colour: 'black') }
@@ -405,9 +385,8 @@ describe KingNavigator do
     end
 
     context 'when queenside castling is not possible based on loaded castling rights' do
-      subject(:loaded_impossible_queenside) { described_class.new(board_navigator, black_king) }
+      subject(:loaded_impossible_queenside) { described_class.new(board, black_king) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) {instance_double(Board) }
       let(:black_king) { instance_double(King, colour: 'black') }
       let(:castling_rights) { { black_queenside: false } }
@@ -421,11 +400,9 @@ describe KingNavigator do
       end
     end
 
-    # rubocop: disable RSpec/MultipleMemoizedHelpers
     context 'when queenside castling is not possible because path is under check' do
-      subject(:checked_queenside) { described_class.new(board_navigator, white_king) }
+      subject(:checked_queenside) { described_class.new(board, white_king) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate) { Coordinate }
       let(:white_king) { King.new(coordinate.parse('e8'), colour: 'white') }
@@ -442,16 +419,14 @@ describe KingNavigator do
         expect(checked_queenside.can_castle_queenside?).to be false
       end
     end
-    # rubocop: enable RSpec/MultipleMemoizedHelpers
   end
 
   describe '#castling_moves' do
     let(:coordinate) { Coordinate }
 
     context 'when King has already moved' do
-      subject(:moved_king) { described_class.new(board_navigator, king) }
+      subject(:moved_king) { described_class.new(board, king) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { instance_double(Board) }
       let(:king) { instance_double(King) }
 
@@ -465,9 +440,8 @@ describe KingNavigator do
     end
 
     context 'when King can castle kingside' do
-      subject(:kingsideful_king) { described_class.new(board_navigator, white_king) }
+      subject(:kingsideful_king) { described_class.new(board, white_king) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { Board.new }
       let(:white_king) { instance_double(King, position: coordinate.parse('e1'), colour: 'white') }
       let(:white_rook) { instance_double(Rook, position: coordinate.parse('h1'), colour: 'white', instance_of?: Rook) }
@@ -478,8 +452,9 @@ describe KingNavigator do
         allow(white_king).to receive(:real?).and_return(true)
         allow(white_rook).to receive(:can_castle?).and_return(true)
         allow(white_rook).to receive(:real?).and_return(true)
-        allow(board_navigator).to receive(:move_checks_own_king?).with('e1', 'f1').and_return(false)
-        allow(board_navigator).to receive(:move_checks_own_king?).with('e1', 'g1').and_return(false)
+        board_navigator = kingsideful_king.instance_variable_get(:@board_navigator)
+        allow(board_navigator).to receive(:move_checks_own_king?).with(white_king.position.to_s, white_king.position.right.to_s).and_return false
+        allow(board_navigator).to receive(:move_checks_own_king?).with(white_king.position.to_s, white_king.position.right.right.to_s).and_return false
       end
 
       it 'includes that as a possible move' do
@@ -489,9 +464,8 @@ describe KingNavigator do
     end
 
     context 'when King can castle queenside' do
-      subject(:queensideful_king) { described_class.new(board_navigator, black_king) }
+      subject(:queensideful_king) { described_class.new(board, black_king) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { Board.new }
       let(:black_king) { instance_double(King, position: coordinate.parse('e8'), colour: 'black') }
       let(:black_rook) { instance_double(Rook, position: coordinate.parse('a8'), colour: 'black', instance_of?: Rook) }
@@ -502,9 +476,9 @@ describe KingNavigator do
         allow(black_king).to receive(:real?).and_return(true)
         allow(black_rook).to receive(:can_castle?).and_return(true)
         allow(black_rook).to receive(:real?).and_return(true)
-        allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'd8').and_return(false)
-        allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'c8').and_return(false)
-        allow(board).to receive(:castling_rights).and_return(Hash.new(true))
+        board_navigator = queensideful_king.instance_variable_get(:@board_navigator)
+        allow(board_navigator).to receive(:move_checks_own_king?).with(black_king.position.to_s, black_king.position.left.to_s).and_return false
+        allow(board_navigator).to receive(:move_checks_own_king?).with(black_king.position.to_s, black_king.position.left.left.to_s).and_return false
       end
 
       it 'includes that as a possible move' do
@@ -514,9 +488,8 @@ describe KingNavigator do
     end
 
     context 'when King can perform both castlings' do
-      subject(:castlingful_king) { described_class.new(board_navigator, black_king) }
+      subject(:castlingful_king) { described_class.new(board, black_king) }
 
-      let(:board_navigator) { instance_double(BoardNavigator, board:) }
       let(:board) { Board.new }
       let(:black_king) { instance_double(King, position: coordinate.parse('e8'), colour: 'black') }
       let(:kingside_rook) { instance_double(Rook, position: coordinate.parse('h8'), colour: 'black', instance_of?: Rook) }
@@ -530,10 +503,11 @@ describe KingNavigator do
           allow(piece).to receive(:can_castle?).and_return(true)
           allow(piece).to receive(:real?).and_return(true)
         end
-        allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'd8').and_return(false)
-        allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'c8').and_return(false)
-        allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'f8').and_return(false)
-        allow(board_navigator).to receive(:move_checks_own_king?).with('e8', 'g8').and_return(false)
+        board_navigator = castlingful_king.instance_variable_get(:@board_navigator)
+        allow(board_navigator).to receive(:move_checks_own_king?).with(black_king.position.to_s, black_king.position.left.to_s).and_return false
+        allow(board_navigator).to receive(:move_checks_own_king?).with(black_king.position.to_s, black_king.position.left.left.to_s).and_return false
+        allow(board_navigator).to receive(:move_checks_own_king?).with(black_king.position.to_s, black_king.position.right.to_s).and_return false
+        allow(board_navigator).to receive(:move_checks_own_king?).with(black_king.position.to_s, black_king.position.right.right.to_s).and_return false
       end
 
       it 'includes them both as possible moves' do
@@ -547,7 +521,6 @@ end
 describe PawnNavigator do
   describe '#possible_moves' do
     context 'when checking starting moves' do
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:coordinate_system) { Coordinate }
 
@@ -556,7 +529,7 @@ describe PawnNavigator do
       end
 
       context 'when Pawn is white' do
-        subject(:navigate_possibilities) { described_class.new(board_navigator, white_pawn) }
+        subject(:navigate_possibilities) { described_class.new(board, white_pawn) }
 
         let(:white_pawn) { board.piece_for('b2') }
 
@@ -568,7 +541,7 @@ describe PawnNavigator do
       end
 
       context 'when Pawn is black' do
-        subject(:navigate_possibilities) { described_class.new(board_navigator, black_pawn) }
+        subject(:navigate_possibilities) { described_class.new(board, black_pawn) }
 
         let(:black_pawn) { board.piece_for('d7') }
 
@@ -580,7 +553,7 @@ describe PawnNavigator do
       end
 
       context 'when Pawn was already moved' do
-        subject(:pawn_no_double) { described_class.new(board_navigator, white_pawn) }
+        subject(:pawn_no_double) { described_class.new(board, white_pawn) }
 
         let!(:white_pawn) { board.piece_for('d2') }
 
@@ -593,9 +566,8 @@ describe PawnNavigator do
     end
 
     context 'when Pawn can take' do
-      subject(:pawn_taking) { described_class.new(board_navigator, black_pawn) }
+      subject(:pawn_taking) { described_class.new(board, black_pawn) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:black_pawn) { board.piece_for('d5') }
       # See 'when Pawn was already moved' above? No idea why that works with let! but this doesn't.
@@ -618,9 +590,8 @@ describe PawnNavigator do
 
   describe '#en_passant' do
     context 'when White pawn can perform en passant' do
-      subject(:white_passant) { described_class.new(board_navigator, white_pawn) }
+      subject(:white_passant) { described_class.new(board, white_pawn) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:white_pawn) { board.piece_for('d5') }
 
@@ -636,9 +607,8 @@ describe PawnNavigator do
     end
 
     context 'when Black pawn can perform en passant' do
-      subject(:black_passant) { described_class.new(board_navigator, black_pawn) }
+      subject(:black_passant) { described_class.new(board, black_pawn) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:black_pawn) { board.piece_for('c5') }
 
@@ -656,9 +626,8 @@ describe PawnNavigator do
 
   describe '#en_passant_checks_king?' do
     context 'when it does check the king' do
-      subject(:passant_check) { described_class.new(board_navigator, black_pawn) }
+      subject(:passant_check) { described_class.new(board, black_pawn) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:black_pawn) { board.piece_for('e4') }
 
@@ -675,9 +644,8 @@ describe PawnNavigator do
     end
 
     context 'when it does not check the king' do
-      subject(:no_passant_check) { described_class.new(board_navigator, white_pawn) }
+      subject(:no_passant_check) { described_class.new(board, white_pawn) }
 
-      let(:board_navigator) { BoardNavigator.new(board) }
       let(:board) { Board.new }
       let(:white_pawn) { board.piece_for('d5') }
 
