@@ -18,8 +18,10 @@ class EnPassantPair
   end
 
   def self.create_from_coordinate(coordinate, colour, board)
+    return new(nil, nil) if coordinate.to_s == '-'
+
     case colour
-    when 'white' then piece = board.piece_for(oordinate.up)
+    when 'white' then piece = board.piece_for(coordinate.up)
     when 'black' then piece = board.piece_for(coordinate.down)
     end
     new(piece, coordinate)

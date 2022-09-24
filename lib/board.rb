@@ -3,7 +3,17 @@
 # This class handles a chess board.
 class Board
   include Display
-  attr_reader :board, :castling_rights
+  attr_reader :board
+  attr_accessor :en_passant_pair, :castling_rights
+
+  def self.starting_state
+    starting_fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+    FEN.new(starting_fen).to_board
+  end
+
+  def self.from_fen(fen_string)
+    FEN.new(fen_string).to_board
+  end
 
   def initialize(square = Square, factory = PieceFactory)
     @square = square
@@ -20,17 +30,6 @@ class Board
       board.merge!(column)
     end
     board
-  end
-
-  def setup_from_fen(notation = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
-    notation.split('/').each_with_index do |row, row_number|
-      fen_numbers(row).each_with_index do |char, column|
-        next if char.to_i.positive?
-
-        coordinate = [integer_to_column(column), 8 - row_number].join
-        board[coordinate].place(create_fen_piece(char, coordinate))
-      end
-    end
   end
 
   def dump_to_fen
@@ -119,13 +118,6 @@ class Board
     '-'
   end
 
-  def load_en_passant_coordinate(string, colour)
-    coordinate = Coordinate.parse(string)
-    return if coordinate.to_s == '-'
-
-    @en_passant_pair = EnPassantPair.create_from_coordinate(coordinate, colour, self)
-  end
-
   def create_en_passant_pair(move)
     piece = piece_for(move.target)
     @en_passant_pair = EnPassantPair.create_from_piece(piece)
@@ -185,14 +177,6 @@ class Board
     castling_rights.join
   end
 
-  def load_castling_rights(string)
-    @castling_rights = Hash.new(false)
-    @castling_rights[:white_queenside] = true if string.include?('Q')
-    @castling_rights[:white_kingside] = true if string.include?('K')
-    @castling_rights[:black_queenside] = true if string.include?('q')
-    @castling_rights[:black_kingside] = true if string.include?('k')
-  end
-
   def promoteable?(coordinate)
     return true if piece_for(coordinate).promoteable?
 
@@ -214,12 +198,11 @@ class Board
     BoardNavigator.new(self).stalemate?(current_player_colour)
   end
 
-  private
-
-  def integer_to_column(integer)
-    starting_column = 'a'
-    (starting_column.ord + integer).chr
+  def create_fen_piece(name, position)
+    @factory.fen_for(name, position)
   end
+
+  private
 
   def create_column(column_letter)
     column = {}
@@ -230,15 +213,7 @@ class Board
     column
   end
 
-  def fen_numbers(row)
-    row.gsub(/\d/) { |match| '1'.rjust(match.to_i, '1') }.chars
-  end
-
   def create_square(coordinate)
     @square.new(coordinate)
-  end
-
-  def create_fen_piece(name, position)
-    @factory.fen_for(name, position)
   end
 end

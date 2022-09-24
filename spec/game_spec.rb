@@ -81,7 +81,6 @@ describe Game do
       let(:proper_move) { 'a2a4' }
 
       before do
-        out_of_bounds_input.board.setup_from_fen
         allow(out_of_bounds_input).to receive(:gets).and_return(improper_move, proper_move)
       end
 
@@ -199,13 +198,12 @@ describe Game do
 
   describe '#validate_target' do
     context 'when target is legal' do
-      subject(:game_valid_move) { described_class.new }
+      subject(:game_valid_move) { described_class.new(player1, player2, board) }
 
+      let(:player1) { Player.new('test', 'white') }
+      let(:player2) { Player.new('test2', 'black') }
+      let(:board) { Board.from_fen('k7/1r6/8/8/8/8/8/K7 w KQkq - 0 1') }
       let(:move) { Move.parse('b7h7') }
-
-      before do
-        game_valid_move.board.setup_from_fen('k7/1r6/8/8/8/8/8/K7')
-      end
 
       it 'returns the move' do
         expect(game_valid_move.validate_target(move)).to be move
@@ -266,11 +264,11 @@ describe Game do
 
   describe '#game_over?' do
     context 'when game is still on' do
-      subject(:game_continue) { described_class.new }
+      subject(:game_continue) { described_class.new(player1, player2, board) }
 
-      before do
-        game_continue.board.setup_from_fen
-      end
+      let(:player1) { Player.new('test', 'white') }
+      let(:player2) { Player.new('test2', 'black') }
+      let(:board) { Board.starting_state }
 
       it 'returns false' do
         expect(game_continue.game_over?).to be false
@@ -278,11 +276,11 @@ describe Game do
     end
 
     context 'when game is won' do
-      subject(:game_won) { described_class.new }
+      subject(:game_won) { described_class.new(player1, player2, board) }
 
-      before do
-        game_won.board.setup_from_fen('R3k3/7R/8/8/8/8/PPPPPPPP/1NBQKBN1')
-      end
+      let(:player1) { Player.new('test', 'white') }
+      let(:player2) { Player.new('test2', 'black') }
+      let(:board) { Board.from_fen('R3k3/7R/8/8/8/8/PPPPPPPP/1NBQKBN1 w KQkq - 0 1') }
 
       it 'returns true' do
         expect(game_won.game_over?).to be true
@@ -290,11 +288,11 @@ describe Game do
     end
 
     context 'when game is tied' do
-      subject(:game_tied) { described_class.new }
+      subject(:game_tied) { described_class.new(player1, player2, board) }
 
-      before do
-        game_tied.board.setup_from_fen('5bnr/4p1pq/4Qpkr/7p/7P/4P3/PPPP1PP1/RNB1KBNR')
-      end
+      let(:player1) { Player.new('test', 'white') }
+      let(:player2) { Player.new('test2', 'black') }
+      let(:board) { Board.from_fen('5bnr/4p1pq/4Qpkr/7p/7P/4P3/PPPP1PP1/RNB1KBNR w KQkq - 0 1') }
 
       it 'returns true' do
         expect(game_tied.game_over?).to be true
@@ -651,14 +649,14 @@ describe Game do
 
   describe '#en_passant?' do
     context 'when the move is en passant' do
-      subject(:passant_game) { described_class.new }
+      subject(:passant_game) { described_class.new(Player.new('test', 'white'), Player.new('test2', 'black'), board) }
 
+      let(:board) { Board.from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR - 0 1') }
       let(:passant_opportunity) { Move.parse('c7c5') }
       let(:black_pawn) { passant_game.board.piece_for('c7') }
       let(:white_pawn) { passant_game.board.piece_for('d5') }
 
       before do
-        passant_game.board.setup_from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
         passant_game.board.move_piece(passant_opportunity.start, passant_opportunity.target)
         passant_game.send_en_passant_opportunity(passant_opportunity)
         passant_game.board.move_piece(white_pawn.position, passant_game.board.en_passant_coordinate)
@@ -672,14 +670,14 @@ describe Game do
     end
 
     context 'when the move is not en passant' do
-      subject(:no_passant_game) { described_class.new }
+      subject(:no_passant_game) { described_class.new(Player.new('test', 'white'), Player.new('test2', 'black'), board) }
 
+      let(:board) { Board.from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR - 0 1') }
       let(:black_pawn) { no_passant_game.board.piece_for('c7') }
       let(:no_passant_opportunity) { Move.parse('c7c6') }
       let(:white_pawn) { no_passant_game.board.piece_for('d5') }
 
       before do
-        no_passant_game.board.setup_from_fen('rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR')
         no_passant_game.board.move_piece(black_pawn.position, no_passant_opportunity.target)
         no_passant_game.board.move_piece(white_pawn.position, black_pawn.position)
       end
@@ -778,11 +776,9 @@ describe Game do
 
   describe '#to_fen' do
     context 'when converting a starting position' do
-      subject(:starting_position) { described_class.new }
+      subject(:starting_position) { described_class.new(Player.new('test', 'white'), Player.new('test2', 'black'), board) }
 
-      before do
-        starting_position.board.setup_from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
-      end
+      let(:board) { Board.starting_state }
 
       it 'returns the correct string' do
         string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
@@ -791,11 +787,9 @@ describe Game do
     end
 
     context 'when converting a starting position partially' do
-      subject(:starting_position) { described_class.new }
+      subject(:starting_position) { described_class.new(Player.new('test', 'white'), Player.new('test2', 'black'), board) }
 
-      before do
-        starting_position.board.setup_from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
-      end
+      let(:board) { Board.starting_state }
 
       it 'returns the correct string' do
         string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -'
@@ -829,7 +823,6 @@ describe Game do
     end
 
     context "when loading Board's variables" do
-
       it 'correctly loads the board' do
         setup = 'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR'
         expect(loaded_game.board.dump_to_fen).to eq(setup)

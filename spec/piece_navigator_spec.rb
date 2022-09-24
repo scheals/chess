@@ -6,12 +6,8 @@ describe PieceNavigator do
   describe '#allied_coordinates' do
     subject(:navigate_allies) { described_class.new(board, white_rook) }
 
-    let(:board) { Board.new }
+    let(:board) { Board.starting_state }
     let(:white_rook) { Rook.new('a1', colour: 'white') }
-
-    before do
-      navigate_allies.board.setup_from_fen
-    end
 
     it 'returns an array of squares that allied pieces are on from given coordinates' do
       expect(navigate_allies.allied_coordinates(navigate_allies.board.coordinates)).to contain_exactly("a1", "a2", "b1", "b2", "c1", "c2", "d1", "d2", "e1", "e2", "f1", "f2", "g1", "g2", "h1", "h2")
@@ -21,11 +17,10 @@ describe PieceNavigator do
   describe '#enemy_coordinates' do
     subject(:navigate_enemies) { described_class.new(board, black_rook) }
 
-    let(:board) { Board.new }
+    let(:board) { Board.starting_state }
     let(:black_rook) { Rook.new('f4', colour: 'black') }
 
     before do
-      navigate_enemies.board.setup_from_fen
       navigate_enemies.board.put(black_rook, 'f4')
     end
 
@@ -102,13 +97,9 @@ describe RookNavigator do
     context 'when checking starting moves' do
       subject(:navigate_possibilities) { described_class.new(board, white_rook) }
 
-      let(:board) { Board.new }
+      let(:board) { Board.starting_state }
       let(:white_rook) { board.piece_for('h1') }
       let(:coordinate_system) { Coordinate }
-
-      before do
-        board.setup_from_fen
-      end
 
       it "returns a collection of Rook's possible coordinates" do
         expect(navigate_possibilities.possible_moves).to be_empty
@@ -118,13 +109,9 @@ describe RookNavigator do
     context 'when game is underway' do
       subject(:navigate_rook) { described_class.new(board, black_rook) }
 
-      let(:board) { Board.new }
+      let(:board) { Board.from_fen('4B3/8/8/8/n1n1rnB1/8/4B3/8 w KQkq - 0 1') }
       let(:black_rook) { Rook.new('e4', colour: 'black') }
       let(:coordinate_system) { Coordinate }
-
-      before do
-        board.setup_from_fen('4B3/8/8/8/n1n1rnB1/8/4B3/8')
-      end
 
       it 'correctly interprets collision' do
         correct_coordinates = %w[e2 e3 e5 e6 e7 e8 d4]
@@ -140,13 +127,9 @@ describe BishopNavigator do
     context 'when checking starting moves' do
       subject(:navigate_possibilities) { described_class.new(board, black_bishop) }
 
-      let(:board) { Board.new }
+      let(:board) { Board.starting_state }
       let(:coordinate_system) { Coordinate }
       let(:black_bishop) { board.piece_for('c8') }
-
-      before do
-        board.setup_from_fen
-      end
 
       it "returns a collection of Bishop's possible coordinates" do
         expect(navigate_possibilities.possible_moves).to be_empty
@@ -156,13 +139,9 @@ describe BishopNavigator do
     context 'when game is underway' do
       subject(:navigate_bishop) { described_class.new(board, white_bishop) }
 
-      let(:board) { Board.new }
+      let(:board) { Board.from_fen('8/1n6/6R1/3n4/4B3/5R2/8/1r4n1 w KQkq - 0 1') }
       let(:white_bishop) { board.piece_for('e4') }
       let(:coordinate_system) { Coordinate }
-
-      before do
-        board.setup_from_fen('8/1n6/6R1/3n4/4B3/5R2/8/1r4n1')
-      end
 
       it 'correctly interprets collision' do
         correct_coordinates = %w[b1 c2 d3 d5 f5]
@@ -178,13 +157,9 @@ describe KnightNavigator do
     context 'when checking starting moves' do
       subject(:navigate_possibilities) { described_class.new(board, white_knight) }
 
-      let(:board) { Board.new }
+      let(:board) { Board.starting_state }
       let(:coordinate_system) { Coordinate }
       let(:white_knight) { board.piece_for('g1') }
-
-      before do
-        board.setup_from_fen
-      end
 
       it "returns a collection of Knight's possible coordinates" do
         expect(navigate_possibilities.possible_moves).to contain_exactly('f3', 'h3')
@@ -198,13 +173,9 @@ describe QueenNavigator do
     context 'when checking starting moves' do
       subject(:navigate_possibilities) { described_class.new(board, black_queen) }
 
-      let(:board) { Board.new }
+      let(:board) { Board.starting_state }
       let(:coordinate_system) { Coordinate }
       let(:black_queen) { board.piece_for('d8') }
-
-      before do
-        board.setup_from_fen
-      end
 
       it "returns a collection of Queen's possible coordinates" do
         expect(navigate_possibilities.possible_moves).to be_empty
@@ -214,13 +185,9 @@ describe QueenNavigator do
     context 'when game is underway' do
       subject(:navigate_queen) { described_class.new(board, black_queen) }
 
-      let(:board) { Board.new }
+      let(:board) { Board.from_fen('4r3/2N5/r1q1r1N1/6N1/N7/5N2/2r3N1/2N5 w KQkq - 0 1') }
       let(:black_queen) { board.piece_for('c6') }
       let(:coordinate_system) { Coordinate }
-
-      before do
-        board.setup_from_fen('4r3/2N5/r1q1r1N1/6N1/N7/5N2/2r3N1/2N5')
-      end
 
       it 'correctly interprets collision' do
         correct_coordinates = %w[a8 b7 a4 b5 b6 c7 c5 c4 c3 d7 d6 d5 e4 f3]
@@ -236,13 +203,9 @@ describe KingNavigator do
     context 'when checking starting moves' do
       subject(:navigate_possibilities) { described_class.new(board, white_king) }
 
-      let(:board) { Board.new }
+      let(:board) { Board.starting_state }
       let(:coordinate_system) { Coordinate }
       let(:white_king) { board.piece_for('e1') }
-
-      before do
-        board.setup_from_fen
-      end
 
       it "returns a collection of King's possible coordinates" do
         expect(navigate_possibilities.possible_moves).to be_empty
@@ -521,12 +484,8 @@ end
 describe PawnNavigator do
   describe '#possible_moves' do
     context 'when checking starting moves' do
-      let(:board) { Board.new }
+      let(:board) { Board.starting_state }
       let(:coordinate_system) { Coordinate }
-
-      before do
-        board.setup_from_fen
-      end
 
       context 'when Pawn is white' do
         subject(:navigate_possibilities) { described_class.new(board, white_pawn) }
@@ -568,14 +527,13 @@ describe PawnNavigator do
     context 'when Pawn can take' do
       subject(:pawn_taking) { described_class.new(board, black_pawn) }
 
-      let(:board) { Board.new }
+      let(:board) { Board.starting_state }
       let(:black_pawn) { board.piece_for('d5') }
       # See 'when Pawn was already moved' above? No idea why that works with let! but this doesn't.
       # So I had to grab the piece after it's been moved.
       let(:coordinate) { Coordinate }
 
       before do
-        board.setup_from_fen
         board.move_piece('d7', 'd5')
         board.move_piece('e2', 'e4')
         board.move_piece('c2', 'c4')
@@ -592,11 +550,10 @@ describe PawnNavigator do
     context 'when White pawn can perform en passant' do
       subject(:white_passant) { described_class.new(board, white_pawn) }
 
-      let(:board) { Board.new }
+      let(:board) { Board.from_fen('3qk3/8/3p4/2pP4/4P3/8/8/3QK3 w KQkq - 0 1') }
       let(:white_pawn) { board.piece_for('d5') }
 
       before do
-        board.setup_from_fen('3qk3/8/3p4/2pP4/4P3/8/8/3QK3')
         board.create_en_passant_pair(Move.parse('c7c5'))
       end
 
@@ -609,11 +566,10 @@ describe PawnNavigator do
     context 'when Black pawn can perform en passant' do
       subject(:black_passant) { described_class.new(board, black_pawn) }
 
-      let(:board) { Board.new }
+      let(:board) { Board.from_fen('3qk3/8/3p4/2pP4/4P3/8/8/3QK3 w KQkq - 0 1') }
       let(:black_pawn) { board.piece_for('c5') }
 
       before do
-        board.setup_from_fen('3qk3/8/3p4/2pP4/4P3/8/8/3QK3')
         board.create_en_passant_pair(Move.parse('d3d5'))
       end
 
@@ -628,11 +584,10 @@ describe PawnNavigator do
     context 'when it does check the king' do
       subject(:passant_check) { described_class.new(board, black_pawn) }
 
-      let(:board) { Board.new }
+      let(:board) { Board.from_fen('rnbpkpnr/pppp1ppp/8/8/3Pp3/8/PPP1QPPP/RNBPKBNR w KQkq - 0 1') }
       let(:black_pawn) { board.piece_for('e4') }
 
       before do
-        board.setup_from_fen('rnbpkpnr/pppp1ppp/8/8/3Pp3/8/PPP1QPPP/RNBPKBNR')
         board.create_en_passant_pair(Move.parse('d2d4'))
       end
 
@@ -646,11 +601,10 @@ describe PawnNavigator do
     context 'when it does not check the king' do
       subject(:no_passant_check) { described_class.new(board, white_pawn) }
 
-      let(:board) { Board.new }
+      let(:board) { Board.from_fen('rnbqkbnr/pp1ppppp/8/2pP4/8/8/PPP1PPPP/RNBQKBNR w KQkq - 0 1') }
       let(:white_pawn) { board.piece_for('d5') }
 
       before do
-        board.setup_from_fen('rnbqkbnr/pp1ppppp/8/2pP4/8/8/PPP1PPPP/RNBQKBNR')
         board.create_en_passant_pair(Move.parse('c7c5'))
       end
 

@@ -109,11 +109,7 @@ describe BoardNavigator do
     context 'when King is under check' do
       subject(:navigate_check) { described_class.new(board) }
 
-      let(:board) { Board.new }
-
-      before do
-        board.setup_from_fen('r6K/8/8/r7/8/8/8/8')
-      end
+      let(:board) { Board.from_fen('r6K/8/8/r7/8/8/8/8 w KQkq - 0 1') }
 
       it 'returns true' do
         king = board.piece_for('h8')
@@ -124,11 +120,7 @@ describe BoardNavigator do
     context 'when King is not under check' do
       subject(:navigate_checkless) { described_class.new(board) }
 
-      let(:board) { Board.new }
-
-      before do
-        board.setup_from_fen('k7/1R6/8/8/8/8/8/7r')
-      end
+      let(:board) { Board.from_fen('k7/1R6/8/8/8/8/8/7r w KQkq - 0 1') }
 
       it 'returns false' do
         king = board.piece_for('a8')
@@ -280,15 +272,11 @@ describe BoardNavigator do
   # rubocop: enable RSpec/MultipleMemoizedHelpers
 
   describe '#moves_for' do
-    let(:board) { Board.new }
+    let(:board) { Board }
     let(:coordinate) { Coordinate }
 
     context 'when piece has no special considerations' do
-      subject(:usual_navigation) { described_class.new(board) }
-
-      before do
-        board.setup_from_fen('1k2r3/2N5/r1q1r1N1/6N1/N7/5N2/2r3N1/2N4K')
-      end
+      subject(:usual_navigation) { described_class.new(board.from_fen('1k2r3/2N5/r1q1r1N1/6N1/N7/5N2/2r3N1/2N4K w KQkq - 0 1')) }
 
       it 'just returns correct moves' do
         correct_moves = %w[a4 b5 a8 b6 b7 c7 c5 c4 c3 d7 d6 d5 e4 f3].map { |move| coordinate.parse(move) }
@@ -297,11 +285,7 @@ describe BoardNavigator do
     end
 
     context 'when a move would put own king in check' do
-      subject(:checking_move) { described_class.new(board) }
-
-      before do
-        board.setup_from_fen('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR')
-      end
+      subject(:checking_move) { described_class.new(board.from_fen('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR w KQkq - 0 1')) }
 
       it 'does not include those moves' do
         correct_moves = %w[c6 b5 a4].map { |move| coordinate.parse(move) }
@@ -310,11 +294,7 @@ describe BoardNavigator do
     end
 
     context 'when queenside castling is possible for a king' do
-      subject(:queenside_navigation) { described_class.new(board) }
-
-      before do
-        board.setup_from_fen('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR')
-      end
+      subject(:queenside_navigation) { described_class.new(board.from_fen('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR w KQkq - 0 1')) }
 
       it 'includes it as a possibility' do
         correct_moves = %w[d1 d2 c1].map { |move| coordinate.parse(move) }
@@ -323,11 +303,7 @@ describe BoardNavigator do
     end
 
     context 'when kingside castling is possible for a king' do
-      subject(:kingside_navigation) { described_class.new(board) }
-
-      before do
-        board.setup_from_fen('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR')
-      end
+      subject(:kingside_navigation) { described_class.new(board.from_fen('rnb1k2r/pppqpp1p/5n1b/3p2p1/Q1P5/2NPB3/PP2PPPP/R3KBNR w KQkq - 0 1')) }
 
       it 'includes it as a possibility' do
         correct_moves = %w[d8 f8 g8].map { |move| coordinate.parse(move) }
@@ -336,11 +312,7 @@ describe BoardNavigator do
     end
 
     context 'when queenside castling puts king in check' do
-      subject(:illegal_queenside) { described_class.new(board) }
-
-      before do
-        board.setup_from_fen('rnb1k2r/ppp1pp1p/5n1b/3p2p1/q1P5/2NPB3/PP2PPPP/R3KBNR')
-      end
+      subject(:illegal_queenside) { described_class.new(board.from_fen('rnb1k2r/ppp1pp1p/5n1b/3p2p1/q1P5/2NPB3/PP2PPPP/R3KBNR w KQkq - 0 1')) }
 
       it 'does not include it as a possibility' do
         correct_moves = %w[d2].map { |move| coordinate.parse(move) }
@@ -349,11 +321,7 @@ describe BoardNavigator do
     end
 
     context 'when kingside castling puts king in check' do
-      subject(:illegal_kingside) { described_class.new(board) }
-
-      before do
-        board.setup_from_fen('rnb1k2r/ppp1pp1p/5nQb/3p2p1/q1P5/2NPB3/PP2PPPP/R3KBNR')
-      end
+      subject(:illegal_kingside) { described_class.new(board.from_fen('rnb1k2r/ppp1pp1p/5nQb/3p2p1/q1P5/2NPB3/PP2PPPP/R3KBNR w KQkq - 0 1')) }
 
       it 'does not include it as a possibility' do
         correct_moves = %w[d7 d8 f8].map { |move| coordinate.parse(move) }
@@ -362,12 +330,11 @@ describe BoardNavigator do
     end
 
     context 'when en passant is possible for a pawn' do
-      subject(:en_passant) { described_class.new(board) }
+      subject(:en_passant) { described_class.new(board.from_fen('4k3/8/8/8/3p4/8/4P3/4K3 w KQkq - 0 1')) }
 
       before do
-        board.setup_from_fen('4k3/8/8/8/3p4/8/4P3/4K3')
         en_passant.board.move_piece('e2', 'e4')
-        board.create_en_passant_pair(Move.parse('e2e4'))
+        en_passant.board.create_en_passant_pair(Move.parse('e2e4'))
       end
 
       it 'includes it as a possibility' do
@@ -378,15 +345,7 @@ describe BoardNavigator do
     end
 
     context 'when en passant is possible for a pawn thanks to a load' do
-      subject(:en_passant) { described_class.new(board) }
-
-      let(:colour) { 'black' }
-      let(:en_passant_coordinate) { 'e3' }
-
-      before do
-        board.setup_from_fen('4k3/8/8/8/3pP3/8/8/4K3')
-        board.load_en_passant_coordinate(en_passant_coordinate, colour)
-      end
+      subject(:en_passant) { described_class.new(board.from_fen('4k3/8/8/8/3pP3/8/8/4K3 w KQkq e3 0 1')) }
 
       it 'includes it as a possibility' do
         correct_moves = %w[d3 d2 e3].map { |move| coordinate.parse(move) }
@@ -397,11 +356,7 @@ describe BoardNavigator do
 
   describe '#win?' do
     context 'when game is still on' do
-      subject(:board_continue) { described_class.new(Board.new) }
-
-      before do
-        board_continue.board.setup_from_fen
-      end
+      subject(:board_continue) { described_class.new(Board.starting_state) }
 
       it 'returns false' do
         expect(board_continue.win?('black')).to be false
@@ -409,11 +364,7 @@ describe BoardNavigator do
     end
 
     context 'when game is won' do
-      subject(:board_won) { described_class.new(Board.new) }
-
-      before do
-        board_won.board.setup_from_fen('R3k3/7R/8/8/8/8/PPPPPPPP/1NBQKBN1')
-      end
+      subject(:board_won) { described_class.new(Board.from_fen('R3k3/7R/8/8/8/8/PPPPPPPP/1NBQKBN1 w KQkq - 0 1')) }
 
       it 'returns true' do
         expect(board_won.win?('white')).to be true

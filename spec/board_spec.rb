@@ -139,11 +139,7 @@ describe Board do
   end
 
   describe '#dump_to_fen' do
-    subject(:usual_board) { described_class.new }
-
-    before do
-      usual_board.setup_from_fen('k7/1R6/8/8/8/8/8/7r')
-    end
+    subject(:usual_board) { described_class.from_fen('k7/1R6/8/8/8/8/8/7r w KQkq - 0 1') }
 
     it 'returns proper FEN representation' do
       expected = 'k7/1R6/8/8/8/8/8/7r'
@@ -152,10 +148,9 @@ describe Board do
   end
 
   describe '#copy' do
-    subject(:polly_board) { described_class.new }
+    subject(:polly_board) { described_class.starting_state }
 
     before do
-      polly_board.setup_from_fen
       polly_board.piece_for('a1').insecure_move('a3')
       polly_board.find('a1').vacate
     end
@@ -218,14 +213,10 @@ describe Board do
     end
   end
 
-  describe '#setup_from_fen' do
-    subject(:starting_board) { described_class.new }
+  describe '::starting_state' do
+    subject(:starting_board) { described_class.starting_state }
 
     let(:board) { starting_board.instance_variable_get(:@board) }
-
-    before do
-      starting_board.setup_from_fen
-    end
 
     it 'puts black Rook into a8' do
       starting_square = board['a8']
@@ -319,40 +310,10 @@ describe Board do
       expect(starting_row_pieces).to all(be_a(Pawn).and(have_attributes(colour: 'white')))
     end
 
-    context 'when dealing with empty squares' do
-      subject(:nil_board) { described_class.new(square, factory) }
-
-      let(:square) { Square }
-      let(:factory) { class_double(PieceFactory) }
-
-      RSpec::Matchers.define :integer_as_string do
-        match { |actual| actual.to_i.positive? }
-      end
-
-      before do
-        allow(factory).to receive(:fen_for)
-      end
-
-      it "doesn't create NilPieces on regular setup" do
-        nil_board.setup_from_fen
-        expect(factory).not_to have_received(:fen_for).with(integer_as_string, anything)
-      end
-
-      it "doesn't create NilPieces on underway setup" do
-        nil_board.setup_from_fen('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R')
-        expect(factory).not_to have_received(:fen_for).with(integer_as_string, anything)
-      end
-    end
-
     context 'when rows contain empty squares' do
-      subject(:sparse_board) { described_class.new }
+      subject(:sparse_board) { described_class.from_fen('3pP3/8/8/8/8/8/8/8 w KQkq - 0 1') }
 
       let(:coordinate) { Coordinate }
-
-      before do
-        notation = '3pP3/8/8/8/8/8/8/8'
-        sparse_board.setup_from_fen(notation)
-      end
 
       it 'puts a black Pawn into d8' do
         expect(sparse_board.piece_for('d8')).to be_a(Pawn).and have_attributes(position: coordinate.parse('d8'), colour: 'black')
@@ -422,13 +383,9 @@ describe Board do
   end
 
   describe '#create_en_passant_pair' do
-    subject(:navigate_en_passant) { described_class.new }
+    subject(:navigate_en_passant) { described_class.from_fen('rnbqkbnr/ppp1pppp/8/3p4/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1') }
 
     let(:move) { Move.parse('d7d5') }
-
-    before do
-      navigate_en_passant.setup_from_fen('rnbqkbnr/ppp1pppp/8/3p4/8/8/PPPPPPPP/RNBQKBNR')
-    end
 
     it 'changes @en_passant_coordinate to the proper coordinate' do
       expect { navigate_en_passant.create_en_passant_pair(move) }.to change(navigate_en_passant, :en_passant_coordinate).from(nil).to(move.target.up)
@@ -436,12 +393,11 @@ describe Board do
   end
 
   describe '#clear_en_passant_pair' do
-    subject(:clear_en_passant) { described_class.new }
+    subject(:clear_en_passant) { described_class.from_fen('rnbqkbnr/pppppp1p/8/6p1/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1') }
 
     let(:move) { Move.parse('g7g5') }
 
     before do
-      clear_en_passant.setup_from_fen('rnbqkbnr/pppppp1p/8/6p1/8/8/PPPPPPPP/RNBQKBNR')
       clear_en_passant.create_en_passant_pair(move)
     end
 
@@ -480,11 +436,7 @@ describe Board do
 
   describe '#promoteable?' do
     context 'when piece at the coordinate is promoteable' do
-      subject(:promoteable_board) { described_class.new }
-
-      before do
-        promoteable_board.setup_from_fen('P3k3/4p3/8/8/8/8/4P3/4K3')
-      end
+      subject(:promoteable_board) { described_class.from_fen('P3k3/4p3/8/8/8/8/4P3/4K3 w KQkq - 0 1') }
 
       it 'returns true' do
         coordinate = 'a8'
@@ -493,11 +445,7 @@ describe Board do
     end
 
     context 'when piece at the coordinate is not promoteable' do
-      subject(:nonpromoteable_board) { described_class.new }
-
-      before do
-        nonpromoteable_board.setup_from_fen('R3k3/4p3/8/8/8/8/4P3/4K3')
-      end
+      subject(:nonpromoteable_board) { described_class.from_fen('R3k3/4p3/8/8/8/8/4P3/4K3 w KQkq - 0 1') }
 
       it 'returns false' do
         coordinate = 'a8'
@@ -577,11 +525,7 @@ describe Board do
     end
 
     context 'when it does not have those rights because of loaded state' do
-      subject(:loaded_queenside) { described_class.new }
-
-      before do
-        loaded_queenside.load_castling_rights('Kk')
-      end
+      subject(:loaded_queenside) { described_class.from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kk - 0 1') }
 
       it 'returns false' do
         colour = 'black'
@@ -638,11 +582,7 @@ describe Board do
     end
 
     context 'when it does not have those rights because of loaded state' do
-      subject(:loaded_kingside) { described_class.new }
-
-      before do
-        loaded_kingside.load_castling_rights('kQq')
-      end
+      subject(:loaded_kingside) { described_class.from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w kQq - 0 1') }
 
       it 'returns false' do
         colour = 'white'
@@ -653,11 +593,7 @@ describe Board do
 
   describe '#record_castling_rights' do
     context 'when everyone has full castling rights' do
-      subject(:full_castling_rights) { described_class.new }
-
-      before do
-        full_castling_rights.setup_from_fen
-      end
+      subject(:full_castling_rights) { described_class.starting_state }
 
       it 'returns a proper string' do
         string = 'KQkq'
@@ -666,11 +602,7 @@ describe Board do
     end
 
     context 'when only black has castling rights' do
-      subject(:black_castling_rights) { described_class.new }
-
-      before do
-        black_castling_rights.setup_from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1')
-      end
+      subject(:black_castling_rights) { described_class.from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1 w kq - 0 1') }
 
       it 'returns a proper string' do
         string = 'kq'
@@ -679,11 +611,7 @@ describe Board do
     end
 
     context 'when no one has castling rights' do
-      subject(:no_castling_rights) { described_class.new }
-
-      before do
-        no_castling_rights.setup_from_fen('1nbqkbn1/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1')
-      end
+      subject(:no_castling_rights) { described_class.from_fen('1nbqkbn1/pppppppp/8/8/8/8/PPPPPPPP/1NBQKBN1 w - - 0 1') }
 
       it 'returns a proper string' do
         string = '-'

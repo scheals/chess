@@ -3,11 +3,12 @@
 # rubocop: disable Metrics/ClassLength
 # This class handles a game of Chess.
 class Game
-  attr_reader :current_player, :player1, :player2, :display, :board
+  attr_reader :current_player, :player1, :player2, :display
+  attr_accessor :board
 
   def initialize(player1 = Player.new('White', 'white'),
                  player2 = Player.new('Black', 'black'),
-                 board = Board.new,
+                 board = Board.starting_state,
                  display = Display)
     @board = board
     @player1 = player1
@@ -259,21 +260,11 @@ class Game
     @current_player = load_current_player(game_state[:current_player])
     @half_move_clock = game_state[:half_move_clock]
     @full_move_clock = game_state[:full_move_clock]
-    load_board(save_state.board_state, current_player.colour)
-  end
-
-  def load_board(state, colour)
-    setup_board(state[:board])
-    board.load_castling_rights(state[:castling_rights])
-    board.load_en_passant_coordinate(state[:en_passant_coordinate], colour)
+    @board = Board.from_fen(fen_string)
   end
 
   def load_current_player(string)
     @current_player = [player1, player2].select { |player| player.colour.chars.first == string }.first
-  end
-
-  def setup_board(fen_string)
-    board.setup_from_fen(fen_string)
   end
 
   def correct_length?(move)
