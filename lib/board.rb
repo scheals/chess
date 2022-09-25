@@ -32,15 +32,6 @@ class Board
     board
   end
 
-  def dump_to_fen
-    fen = ''
-    8.times do |i|
-      fen += row(8 - i).values.map { |square| square.piece.to_fen }.join
-      fen += '/' unless i == 7
-    end
-    fen.gsub(/(\d)+/) { |match| match.count('1') }
-  end
-
   def copy
     Marshal.load(Marshal.dump(self))
   end
@@ -112,12 +103,6 @@ class Board
     @factory.for(name, colour:, position:)
   end
 
-  def record_en_passant_coordinate
-    return en_passant_coordinate.to_s if en_passant_coordinate
-
-    '-'
-  end
-
   def create_en_passant_pair(move)
     piece = piece_for(move.target)
     @en_passant_pair = EnPassantPair.create_from_piece(piece)
@@ -133,48 +118,6 @@ class Board
 
   def en_passant
     vacate(@en_passant_pair.piece.position)
-  end
-
-  def queenside_castling_rights?(colour)
-    return false unless castling_rights["#{colour}_queenside".to_sym]
-
-    colour_pieces = pieces { |piece| piece.colour == colour }
-    king = colour_pieces.find { |piece| piece.is_a?(King) }
-    queenside_rook = colour_pieces.select { |piece| piece.is_a?(Rook) && piece.position.column == 'a' }
-
-    return true if king.can_castle? &&
-                   queenside_rook.any?(&:can_castle?)
-
-    false
-  end
-
-  def kingside_castling_rights?(colour)
-    return false unless castling_rights["#{colour}_kingside".to_sym]
-
-    colour_pieces = pieces { |piece| piece.colour == colour }
-    king = colour_pieces.find { |piece| piece.is_a?(King) }
-    kingside_rook = colour_pieces.select { |piece| piece.is_a?(Rook) && piece.position.column == 'h' }
-
-    return true if king.can_castle? &&
-                   kingside_rook.any?(&:can_castle?)
-
-    false
-  end
-
-  def record_castling_rights
-    castling_rights = []
-    colours = %w[white black]
-
-    colours.each do |colour|
-      letters = %w[K Q]
-      letters.map!(&:downcase) if colour == 'black'
-      castling_rights << letters.first if kingside_castling_rights?(colour)
-      castling_rights << letters.last if queenside_castling_rights?(colour)
-    end
-
-    return '-' if castling_rights.empty?
-
-    castling_rights.join
   end
 
   def promoteable?(coordinate)

@@ -239,14 +239,7 @@ class Game
   end
 
   def to_fen(full: true)
-    result = []
-    result << board.dump_to_fen
-    result << current_player.colour[0]
-    result << board.record_castling_rights
-    result << board.record_en_passant_coordinate
-    result << @half_move_clock if full
-    result << @full_move_clock if full
-    result.join(' ')
+    FENSerializer.from_game(self, full:)
   end
 
   def save_game

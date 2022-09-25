@@ -26,8 +26,8 @@ describe FEN do
 
     context "when loading Board's variables" do
       it 'correctly loads the board' do
-        setup = 'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR'
-        expect(loaded_game.board.dump_to_fen).to eq(setup)
+        board_pieces = described_class.new('rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR b kq - 1 2').to_board.pieces
+        expect(loaded_game.board.pieces).to eq(board_pieces)
       end
 
       it 'correctly loads the castling rights' do

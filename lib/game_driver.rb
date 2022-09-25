@@ -3,23 +3,18 @@
 # This module handles creating a game session.
 module GameDriver
   def self.setup
-    puts 'Who is playing as white?'
-    white_player = Player.new(gets.chomp, 'white')
-    puts 'Who is playing as black?'
-    black_player = Player.new(gets.chomp, 'black')
-    game = Game.new(white_player, black_player)
     puts 'Are you loading a game? Y/n'
     loading_choice = gets.chomp
-    return attempt_to_load(game) if loading_choice.downcase == 'y'
+    return attempt_to_load if loading_choice.downcase == 'y'
 
-    setup_fresh(game)
+    setup_fresh
   end
 
-  def self.attempt_to_load(game)
-    return no_save_directory(game) unless Dir.exist?('savegames')
+  def self.attempt_to_load
+    return no_save_directory unless Dir.exist?('savegames')
 
     savegames = get_savegame_names
-    return empty_save_directory(game) if savegames.empty?
+    return empty_save_directory if savegames.empty?
 
     load(choose_save(savegames))
   end
@@ -30,11 +25,16 @@ module GameDriver
       fen_string = file.gets.chomp
     end
 
+    players = get_player_names
+    FEN.new(fen_string).to_game(players[:white_player], players[:black_player])
+  end
+
+  def self.get_player_names
     puts 'Who is playing as white?'
     white_player = Player.new(gets.chomp, 'white')
     puts 'Who is playing as black?'
     black_player = Player.new(gets.chomp, 'black')
-    FEN.new(fen_string).to_game(white_player, black_player)
+    { white_player:, black_player: }
   end
 
   def self.choose_save(savegames)
@@ -47,7 +47,7 @@ module GameDriver
   end
 
   def self.valid_save?(savegames, choice)
-    return true if (1..(savegames.size)).include?(choice)
+    return true if (1..(savegames.size)).cover?(choice)
 
     puts 'Incorrect input!'
     false
@@ -57,20 +57,19 @@ module GameDriver
     Dir.entries('savegames').reject { |entry| entry.include?('.') }
   end
 
-  def self.no_save_directory(game)
+  def self.no_save_directory
     puts 'Directory savegames not found! Starting a new game.'
-    setup_fresh(game)
+    setup_fresh
   end
 
-  def self.empty_save_directory(game)
+  def self.empty_save_directory
     puts 'No save games found! Starting a new game.'
-    setup_fresh(game)
+    setup_fresh
   end
 
-  def self.setup_fresh(game)
-    starting_board = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
-    game.setup_board(starting_board)
-    game
+  def self.setup_fresh
+    players = get_player_names
+    Game.new(white_player: players[:white_player], black_player: players[:black_player])
   end
 
   def self.start(game)
