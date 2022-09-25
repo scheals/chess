@@ -12,7 +12,7 @@ class Board
   end
 
   def self.from_fen(fen_string)
-    FEN.new(fen_string).to_board
+    FEN.new(fen_string).to_board(prevent_pawn_double_move: true)
   end
 
   def initialize(square = Square, factory = PieceFactory)

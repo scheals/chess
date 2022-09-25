@@ -338,7 +338,7 @@ describe BoardNavigator do
       end
 
       it 'includes it as a possibility' do
-        correct_moves = %w[d3 d2 e3].map { |move| coordinate.parse(move) }
+        correct_moves = %w[d3 e3].map { |move| coordinate.parse(move) }
 
         expect(en_passant.moves_for('d4')).to match_array(correct_moves)
       end
@@ -348,7 +348,7 @@ describe BoardNavigator do
       subject(:en_passant) { described_class.new(board.from_fen('4k3/8/8/8/3pP3/8/8/4K3 w KQkq e3 0 1')) }
 
       it 'includes it as a possibility' do
-        correct_moves = %w[d3 d2 e3].map { |move| coordinate.parse(move) }
+        correct_moves = %w[d3 e3].map { |move| coordinate.parse(move) }
         expect(en_passant.moves_for('d4')).to match_array(correct_moves)
       end
     end

@@ -28,13 +28,14 @@ class FEN
   end
 
   def to_game(white_player, black_player)
-    @board = to_board
+    @board = to_board(prevent_pawn_double_move: true)
     Game.new(white_player:, black_player:, board:, current_player_colour:, half_move_clock:, full_move_clock:)
   end
 
-  def to_board
+  def to_board(prevent_pawn_double_move: false)
     @board = Board.new
     load_board
+    move_pawns if prevent_pawn_double_move
     board
   end
 
@@ -66,6 +67,16 @@ class FEN
     board.castling_rights[:white_kingside] = true if @castling_rights.include?('K')
     board.castling_rights[:black_queenside] = true if @castling_rights.include?('q')
     board.castling_rights[:black_kingside] = true if @castling_rights.include?('k')
+  end
+
+  def move_pawns
+    starting_pawn_rows = [2, 7]
+    board.pieces do |piece|
+      next unless piece.is_a?(Pawn)
+      next if starting_pawn_rows.include?(piece.position.row.to_i)
+
+      piece.load_move_history(:no_double_moves)
+    end
   end
 
   def integer_to_column(integer)

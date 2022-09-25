@@ -37,6 +37,12 @@ class Piece
     @position = coordinate.parse(space)
   end
 
+  def load_move_history(*history)
+    history.each do |move|
+      @move_history << move
+    end
+  end
+
   def moved?
     !move_history.empty?
   end
